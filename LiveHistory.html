@@ -6,8 +6,7 @@
     <title>御坂19039 - 往期直播记录</title>
     <link rel="stylesheet" href="styles.css"> <!-- 假设你有一个外部CSS文件 -->
     <style>
-        /* 合并后的内联CSS样式 */
-        body {
+         body {
             font-family: 'Microsoft YaHei', sans-serif;
             line-height: 1.6;
             background: #fff5f7;
@@ -57,82 +56,148 @@
         .live-info {
             margin-top: 10px;
         }
+        /* 添加标签样式 */
+        .tags {
+            margin-top: 10px;
+        }
+        .tag {
+            background-color: #ff9eb5;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 5px;
+            display: inline-block;
+            cursor: pointer; /* 添加鼠标指针样式 */
+        }
+ 
+        /* 添加检索框样式 */
+        .search-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .search-box {
+            padding: 10px;
+            width: 80%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
     <header class="header">
-        <a href="https://space.bilibili.com/12136555/" onclick="scrollToTop()">Home</a> <!-- 假设scrollToTop()是一个定义的函数，用于滚动到页面顶部 -->
+        <a href="index.html" onclick="scrollToTop()">Home</a>
         <!-- 可以添加更多链接和按钮 -->
     </header>
     <div class="container">
-    <h1>🎥 御坂19039 - 往期直播记录</h1>
-    
-    <!-- 最新直播记录在上面 -->
-    <div class="live-record">
-        <div class="live-info">
-            <h2>逃离现实第三天</h2>
-            <p><strong>直播日期：</strong>2025年2月01日</p>
-            <p><strong>直播简介：</strong>逃离现实的第三天，继续探索未知的世界。</p>
-            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1uYFveMEzA" target="_blank">点击观看</a></p>
+        <h1>🎥 御坂19039 - 往期直播记录</h1>
+        <div class="search-container">
+            <input type="text" id="search-box" class="search-box" placeholder="输入标签检索直播...">
+        </div>
+        
+        <!-- 最新直播记录在上面 -->
+ <div class="live-record" data-tags="逃离现实">
+    <div class="live-info">
+        <h2>逃离现实第三天</h2>
+        <p><strong>直播日期：</strong>2025年2月01日</p>
+        <p><strong>直播简介：</strong>逃离现实的第三天，继续探索未知的世界。</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1uYFveMEzA" target="_blank">点击观看</a></p>
+        <div class="tags">
+            <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
         </div>
     </div>
-    
-    <div class="live-record">
-        <div class="live-info">
-            <h2>逃离现实第二天</h2>
-            <p><strong>直播日期：</strong>2025年1月26日</p>
-            <p><strong>直播简介：</strong>逃离现实的第二天，继续分享心得。</p>
-            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1HefCY1EBG" target="_blank">点击观看</a></p>
-        </div>
-    </div>
-    
-    <div class="live-record">
-        <div class="live-info">
-            <h2>逃离现实第一天</h2>
-            <p><strong>直播日期：</strong>2025年1月25日</p>
-            <p><strong>直播简介：</strong>静音直播，逃离现实的第一天。</p>
-            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1bQFFeMEnE" target="_blank">点击观看</a></p>
-        </div>
-    </div>
-    
-    <div class="live-record">
-        <div class="live-info">
-            <h2>背着家里人偷偷啵啵~</h2>
-            <p><strong>直播日期：</strong>2025年1月25日</p>
-            <p><strong>直播简介：</strong>在泰拉瑞亚的世界里，背着家里人偷偷啵啵~</p>
-            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV12TfZY8En1" target="_blank">点击观看</a></p>
-        </div>
-    </div>
-    
-    <div class="live-record">
-        <div class="live-info">
-            <h2>调试中···</h2>
-            <p><strong>直播日期：</strong>2025年1月18日</p>
-            <p><strong>直播简介：</strong>非正式直播，主要是调试设备。</p>
-            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1USwveVEfZ" target="_blank">点击观看</a></p>
-        </div>
-    </div>
-    
-    <div class="live-record">
-        <div class="live-info">
-            <h2>不要笑挑战！一起跨年~</h2>
-            <p><strong>直播日期：</strong>2024年12月31日</p>
-            <p><strong>直播简介：</strong>跨年特别直播，一起参与不要笑挑战，共度美好时光。</p>
-            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1G669Y2EHQ" target="_blank">点击观看</a></p>
-        </div>
-    </div>
-    
-    <!-- 可以继续添加更多直播记录 -->
 </div>
 
+<div class="live-record" data-tags="逃离现实">
+    <div class="live-info">
+        <h2>逃离现实第二天</h2>
+        <p><strong>直播日期：</strong>2025年1月26日</p>
+        <p><strong>直播简介：</strong>逃离现实的第二天，继续分享心得。</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1HefCY1EBG" target="_blank">点击观看</a></p>
+        <div class="tags">
+            <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
+        </div>
+    </div>
+</div>
+
+<div class="live-record" data-tags="逃离现实">
+    <div class="live-info">
+        <h2>逃离现实第一天</h2>
+        <p><strong>直播日期：</strong>2025年1月25日</p>
+        <p><strong>直播简介：</strong>静音直播，逃离现实的第一天。</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1bQFFeMEnE" target="_blank">点击观看</a></p>
+        <div class="tags">
+            <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
+        </div>
+    </div>
+</div>
+
+<div class="live-record" data-tags="泰拉瑞亚, 搞笑">
+    <div class="live-info">
+        <h2>背着家里人偷偷啵啵~</h2>
+        <p><strong>直播日期：</strong>2025年1月25日</p>
+        <p><strong>直播简介：</strong>在泰拉瑞亚的世界里，背着家里人偷偷啵啵~</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV12TfZY8En1" target="_blank">点击观看</a></p>
+        <div class="tags">
+            <span class="tag" onclick="filterByTag('泰拉瑞亚')">泰拉瑞亚</span>
+            <span class="tag" onclick="filterByTag('搞笑')">搞笑</span>
+        </div>
+    </div>
+</div>
+
+<div class="live-record" data-tags="调试">
+    <div class="live-info">
+        <h2>调试中···</h2>
+        <p><strong>直播日期：</strong>2025年1月18日</p>
+        <p><strong>直播简介：</strong>非正式直播，主要是调试设备。</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1USwveVEfZ" target="_blank">点击观看</a></p>
+        <div class="tags">
+            <span class="tag" onclick="filterByTag('调试')">调试</span>
+        </div>
+    </div>
+</div>
+
+<div class="live-record" data-tags="跨年, 挑战">
+    <div class="live-info">
+        <h2>不要笑挑战！一起跨年~</h2>
+        <p><strong>直播日期：</strong>2024年12月31日</p>
+        <p><strong>直播简介：</strong>跨年特别直播，一起参与不要笑挑战，共度美好时光。</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1G669Y2EHQ" target="_blank">点击观看</a></p>
+        <div class="tags">
+            <span class="tag" onclick="filterByTag('跨年')">跨年</span>
+            <span class="tag" onclick="filterByTag('挑战')">挑战</span>
+        </div>
+    </div>
+</div>
+        <!-- ...（继续添加更多直播记录）... -->
+    
     <script>
-        // 如果scrollToTop函数未定义，可以在这里定义它
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth' // 平滑滚动到顶部
+        // 检索功能
+        function filterByTag(tag) {
+            const searchBox = document.getElementById('search-box');
+            searchBox.value = tag;
+            triggerSearch();
+        }
+ 
+        function triggerSearch() {
+            const searchValue = document.getElementById('search-box').value.toLowerCase();
+            const liveRecords = document.querySelectorAll('.live-record');
+ 
+            liveRecords.forEach(record => {
+                const tags = record.getAttribute('data-tags').split(', ');
+                const hasMatchingTag = tags.some(tag => tag.toLowerCase().includes(searchValue));
+ 
+                if (hasMatchingTag) {
+                    record.style.display = ''; // 显示
+                } else {
+                    record.style.display = 'none'; // 隐藏
+                }
             });
         }
+ 
+        // 初始化时绑定输入框的输入事件
+        document.getElementById('search-box').addEventListener('input', triggerSearch);
+ 
+        // 如果scrollToTop函数未定义，可以在这里定义它（已定义，所以不需要重复）
     </script>
 </body>
 </html>
