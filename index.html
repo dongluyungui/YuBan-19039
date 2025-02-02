@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        /* 通用样式 */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* 鼠标悬停时颜色变化 */
+        a:hover {
+            color: #ff6f91;
+        }
+
+        /* 主容器样式 */
+      .container {
+            max-width: 800px;
+            margin: 60px auto 20px;
+        }
+
+        /* 标题样式 */
+        h1 {
+            color: #e91e63;
+            border-bottom: 3px solid #ff9eb5;
+            padding-bottom: 10px;
+        }
+
+        /* 链接样式 */
+      .link-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+        }
+
+      .link-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        /* 页眉样式 */
+      .header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 10px;
+        }
+
+      .header-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+      .header-links a {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-links">
+            <a href="index.html"  class="home-button">Home</a>
+            <a href="About.html"  class="about-button">About</a>
+        </div>
+        <div class="title">Home</div>
+    </header>
+    <div class="container">
+        <h1>欢迎来到主页</h1>
+        <a href="LiveHistory.html"  class="link-item">往期直播记录</a>
+        <a href="LiveRecords.html"  class="link-item">生成直播记录</a>
+    </div>
+</body>
+
+</html>
