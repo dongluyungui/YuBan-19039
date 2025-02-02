@@ -1,382 +1,267 @@
-<!DOCTYPE html> 
-<html lang="zh-CN"> 
- 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>生成直播记录</title> 
-    <link rel="stylesheet" href="styles.css">   
-    <style> 
-        /* 全局样式 */ 
-        body { 
-            font-family: 'Microsoft YaHei', sans-serif; 
-            line-height: 1.6; 
-            background: #fff5f7; 
-            color: #333; 
-            margin: 0; 
-            padding: 0; 
-        } 
- 
-        /* 导航栏样式 */ 
-     .header { 
-            background-color: #e91e63; 
-            /* 导航栏背景色 */ 
-            color: white; 
-            padding: 15px 20px; 
-            /* 导航栏内边距 */ 
-            position: sticky; 
-            /* 使导航栏在滚动时保持固定 */ 
-            top: 0; 
-            /* 固定在页面顶部 */ 
-            z-index: 1000; 
-            /* 确保导航栏在其他内容之上 */ 
-            display: flex; 
-            /* 使用flex布局 */ 
-            justify-content: space-between; 
-            /* 两端对齐 */ 
-            align-items: center; 
-            /* 垂直居中 */ 
-        } 
- 
-     .header a,.header button { 
-            color: white; 
-            text-decoration: none; 
-            /* 去除链接下划线 */ 
-            margin: 0 10px; 
-            /* 链接和按钮之间的间距 */ 
-        } 
- 
-     .header button { 
-            background-color: #ff9eb5; 
-            /* 按钮背景色 */ 
-            border: none; 
-            padding: 10px 20px; 
-            cursor: pointer; 
-        } 
- 
-     .header button:hover { 
-            background-color: #ff6f91; 
-            /* 按钮悬停背景色 */ 
-        } 
- 
-        /* 页面页眉标题 */ 
-     .title { 
-            text-align: center; 
-            font-weight: bold; 
-            cursor: pointer; 
-            flex-grow: 1; 
-        } 
- 
-     .title:hover { 
-            color: #ff4444; 
-            /* 鼠标悬停时颜色变化 */ 
-        } 
- 
-        /* 主容器样式 */ 
-     .container { 
-            max-width: 800px; 
-            margin: 60px auto 20px; 
-        } 
- 
-        /* 标题样式 */ 
-        h1 { 
-            color: #e91e63; 
-            border-bottom: 3px solid #ff9eb5; 
-            padding-bottom: 10px; 
-        } 
- 
-        /* 直播记录样式 */ 
-     .live-record { 
-            background: white; 
-            border-radius: 15px; 
-            padding: 20px; 
-            margin: 20px 0; 
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); 
-        } 
- 
-     .live-info { 
-            margin-top: 10px; 
-        } 
- 
-        /* 标签样式 */ 
-     .tag { 
-            background-color: #ff9eb5; 
-            color: white; 
-            padding: 5px 10px; 
-            border-radius: 5px; 
-            margin-right: 5px; 
-            display: inline-block; 
-            cursor: pointer; 
-        } 
- 
-     .tag:hover { 
-            background-color: #ff6f91; 
-        } 
- 
-        /* 新增删除按钮样式 */ 
-     .delete-btn { 
-            color: #ff4444; 
-            cursor: pointer; 
-            font-weight: bold; 
-            margin-left: 4px; 
-        } 
- 
-     .delete-btn:hover { 
-            color: #cc0000; 
-        } 
- 
-     .form-group { 
-            margin-bottom: 15px; 
-        } 
- 
-     .form-group label { 
-            display: block; 
-            margin-bottom: 5px; 
-        } 
- 
-     .form-group input,.form-group textarea,.form-group select,.form-group.tags-container   { 
-            width: 100%; 
-            padding: 8px; 
-            box-sizing: border-box; 
-        } 
- 
-     .tags-container { 
-            display: flex; 
-            flex-wrap: wrap; 
-        } 
- 
-     .tag-input { 
-            flex: 1; 
-            margin-right: 10px; 
-        } 
- 
-     .tag-btn { 
-            margin-top: 10px; 
-        } 
- 
-     .result { 
-            margin-top: 20px; 
-            white-space: pre-wrap; 
-            word-wrap: break-word; 
-            background-color: #f9f9f9; 
-            padding: 10px; 
-            border: 1px solid #ddd; 
-            font-family: monospace; 
-            overflow-x: auto; 
-        } 
-    </style> 
-</head> 
- 
-<body> 
-    <header class="header"> 
-        <div class="header-links"> 
-            <a href="index.html"   class="home-button">Home</a> 
-            <a href="About.html"   class="about-button">About</a> 
- 
-            <a href="LiveHistory.html"  class="about-button" target="_blank">History</a> 
-            <!-- 这里可以添加更多链接 --> 
-        </div> 
-        <div class="title" onclick="scrollToTop()">生成直播记录</div> 
-    </header> 
-    <div class="container"> 
-        <h1>生成直播记录</h1> 
-        <div class="form-group"> 
-            <label for="title">直播标题：</label> 
-            <input type="text" id="title" required> 
-        </div> 
-        <div class="form-group"> 
-            <label for="date">直播日期：</label> 
-            <input type="date" id="date" required> 
-        </div> 
-        <div class="form-group"> 
-            <label for="description">直播简介：</label> 
-            <textarea id="description" rows="4" required></textarea> 
-        </div> 
-        <div class="form-group"> 
-            <label for="link">视频链接：</label> 
-            <input type="url" id="link" required> 
-        </div> 
-        <div class="form-group"> 
-            <label>标签：</label> 
-            <div class="tags-container"> 
-                <input type="text" class="tag-input" placeholder="输入标签"> 
-                <button class="tag-btn" onclick="addTag()">添加</button> 
-            </div> 
-            <div id="tags-list"></div> 
-        </div> 
-        <!-- 新增的导入代码区域 --> 
-        <div class="form-group"> 
-            <label>导入已有代码：</label> 
-            <textarea id="import-code" rows="6" placeholder="粘贴直播记录代码到这里"></textarea> 
-        </div> 
-        <div> 
-            <button onclick="generateCode()">生成代码</button> 
-            <button onclick="parseExistingCode()">解析并填充</button> 
-            <button onclick="copyCode()">复制</button> 
-        </div> 
-        <div class="result" id="result"> 
-            <pre></pre> 
-        </div> 
-    </div> 
-    <script> 
-        // 修改后的addTag函数 
-        function addTag() { 
-            const tagInput = document.querySelector('.tag-input');   
-            const tagsList = document.getElementById('tags-list');   
-            const tagValue = tagInput.value.trim();   
- 
-            if (tagValue) { 
-                const tagElement = document.createElement('div');   
-                tagElement.className   = 'tag'; 
-                tagElement.innerHTML   = ` 
-                     <span class="tag-text">${tagValue}</span> 
-                     <span class="delete-btn" onclick="removeTag(this)">×</span> 
-                 `; 
-                tagElement.querySelector('.tag-text').addEventListener('click',   () => filterByTag(tagValue)); 
-                tagsList.appendChild(tagElement);   
-                tagInput.value   = ''; 
-            } 
-        } 
- 
-        // 新增删除标签函数 
-        function removeTag(deleteBtn) { 
-            const tagElement = deleteBtn.closest('.tag');   
-            if (tagElement) { 
-                tagElement.remove();   
-            } 
-        } 
- 
-        function generateCode() { 
-            const title = document.getElementById('title').value;   
-            const dateInput = document.getElementById('date').value;   
-            const formattedDate = formatDate(dateInput); 
-            const description = document.getElementById('description').value;   
-            const link = document.getElementById('link').value;   
-            const tagsList = document.getElementById('tags-list');   
- 
-            let tagsArray = []; 
-            tagsList.querySelectorAll('.tag-text').forEach(tagText   => { 
-                tagsArray.push(tagText.textContent);   
-            }); 
- 
-            const tagsString = tagsArray.join(',');   
-            let tagsHtml = tagsArray.map(tag   => 
-                `<span class="tag" onclick="filterByTag('${tag.replace(/'/g,   "\\'")}')">${tag}</span>` 
-            ).join(''); 
- 
-            const code = ` 
- <div class="live-record" data-tags="${tagsString}"> 
-     <div class="live-info"> 
-         <h2>${title}</h2> 
-         <p><strong>直播日期：</strong>${formattedDate}</p> 
-         <p><strong>直播简介：</strong>${description}</p> 
-         <p><strong>视频链接：</strong><a href="${link}" target="_blank">点击观看</a></p> 
-         <div class="tags"> 
-             ${tagsHtml} 
-         </div> 
-     </div> 
- </div> 
-            `; 
- 
-            document.querySelector('#result    pre').textContent = code; 
-        } 
- 
-        function formatDate(dateString) { 
-            const date = new Date(dateString); 
-            return `${date.getFullYear()}年${date.getMonth()   + 1}月${date.getDate()}日`; 
-        } 
- 
-        function parseExistingCode() { 
-            const code = document.getElementById('import-code').value;   
-            if (!code) return; 
- 
-            try { 
-                const parser = new DOMParser(); 
-                const doc = parser.parseFromString(code,   'text/html'); 
-                const liveRecord = doc.querySelector('.live-record');   
- 
-                // 解析标题 
-                const titleElement = doc.querySelector('h2');   
-                if (titleElement) { 
-                    document.getElementById('title').value   = titleElement.textContent;   
-                } 
- 
-                // 解析日期 
-                const dateText = Array.from(doc.querySelectorAll('p')).find(p   => p.textContent.includes(' 直播日期：')); 
-                if (dateText) { 
-                    const chineseDate = dateText.textContent.split(' ：')[1]; 
-                    const [year, month, day] = chineseDate.split(/ 年|月|日/).filter(Boolean); 
-                    document.getElementById('date').value   = `${year}-${month.padStart(2,   '0')}-${day.padStart(2,   '0')}`; 
-                } 
- 
-                // 解析简介 
-                const descText = Array.from(doc.querySelectorAll('p')).find(p   => p.textContent.includes(' 直播简介：')); 
-                if (descText) { 
-                    document.getElementById('description').value   = descText.textContent.split(' ：')[1].trim(); 
-                } 
- 
-                // 解析链接 
-                const linkElement = doc.querySelector('a');   
-                if (linkElement) { 
-                    document.getElementById('link').value   = linkElement.href;   
-                } 
- 
-                // 解析标签 
-                const tagsList = document.getElementById('tags-list');   
-                tagsList.innerHTML   = ''; 
- 
-                // 合并两种标签来源 
-                const dataTags = (liveRecord?.dataset.tags   || '').split(/，|,/); // 支持中文和英文逗号 
-                const spanTags = Array.from(doc.querySelectorAll('.tag')).map(t   => t.textContent);   
-                const allTags = [...new Set([...dataTags,...spanTags])].filter(Boolean); 
- 
-                allTags.forEach(tag   => { 
-                    const tagElement = document.createElement('div');   
-                    tagElement.className   = 'tag'; 
-                    tagElement.innerHTML   = ` 
-                         <span class="tag-text">${tag}</span> 
-                         <span class="delete-btn" onclick="removeTag(this)">×</span> 
-                     `; 
-                    tagElement.querySelector('.tag-text').addEventListener('click',   () => filterByTag(tag)); 
-                    tagsList.appendChild(tagElement);   
-                }); 
-            } catch (error) { 
-                alert('解析失败，请检查代码格式是否正确'); 
-            } 
-        } 
- 
-        function filterByTag(tagName) { 
-            alert(`Filtered by tag: ${tagName}`); 
-            // 在这里添加实际的过滤逻辑 
-        } 
- 
-        document.querySelector('.tag-input').addEventListener('keydown',   function (event) { 
-            if (event.keyCode   === 13) { 
-                addTag(); 
-            } 
-        }); 
- 
-        /* 回到顶部 */ 
-        function scrollToTop() { 
-            window.scrollTo({   
-                top: 0, 
-                behavior:'smooth' 
-            }); 
-        } 
- 
-        function copyCode() { 
-             const code = document.querySelector('#result   pre').textContent; 
-             const tempTextarea = document.createElement('textarea');   
-             tempTextarea.value   = code; 
-             document.body.appendChild(tempTextarea);   
-             tempTextarea.select();   
-             document.execCommand('copy');   
-             document.body.removeChild(tempTextarea);   
-              
-        } 
- 
- 
-    </script> 
-</body> 
- 
-</html> 
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生成直播记录</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* 表单专属样式 */
+    .form-panel {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #666;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    .time-picker-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .tags-container {
+      display: flex;
+      gap: 5px;
+      margin-top: 5px;
+    }
+
+    .tag-input {
+      flex: 1;
+      padding: 6px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      background: var(--secondary-color);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      margin: 2px;
+    }
+
+    .delete-btn {
+      margin-left: 6px;
+      cursor: pointer;
+      color: #ffcccc;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .result {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 20px;
+    }
+
+    .result pre {
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div>
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="LiveHistory.html" class="nav-link">往期回放</a>
+      </div>
+      <button class="bilibili-btn" onclick="history.back()">返回</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>生成直播记录</h1>
+    
+    <div class="form-panel">
+      <div class="form-group">
+        <label for="title">直播标题：</label>
+        <input type="text" id="title" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label for="date">直播日期：</label>
+        <input type="date" id="date" class="form-control" required>
+      </div>
+
+      <div class="form-group time-picker-group">
+        <div>
+          <label for="startTime">开始时间：</label>
+          <input type="time" id="startTime" class="form-control" required>
+        </div>
+        <div>
+          <label for="endTime">结束时间：</label>
+          <input type="time" id="endTime" class="form-control" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="description">直播简介：</label>
+        <textarea id="description" class="form-control" rows="4" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="link">视频链接：</label>
+        <input type="url" id="link" class="form-control" required>
+      </div>
+
+      <div class="form-group">
+        <label>标签管理：</label>
+        <div class="tags-container">
+          <input type="text" class="form-control tag-input" placeholder="输入新标签">
+          <button class="bilibili-btn" onclick="addTag()">添加</button>
+        </div>
+        <div id="tags-list" class="tags-container"></div>
+      </div>
+
+      <div class="form-group">
+        <label>导入已有代码：</label>
+        <textarea id="import-code" class="form-control" rows="4" placeholder="粘贴直播记录代码（此功能待修复）"></textarea>
+      </div>
+
+      <div class="action-buttons">
+        <button class="bilibili-btn" onclick="generateCode()">生成代码</button>
+        <button class="bilibili-btn" onclick="parseExistingCode()">解析代码</button>
+        <button class="bilibili-btn" onclick="copyCode()">复制代码</button>
+      </div>
+    </div>
+
+    <div class="result">
+      <pre id="code-output"></pre>
+    </div>
+  </div>
+
+  <script>
+    // 标签管理功能
+    function addTag() {
+      const tagInput = document.querySelector('.tag-input');
+      const tagValue = tagInput.value.trim();
+      if (tagValue) {
+        const tagElement = document.createElement('div');
+        tagElement.className = 'tag';
+        tagElement.innerHTML = `
+          <span>${tagValue}</span>
+          <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
+        `;
+        document.getElementById('tags-list').appendChild(tagElement);
+        tagInput.value = '';
+      }
+    }
+
+    // 生成代码功能
+    function generateCode() {
+      const getValue = id => document.getElementById(id).value;
+      const tags = [...document.querySelectorAll('#tags-list .tag span:first-child')]
+                   .map(span => span.textContent);
+
+      const code = `
+<div class="live-record" data-tags="${tags.join(',')}">
+  <div class="live-info">
+    <h2>${getValue('title')}</h2>
+    <p><strong>直播日期：</strong>${formatDate(getValue('date'))}</p>
+    <p><strong>直播时间：</strong>${getValue('startTime')} - ${getValue('endTime')}</p>
+    <p><strong>直播简介：</strong>${getValue('description')}</p>
+    <p><strong>视频链接：</strong><a href="${getValue('link')}" target="_blank">点击观看</a></p>
+    <div class="tags">
+      ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
+    </div>
+  </div>
+</div>`;
+      document.getElementById('code-output').textContent = code;
+    }
+
+    // 日期格式化
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return `${date.getFullYear()}年${(date.getMonth()+1).toString().padStart(2,'0')}月${date.getDate().toString().padStart(2,'0')}日`;
+    }
+
+    // 代码解析功能
+    function parseExistingCode() {
+      try {
+        const code = document.getElementById('import-code').value;
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(code, 'text/html');
+        
+        // 解析数据
+        const record = doc.querySelector('.live-record');
+        const getText = (selector) => doc.querySelector(selector)?.textContent.trim();
+        
+        // 填充表单
+        document.getElementById('title').value = getText('h2') || '';
+        document.getElementById('date').value = parseChineseDate(getText('p:has(strong:contains("直播日期"))'));
+        document.getElementById('description').value = getText('p:has(strong:contains("直播简介"))')?.split('：')[1] || '';
+        document.getElementById('link').value = doc.querySelector('a')?.href || '';
+        
+        // 处理时间
+        const timeRange = getText('p:has(strong:contains("直播时间"))')?.split('：')[1];
+        if(timeRange) {
+          const [start, end] = timeRange.split(' - ');
+          document.getElementById('startTime').value = start;
+          document.getElementById('endTime').value = end;
+        }
+        
+        // 处理标签
+        document.getElementById('tags-list').innerHTML = 
+          [...doc.querySelectorAll('.tag')].map(tag => `
+            <div class="tag">
+              <span>${tag.textContent}</span>
+              <span class="delete-btn">×</span>
+            </div>
+          `).join('');
+          
+      } catch (error) {
+        alert('解析错误，请检查代码格式');
+      }
+    }
+
+    // 中文日期解析
+    function parseChineseDate(dateStr) {
+      const match = dateStr?.match(/(\d+)年(\d+)月(\d+)日/);
+      if(match) {
+        const [, year, month, day] = match;
+        return `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`;
+      }
+      return '';
+    }
+
+    // 复制功能
+    function copyCode() {
+      const output = document.getElementById('code-output');
+      navigator.clipboard.writeText(output.textContent);
+    }
+
+    // 初始化标签输入
+    document.querySelector('.tag-input').addEventListener('keypress', (e) => {
+      if(e.key === 'Enter') addTag();
+    });
+  </script>
+</body>
+</html>
