@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>御坂19039 - 往期直播记录</title>
+    <link rel="stylesheet" href="styles.css"> <!-- 假设你有一个外部CSS文件 -->
+    <style>
+        /* 合并后的内联CSS样式 */
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            line-height: 1.6;
+            background: #fff5f7;
+            color: #333;
+            margin: 0;
+            padding: 0; /* 使用0 padding，因为导航栏会有自己的padding */
+        }
+        .header {
+            background-color: #e91e63; /* 导航栏背景色 */
+            color: white;
+            padding: 15px 20px; /* 导航栏内边距 */
+            text-align: center; /* 居中对齐 */
+            position: sticky; /* 使导航栏在滚动时保持固定 */
+            top: 0; /* 固定在页面顶部 */
+            z-index: 1000; /* 确保导航栏在其他内容之上 */
+        }
+        .header a, .header button {
+            color: white;
+            text-decoration: none; /* 去除链接下划线 */
+            margin: 0 10px; /* 链接和按钮之间的间距 */
+        }
+        .header button {
+            background-color: #ff9eb5; /* 按钮背景色 */
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .header button:hover {
+            background-color: #ff6f91; /* 按钮悬停背景色 */
+        }
+        .container {
+            max-width: 800px;
+            margin: 60px auto 20px; /* 增加顶部外边距以适应固定的导航栏 */
+        }
+        h1 {
+            color: #e91e63;
+            border-bottom: 3px solid #ff9eb5;
+            padding-bottom: 10px;
+        }
+        .live-record {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        .live-info {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="https://space.bilibili.com/12136555/" onclick="scrollToTop()">Home</a> <!-- 假设scrollToTop()是一个定义的函数，用于滚动到页面顶部 -->
+        <!-- 可以添加更多链接和按钮 -->
+    </header>
+    <div class="container">
+    <h1>🎥 御坂19039 - 往期直播记录</h1>
+    
+    <!-- 最新直播记录在上面 -->
+    <div class="live-record">
+        <div class="live-info">
+            <h2>逃离现实第三天</h2>
+            <p><strong>直播日期：</strong>2025年2月01日</p>
+            <p><strong>直播简介：</strong>逃离现实的第三天，继续探索未知的世界。</p>
+            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1uYFveMEzA" target="_blank">点击观看</a></p>
+        </div>
+    </div>
+    
+    <div class="live-record">
+        <div class="live-info">
+            <h2>逃离现实第二天</h2>
+            <p><strong>直播日期：</strong>2025年1月26日</p>
+            <p><strong>直播简介：</strong>逃离现实的第二天，继续分享心得。</p>
+            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1HefCY1EBG" target="_blank">点击观看</a></p>
+        </div>
+    </div>
+    
+    <div class="live-record">
+        <div class="live-info">
+            <h2>逃离现实第一天</h2>
+            <p><strong>直播日期：</strong>2025年1月25日</p>
+            <p><strong>直播简介：</strong>静音直播，逃离现实的第一天。</p>
+            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1bQFFeMEnE" target="_blank">点击观看</a></p>
+        </div>
+    </div>
+    
+    <div class="live-record">
+        <div class="live-info">
+            <h2>背着家里人偷偷啵啵~</h2>
+            <p><strong>直播日期：</strong>2025年1月25日</p>
+            <p><strong>直播简介：</strong>在泰拉瑞亚的世界里，背着家里人偷偷啵啵~</p>
+            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV12TfZY8En1" target="_blank">点击观看</a></p>
+        </div>
+    </div>
+    
+    <div class="live-record">
+        <div class="live-info">
+            <h2>调试中···</h2>
+            <p><strong>直播日期：</strong>2025年1月18日</p>
+            <p><strong>直播简介：</strong>非正式直播，主要是调试设备。</p>
+            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1USwveVEfZ" target="_blank">点击观看</a></p>
+        </div>
+    </div>
+    
+    <div class="live-record">
+        <div class="live-info">
+            <h2>不要笑挑战！一起跨年~</h2>
+            <p><strong>直播日期：</strong>2024年12月31日</p>
+            <p><strong>直播简介：</strong>跨年特别直播，一起参与不要笑挑战，共度美好时光。</p>
+            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1G669Y2EHQ" target="_blank">点击观看</a></p>
+        </div>
+    </div>
+    
+    <!-- 可以继续添加更多直播记录 -->
+</div>
+
+    <script>
+        // 如果scrollToTop函数未定义，可以在这里定义它
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // 平滑滚动到顶部
+            });
+        }
+    </script>
+</body>
+</html>
