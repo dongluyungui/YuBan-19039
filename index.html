@@ -1,83 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <style>
-        /* 通用样式 */
-        body {
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>御坂19039の温馨小站</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* 首页专属样式 */
+    .banner {
+      background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
 
-        /* 鼠标悬停时颜色变化 */
-        a:hover {
-            color: #ff6f91;
-        }
+    .profile-card {
+      background: white;
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      margin: 20px 0;
+    }
 
-        /* 主容器样式 */
-      .container {
-            max-width: 800px;
-            margin: 60px auto 20px;
-        }
+    .avatar {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      margin-right: 30px;
+      border: 5px solid var(--secondary-color);
+    }
 
-        /* 标题样式 */
-        h1 {
-            color: #e91e63;
-            border-bottom: 3px solid #ff9eb5;
-            padding-bottom: 10px;
-        }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 40px 0;
+    }
 
-        /* 链接样式 */
-      .link-item {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            text-decoration: none;
-            color: #333;
-        }
-
-      .link-item:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        /* 页眉样式 */
-      .header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-            padding: 10px;
-        }
-
-      .header-links {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-      .header-links a {
-            color: #007bff;
-            text-decoration: none;
-            margin-right: 20px;
-        }
-    </style>
+    .stat-number {
+      color: var(--primary-color);
+      font-size: 2.5em;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+  </style>
 </head>
-
 <body>
-    <header class="header">
-        <div class="header-links">
-            <a href="index.html"  class="home-button">Home</a>
-            <a href="About.html"  class="about-button">About</a>
-        </div>
-        <div class="title">Home</div>
-    </header>
-    <div class="container">
-        <h1>欢迎来到主页</h1>
-        <a href="LiveHistory.html"  class="link-item">往期直播记录</a>
-        <a href="LiveRecords.html"  class="link-item">生成直播记录</a>
+  <header class="header">
+    <div class="header-content">
+      <div>
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="About.html" class="nav-link">关于</a>
+        <a href="LiveHistory.html" class="nav-link">往期回放</a>
+      </div>
+      <div>
+        <a href="https://space.bilibili.com/12136555" target="_blank" class="bilibili-btn">个人主页</a>
+        <a href="https://live.bilibili.com/8414339" target="_blank" class="bilibili-btn">进入直播间</a>
+      </div>
     </div>
-</body>
+  </header>
 
+    <div class="container">
+        <div class="banner">
+            <h1>⚡御坂19039の温馨小站⚡</h1>
+            <p>欢迎来到超电磁炮的应援基地！(≧∇≦)ﾉ</p>
+        </div>
+
+        <div class="profile-card">
+            <img src="https://i1.hdslb.com/bfs/face/43118bd251f77d706382cdae6098938fa6f32196.jpg" 
+                 alt="御坂19039" 
+                 class="avatar">
+            <div>
+                <h2 style="color: #e91e63; margin-top: 0;">✨ 主播介绍 ✨</h2>
+                <p>🎤 B站ID：御坂19039</p>
+                <p>🌟 直播类型：聊天互动 | 游戏实况 | 才艺展示</p>
+                <p>💖 直播时间：不定期直播哦~时间变动会发动态嘟</p>
+                <p>📌 个人标签：元气满满 | 超电磁炮 | 治愈系</p>
+                <div style="margin-top: 20px;">
+                    <a href="https://space.bilibili.com/12136555/" target="_blank" class="bilibili-btn">个人主页</a>
+                    <a href="https://live.bilibili.com/8414339/" target="_blank" class="bilibili-btn">直播间</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>粉丝数量</h3>
+                <div class="stat-number loading" id="fans-count"></div>
+                <p>持续增长中...</p>
+            </div>
+            <div class="stat-card">
+                <h3>直播间人气</h3>
+                <div class="stat-number loading" id="live-popularity"></div>
+                <p id="live-status">当前直播状态</p>
+            </div>
+            <div class="stat-card">
+                <h3>获赞总数</h3>
+                <div class="stat-number loading" id="likes-count"></div>
+                <p>感谢大家的支持</p>
+            </div>
+        </div>
+
+        <!-- 直播特色 -->
+        <div class="live-card">
+            <h3>🌟 直播特色 🌟</h3>
+            <ul>
+                <li>💬 实时互动：弹幕及时回复，点歌点梗都可以！</li>
+                <li>🎮 多元内容：从热门游戏到经典怀旧全涵盖</li>
+                <li>🎉 定期活动：生日会、纪念回、节庆特别企划</li>
+                <li>🎁 粉丝福利：定期抽奖、定制周边</li>
+            </ul>
+        </div>
+
+        <!-- 最新动态 -->
+        <div class="live-card">
+            <h3>📢 最新动态</h3>
+            <p>【8月特别企划】每周五晚「怀旧游戏之夜」启动！</p>
+            <p>🎮 活动内容：经典游戏合集 + 趣味挑战赛</p>
+            <p>🏆 参与福利：限定勋章 + 神秘大礼包</p>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div style="text-align: center; padding: 30px; color: #666;">
+        <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
+        <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
+    </div>
+
+    </div>
+
+    <script>
+        // 配置信息
+        const CONFIG = {
+            UID: 12136555,
+            ROOM_ID: 8414339,
+            CORS_PROXY: 'https://api.allorigins.win/get?url=', // 备用代理
+            REFRESH_INTERVAL: 300000 // 5分钟刷新
+        };
+
+        // 元素引用
+        const elements = {
+            fans: document.getElementById('fans-count'),
+            popularity: document.getElementById('live-popularity'),
+            likes: document.getElementById('likes-count'),
+            liveStatus: document.getElementById('live-status')
+        };
+
+        // 通用请求方法
+        async function fetchData(url) {
+            try {
+                const response = await fetch(`${CONFIG.CORS_PROXY}${encodeURIComponent(url)}`);
+                if (!response.ok) throw new Error('网络请求失败');
+                
+                const data = await response.json();
+                return JSON.parse(data.contents);
+            } catch (error) {
+                console.error('数据获取失败:', error);
+                return null;
+            }
+        }
+
+        // 更新统计数据
+        function updateStat(element, value, suffix = '') {
+            element.classList.remove('loading');
+            if (value === null) {
+                element.textContent = '数据暂不可用';
+                element.style.color = '#999';
+            } else {
+                element.textContent = `${(value / 10000).toFixed(1)}万${suffix}`;
+                element.style.color = '#e91e63';
+            }
+        }
+
+        // 加载所有数据
+        async function loadAllData() {
+            // 粉丝数据
+            const fansData = await fetchData(
+                `https://api.bilibili.com/x/relation/stat?vmid=${CONFIG.UID}`
+            );
+            updateStat(elements.fans, fansData?.data?.follower);
+
+            // 直播间数据
+            const liveData = await fetchData(
+                `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${CONFIG.ROOM_ID}`
+            );
+            updateStat(elements.popularity, liveData?.data?.online);
+            elements.liveStatus.textContent = liveData?.data?.live_status === 1 
+                ? '🔴 正在直播中' 
+                : '⚪️ 当前未开播';
+
+            // 点赞数据
+            const upstatData = await fetchData(
+                `https://api.bilibili.com/x/space/upstat?mid=${CONFIG.UID}`
+            );
+            updateStat(elements.likes, upstatData?.data?.likes);
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllData();
+            setInterval(loadAllData, CONFIG.REFRESH_INTERVAL);
+        });
+
+        // 错误处理
+        window.addEventListener('error', (event) => {
+            console.error('全局错误:', event.error);
+            [elements.fans, elements.popularity, elements.likes].forEach(el => {
+                el.textContent = '数据获取失败';
+                el.style.color = '#ff0000';
+            });
+        });
+    </script>
+</body>
 </html>
