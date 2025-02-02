@@ -6,7 +6,7 @@
     <title>御坂19039 - 往期直播记录</title>
     <link rel="stylesheet" href="styles.css"> <!-- 假设你有一个外部CSS文件 -->
     <style>
-         body {
+  body {
             font-family: 'Microsoft YaHei', sans-serif;
             line-height: 1.6;
             background: #fff5f7;
@@ -18,15 +18,18 @@
             background-color: #e91e63; /* 导航栏背景色 */
             color: white;
             padding: 15px 20px; /* 导航栏内边距 */
-            text-align: center; /* 居中对齐 */
+            text-align: center; /* 居中对齐（但搜索框将右对齐） */
             position: sticky; /* 使导航栏在滚动时保持固定 */
             top: 0; /* 固定在页面顶部 */
             z-index: 1000; /* 确保导航栏在其他内容之上 */
+            display: flex; /* 使用flex布局 */
+            justify-content: space-between; /* 两端对齐 */
+            align-items: center; /* 垂直居中 */
         }
         .header a, .header button {
             color: white;
             text-decoration: none; /* 去除链接下划线 */
-            margin: 0 10px; /* 链接和按钮之间的间距 */
+            margin: 0 10px; /* 链接和按钮之间的间距（这里可能需要调整以适应搜索框） */
         }
         .header button {
             background-color: #ff9eb5; /* 按钮背景色 */
@@ -36,6 +39,29 @@
         }
         .header button:hover {
             background-color: #ff6f91; /* 按钮悬停背景色 */
+        }
+        .header .search-container {
+            display: flex; /* 使用flex布局使搜索框内的元素（可能包括图标和输入框）对齐 */
+            align-items: center; /* 垂直居中 */
+        }
+        .header .search-box {
+            padding: 5px 10px; /* 输入框内边距 */
+            border: none; /* 无边框 */
+            border-radius: 5px; /* 圆角 */
+        }
+        .clear-search-btn {
+             background-color: #ff6f91; /* 与按钮悬停背景色相似，但略有区别以增加视觉层次 */
+             color: white; /* 按钮文字颜色 */
+             border: none; /* 无边框 */
+             padding: 10px 20px; /* 内边距，确保按钮大小适中 */
+             cursor: pointer; /* 鼠标指针样式，表明这是一个可点击的元素 */
+             border-radius: 5px; /* 圆角，使按钮看起来更柔和 */
+             margin-left: 10px; /* 与搜索框之间的间距，确保不会紧贴在一起 */
+             transition: background-color 0.3s ease; /* 背景色过渡效果，提升用户体验 */
+        }
+ 
+.       clear-search-btn:hover {
+             background-color: #ff4063; /* 按钮悬停时的背景色，应该比正常状态更深或更浅一些 */
         }
         .container {
             max-width: 800px;
@@ -70,32 +96,27 @@
             cursor: pointer; /* 添加鼠标指针样式 */
         }
  
-        /* 添加检索框样式 */
-        .search-container {
-            margin-top: 20px;
-            text-align: center;
-        }
-        .search-box {
-            padding: 10px;
-            width: 80%;
-            max-width: 600px;
-            margin: 0 auto;
-        }
     </style>
 </head>
 <body>
     <header class="header">
-        <a href="index.html" onclick="scrollToTop()">Home</a>
-        <!-- 可以添加更多链接和按钮 -->
+    <div class="header-links">
+        <a href="index.html" class="home-button" onclick="scrollToTop()">Home</a>
+        <a href="about.html" class="about-button">About</a>
+    </div>
+        <div class="title">🎥 御坂19039 - 往期直播记录</div>
+
+        <div class="search-container">
+            <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
+            <button class="clear-search-btn">清除标签</button>
+        </div>
+        <!-- 可以添加更多链接和按钮，但注意调整margin以适应搜索框 -->
     </header>
     <div class="container">
         <h1>🎥 御坂19039 - 往期直播记录</h1>
-        <div class="search-container">
-            <input type="text" id="search-box" class="search-box" placeholder="输入标签检索直播...">
-        </div>
         
         <!-- 最新直播记录在上面 -->
- <div class="live-record" data-tags="逃离现实">
+ <div class="live-record" data-tags="逃离现实，2025">
     <div class="live-info">
         <h2>逃离现实第三天</h2>
         <p><strong>直播日期：</strong>2025年2月01日</p>
@@ -103,11 +124,12 @@
         <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1uYFveMEzA" target="_blank">点击观看</a></p>
         <div class="tags">
             <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
+            <span class="tag" onclick="filterByTag('2025')">2025</span>
         </div>
     </div>
 </div>
 
-<div class="live-record" data-tags="逃离现实">
+<div class="live-record" data-tags="逃离现实，2025">
     <div class="live-info">
         <h2>逃离现实第二天</h2>
         <p><strong>直播日期：</strong>2025年1月26日</p>
@@ -115,11 +137,12 @@
         <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1HefCY1EBG" target="_blank">点击观看</a></p>
         <div class="tags">
             <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
+            <span class="tag" onclick="filterByTag('2025')">2025</span>
         </div>
     </div>
 </div>
 
-<div class="live-record" data-tags="逃离现实">
+<div class="live-record" data-tags="逃离现实，2025">
     <div class="live-info">
         <h2>逃离现实第一天</h2>
         <p><strong>直播日期：</strong>2025年1月25日</p>
@@ -127,11 +150,12 @@
         <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1bQFFeMEnE" target="_blank">点击观看</a></p>
         <div class="tags">
             <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
+            <span class="tag" onclick="filterByTag('2025')">2025</span>
         </div>
     </div>
 </div>
 
-<div class="live-record" data-tags="泰拉瑞亚, 搞笑">
+<div class="live-record" data-tags="泰拉瑞亚, 搞笑，2025">
     <div class="live-info">
         <h2>背着家里人偷偷啵啵~</h2>
         <p><strong>直播日期：</strong>2025年1月25日</p>
@@ -140,11 +164,12 @@
         <div class="tags">
             <span class="tag" onclick="filterByTag('泰拉瑞亚')">泰拉瑞亚</span>
             <span class="tag" onclick="filterByTag('搞笑')">搞笑</span>
+            <span class="tag" onclick="filterByTag('2025')">2025</span>
         </div>
     </div>
 </div>
 
-<div class="live-record" data-tags="调试">
+<div class="live-record" data-tags="调试.2025">
     <div class="live-info">
         <h2>调试中···</h2>
         <p><strong>直播日期：</strong>2025年1月18日</p>
@@ -152,11 +177,12 @@
         <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1USwveVEfZ" target="_blank">点击观看</a></p>
         <div class="tags">
             <span class="tag" onclick="filterByTag('调试')">调试</span>
+            <span class="tag" onclick="filterByTag('2025')">2025</span>
         </div>
     </div>
 </div>
 
-<div class="live-record" data-tags="跨年, 挑战">
+<div class="live-record" data-tags="跨年, 挑战，2024">
     <div class="live-info">
         <h2>不要笑挑战！一起跨年~</h2>
         <p><strong>直播日期：</strong>2024年12月31日</p>
@@ -165,6 +191,7 @@
         <div class="tags">
             <span class="tag" onclick="filterByTag('跨年')">跨年</span>
             <span class="tag" onclick="filterByTag('挑战')">挑战</span>
+            <span class="tag" onclick="filterByTag('2024')">2024</span>
         </div>
     </div>
 </div>
@@ -197,7 +224,18 @@
         // 初始化时绑定输入框的输入事件
         document.getElementById('search-box').addEventListener('input', triggerSearch);
  
-        // 如果scrollToTop函数未定义，可以在这里定义它（已定义，所以不需要重复）
+        // 如果scrollToTop函数未定义，可以在这里定义它（假设已定义，所以不需要重复）
+
+        // JavaScript代码用于处理清除按钮的点击事件
+        document.addEventListener('DOMContentLoaded', function() {
+            var clearSearchBtn = document.querySelector('.clear-search-btn');
+            var searchBox = document.querySelector('.search-box');
+ 
+            clearSearchBtn.addEventListener('click', function() {
+                 searchBox.value = ''; // 清空搜索框内容
+                 triggerSearch(); // 手动调用触发搜索的函数，以更新显示的直播记录
+            });
+        });
     </script>
 </body>
 </html>
