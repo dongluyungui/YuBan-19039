@@ -6,6 +6,28 @@
   <title>御坂19039の温馨小站</title>
   <link rel="stylesheet" href="styles.css">
   <style>
+       /* 新增动态样式 */ 
+    .dynamic-list { 
+        margin-top: 20px; 
+    } 
+ 
+    .dynamic-item { 
+        background: #fff; 
+        border-radius: 10px; 
+        padding: 15px; 
+        margin-bottom: 15px; 
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    } 
+ 
+    .dynamic-time { 
+        color: #666; 
+        font-size: 0.9em; 
+        margin-bottom: 8px; 
+    } 
+ 
+    .dynamic-content { 
+        line-height: 1.6; 
+    } 
     /* 首页专属样式 */
     .banner {
       background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
@@ -65,7 +87,7 @@
     <div class="container">
         <div class="banner">
             <h1>⚡御坂19039の温馨小站⚡</h1>
-            <p>欢迎来到超电磁炮的应援基地！(≧∇≦)ﾉ</p>
+            <p>欢迎来到御坂19039的应援基地！(≧∇≦)ﾉ</p>
         </div>
 
         <div class="profile-card">
@@ -114,14 +136,21 @@
             </ul>
         </div>
 
-        <!-- 最新动态 -->
-        <div class="live-card">
-            <h3>📢 最新动态</h3>
-            <p>【8月特别企划】每周五晚「怀旧游戏之夜」启动！</p>
-            <p>🎮 活动内容：经典游戏合集 + 趣味挑战赛</p>
-            <p>🏆 参与福利：限定勋章 + 神秘大礼包</p>
-        </div>
-    </div>
+       <!-- 最新动态 --> 
+      <div class="live-card"> 
+        <h3>📢 最新动态</h3> 
+          <div id="dynamics-container" class="dynamic-list"> 
+            <div class="dynamic-item"> 
+             <div class="dynamic-time">📅 2025年01月28日</div> 
+             <div class="dynamic-content">新春快乐！春节到，鸿运照，烦恼的事儿往边靠，祝你出门遇贵人，在家听喜报！年年有此时，岁岁有今朝！愿你和你的家人幸福快乐！万事如意！每天都要开开心心的哦！</div> 
+            </div> 
+          <div id="dynamics-container" class="dynamic-list"> 
+             <div class="dynamic-item"> 
+             <div class="dynamic-time">📅 2024年12月26日</div> 
+             <div class="dynamic-content">不要笑挑战的搞笑视频征集啦～可以直接在这条动态下分享bv号，也可以直接分享视频给我～届时会开启只要笑就吃柠檬挑战！欢迎大家多多分享！搞笑视频尽量在10-15秒左右，不宜过长哦～</div> 
+          </div> 
+        </div> 
+      </div> 
 
     <!-- 页脚 -->
     <div style="text-align: center; padding: 30px; color: #666;">
