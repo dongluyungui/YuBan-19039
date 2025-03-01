@@ -203,7 +203,7 @@
         audio.currentTime = 0;
         
         // 设置新音频源并播放
-        audio.src = 'sounds/' + soundFile;
+        audio.src = 'Sounds/' + soundFile;
         audio.play();
 
         // 更新当前活动按钮
@@ -225,7 +225,7 @@
             const onclickContent = button.getAttribute('onclick');
             const match = onclickContent.match(/playSound\('(.*?)'\)/);
             if (match && match[1]) {
-                const filename = 'sounds/' + match[1];
+                const filename = 'Sounds/' + match[1];
                 if (!loadedFiles.has(filename)) {
                     new Audio(filename);
                     loadedFiles.add(filename);
