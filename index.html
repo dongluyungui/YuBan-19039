@@ -143,6 +143,37 @@
       transform: translateY(-5px); /* 上浮效果 */
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 阴影加深效果 */
     }
+    .captain-card.rank1 {
+      border: 3px solid #e91e63; /* 较粗的边框 */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* 更深的阴影 */
+      background-color: #fde6e9; /* 背景色 */
+    }
+
+    .captain-card.rank2 {
+      border: 2px solid #9c27b0; /* 中等粗细的边框 */
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* 中等深度的阴影 */
+      background-color: #f3e5f5; /* 背景色 */
+    }
+
+    .captain-card.rank3 {
+      border: 1px solid #03a9f4; /* 较细的边框 */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 较浅的阴影 */
+      background-color: #e3f2fd; /* 背景色 */
+    }
+    /*数据页面 */
+    .stat-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease; /* 添加过渡效果 */
+}
+
+    .stat-card:hover {
+        transform: translateY(-5px); /* 上浮效果 */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 阴影加深效果 */
+    }
   </style>
 </head>
 
@@ -312,24 +343,32 @@
   </div>
 
   <script>
-    // 配置信息
+     // 配置信息
     const CONFIG = {
-      UID: 12136555,
-      ROOM_ID: 8414339,
-      CORS_PROXY: 'https://api.allorigins.win/get?url=', // 备用代理
-      REFRESH_INTERVAL: 300000, // 5分钟刷新
-      PAGE_SIZE: 10
+        UID: 12136555,
+        ROOM_ID: 8414339,
+        CORS_PROXY: 'https://api.allorigins.win/get?url=', // 备用代理
+        REFRESH_INTERVAL: 300000, // 5分钟刷新
+        PAGE_SIZE: 10
     };
+    // 新增全局变量，用于存储舰长数量
+    let globalCaptainCount;
+    // 新增全局变量，用于存储直播间人气数据
+    let globalLivePopularity;
+    // 新增全局变量，用于存储粉丝数量
+    let globalFollowerCount;
 
     // 元素引用
     const elements = {
-      fans: document.getElementById('fans-count'),
-      popularity: document.getElementById('live-popularity'),
-      liveStatus: document.getElementById('live-status'),
-      // 新增元素引用
-      fansDifference: document.getElementById('fans-difference'),
-      debutTime: document.getElementById('debut-time'),
-      captain: document.getElementById('captain-number')
+        fans: document.getElementById('fans-count'),
+        popularity: document.getElementById('live-popularity'),
+        liveStatus: document.getElementById('live-status'),
+        fansDifference: document.getElementById('fans-difference'),
+        debutTime: document.getElementById('debut-time'),
+        captain: document.getElementById('captain-number'),
+        fansCard: document.querySelector('.stat-card:nth-child(1)'), // 粉丝数量卡片
+        captainCard: document.querySelector('.stat-card:nth-child(3)'), // 舰长数量卡片
+        popularityCard: document.querySelector('.stat-card:nth-child(2)') // 直播间人气卡片
     };
 
     // 通用请求方法
@@ -366,41 +405,47 @@
 
     // 加载所有数据
     async function loadAllData() {
-      // 粉丝数据
-      const fansData = await fetchData(
-        `https://api.bilibili.com/x/relation/stat?vmid=${CONFIG.UID}`
-      );
-      const followerCount = fansData?.data?.follower;
-      updateStat(elements.fans, followerCount);
+        // 粉丝数据
+        const fansData = await fetchData(
+            `https://api.bilibili.com/x/relation/stat?vmid=${CONFIG.UID}`
+        );
+        const followerCount = fansData?.data?.follower;
+        // 将获取到的粉丝数量保存到全局变量中
+        globalFollowerCount = followerCount;
+        updateStat(elements.fans, followerCount);
 
-      // 计算距离粉丝的差值
-      if (followerCount!== null) {
-        const difference = 2000 - followerCount;
-        if (difference > 0) {
-          elements.fansDifference.textContent = `距离2000粉丝仅差：${difference} 位粉丝`;
+        // 计算距离粉丝的差值
+        if (followerCount!== null) {
+            const difference = 2000 - followerCount;
+            if (difference > 0) {
+                elements.fansDifference.textContent = `距离2000粉丝仅差：${difference} 位粉丝`;
+            } else {
+                elements.fansDifference.textContent = '已达到2000粉丝！';
+            }
         } else {
-          elements.fansDifference.textContent = '已达到2000粉丝！';
+            elements.fansDifference.textContent = '数据暂不可用';
         }
-      } else {
-        elements.fansDifference.textContent = '数据暂不可用';
-      }
 
-      // 直播间数据
-      const liveData = await fetchData(
-        `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${CONFIG.ROOM_ID}`
-      );
-      updateStat(elements.popularity, liveData?.data?.online);
-      elements.liveStatus.textContent = liveData?.data?.live_status === 1
-        ? '🔴 正在直播中'
-        : '⚪️ 当前未开播';
+        // 直播间数据
+        const liveData = await fetchData(
+            `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${CONFIG.ROOM_ID}`
+        );
+        const online = liveData?.data?.online;
+        // 将获取到的直播间人气数据保存到全局变量中
+        globalLivePopularity = online;
+        updateStat(elements.popularity, online);
+        elements.liveStatus.textContent = liveData?.data?.live_status === 1
+          ? '🔴 正在直播中'
+          : '⚪️ 当前未开播';
 
-
-      // 舰长数据
-            const captainData = await fetchData(
-                `https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=${CONFIG.ROOM_ID}&page=1&ruid=${CONFIG.UID}&page_size=${CONFIG.PAGE_SIZE}`
-            );
-            const captainCount = captainData?.data?.info?.num || null;
-            updateStat(elements.captain, captainCount);
+        // 舰长数据
+        const captainData = await fetchData(
+            `https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=${CONFIG.ROOM_ID}&page=1&ruid=${CONFIG.UID}&page_size=${CONFIG.PAGE_SIZE}`
+        );
+        const captainCount = captainData?.data?.info?.num || null;
+        // 将获取到的舰长数量保存到全局变量中
+        globalCaptainCount = captainCount;
+        updateStat(elements.captain, captainCount);
     }
 
     // 新增倒计时功能
@@ -465,17 +510,45 @@
       const captainList = document.getElementById('captain-list');
       captainList.innerHTML = '';
       if (captains && captains.length > 0) {
-        captains.forEach(captain => {
+        captains.forEach((captain, index) => {
           const card = document.createElement('div');
           card.classList.add('captain-card');
+          if (index === 0) {
+            card.classList.add('rank1'); // 排名1的舰长添加rank1类
+          } else if (index === 1) {
+            card.classList.add('rank2'); // 排名2的舰长添加rank2类
+          } else if (index === 2) {
+            card.classList.add('rank3'); // 排名3的舰长添加rank3类
+          }
 
           const avatar = document.createElement('img');
           avatar.classList.add('captain-avatar');
-          // 容错处理，当 face 字段不存在或为空时显示默认图片
-          avatar.src = captain.face || 'default-avatar.png';
+
           let displayName = captain.username || '未知舰长';
           displayName = stripHtmlTags(displayName);
           avatar.alt = displayName;
+
+          const originalSrc = captain.face;
+          // 提取文件名并将扩展名替换为.jpg
+          let fileName = originalSrc.split('/').pop().replace(/\.\w+$/, '.jpg');
+          const localSrc = `img/face/${fileName}`;
+          const defaultSrc = 'img/face/Fans.jpg';
+
+          // 尝试加载本地头像
+          function tryLoadAvatar(src) {
+            avatar.src = src;
+            avatar.onerror = function () {
+              if (src === localSrc) {
+                // 本地头像加载失败，尝试默认头像
+                tryLoadAvatar(defaultSrc);
+              } else {
+                // 默认头像也加载失败，不显示头像
+                avatar.style.display = 'none';
+              }
+            };
+          }
+
+          tryLoadAvatar(localSrc);
 
           const name = document.createElement('p');
           name.textContent = displayName;
@@ -495,7 +568,7 @@
         message.textContent = '暂无舰长信息';
         captainList.appendChild(message);
       }
-   }
+    }
 
     // 加载舰长数据
         async function loadCaptainData() {
@@ -522,10 +595,108 @@
 
     // 初始化
     document.addEventListener('DOMContentLoaded', () => {
-      loadAllData();
-      setInterval(loadAllData, CONFIG.REFRESH_INTERVAL);
-      loadCaptainData();
+        loadAllData();
+        setInterval(loadAllData, CONFIG.REFRESH_INTERVAL);
+        loadCaptainData();
+
+    // 粉丝数量卡片点击事件
+elements.fansCard.addEventListener('click', () => {
+    // 使用全局变量获取目标数量
+    const targetCount = globalFollowerCount;
+    const totalDuration = 1000; // 动画总时长，单位为毫秒，这里设置为1秒
+    const startTime = Date.now();
+    let currentCount = 0;
+
+    const intervalId = setInterval(() => {
+        const elapsedTime = Date.now() - startTime;
+        const progress = Math.min(elapsedTime / totalDuration, 1); // 确保进度不超过1
+        currentCount = Math.floor(targetCount * progress); // 根据进度计算当前数量
+
+        let displayValue;
+        if (targetCount >= 10000) {
+            if (currentCount >= 10000) {
+                displayValue = `${(currentCount / 10000).toFixed(1)}万`;
+            } else {
+                displayValue = currentCount;
+            }
+        } else {
+            displayValue = currentCount;
+        }
+
+        elements.fans.textContent = displayValue;
+
+        if (elapsedTime >= totalDuration) {
+            clearInterval(intervalId);
+            if (targetCount >= 10000) {
+                elements.fans.textContent = `${(targetCount / 10000).toFixed(1)}万`;
+            } else {
+                elements.fans.textContent = targetCount;
+            }
+        }
+    }, 10);
+});
+
+    // 舰长数量卡片点击事件
+    elements.captainCard.addEventListener('click', () => {
+        const targetCount = parseInt(elements.captain.textContent);
+        const totalDuration = 1000; // 动画总时长，单位为毫秒，这里设置为1秒
+        const startTime = Date.now();
+        let currentCount = 0;
+
+        const intervalId = setInterval(() => {
+            const elapsedTime = Date.now() - startTime;
+            const progress = Math.min(elapsedTime / totalDuration, 1); // 确保进度不超过1
+            currentCount = Math.floor(targetCount * progress); // 根据进度计算当前数量
+            elements.captain.textContent = currentCount;
+
+            if (elapsedTime >= totalDuration) {
+                clearInterval(intervalId);
+                elements.captain.textContent = targetCount;
+            }
+        }, 10);
     });
+
+    // 直播间人气卡片点击事件
+    elements.popularityCard.addEventListener('click', () => {
+        // 使用全局变量获取目标数量
+        const targetCount = globalLivePopularity;
+        if (isNaN(targetCount)) {
+            console.error('globalLivePopularity 不是有效的数字');
+            return;
+        }
+        const totalDuration = 1000; // 动画总时长，单位为毫秒，这里设置为1秒
+        const startTime = Date.now();
+        let currentCount = 0;
+
+        const intervalId = setInterval(() => {
+            const elapsedTime = Date.now() - startTime;
+            const progress = Math.min(elapsedTime / totalDuration, 1); // 确保进度不超过1
+            currentCount = Math.floor(targetCount * progress); // 根据进度计算当前数量
+
+            let displayValue;
+            if (targetCount >= 10000) {
+                if (currentCount >= 10000) {
+                    displayValue = `${(currentCount / 10000).toFixed(1)}万`;
+                } else {
+                    displayValue = currentCount;
+                }
+            } else {
+                displayValue = currentCount;
+            }
+
+            elements.popularity.textContent = displayValue;
+
+            if (elapsedTime >= totalDuration) {
+                clearInterval(intervalId);
+                if (targetCount >= 10000) {
+                    elements.popularity.textContent = `${(targetCount / 10000).toFixed(1)}万`;
+                } else {
+                    elements.popularity.textContent = targetCount;
+                }
+            }
+        }, 10);
+    });
+});
 
     // 错误处理
     window.addEventListener('error', (event) => {
