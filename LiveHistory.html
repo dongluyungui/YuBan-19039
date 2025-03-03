@@ -3,6 +3,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>往期直播回放</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <style>
     /* 搜索相关样式 */
     .search-container {
@@ -81,7 +82,7 @@
         <div class="search-container">
           <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
           <button class="bilibili-btn toggle-tags-btn">标签筛选</button>
-          <div class="tags-list" id="tags-list"><span>2025</span><span>游戏</span><span>无畏契约</span><span>杂谈</span><span>仓鼠</span><span>静音</span><span>绘画</span><span>逃离现实</span><span>FPS</span><span>我的世界</span><span>泰拉瑞亚</span><span>搞笑</span><span>调试</span><span>跨年</span><span>挑战</span><span>2024</span></div>
+          <div class="tags-list" id="tags-list"><span>2025</span><span>杂谈</span><span>御姐</span><span>大版</span><span>OSaKa</span><span>无畏契约</span><span>FPS</span><span>游戏</span><span>仓鼠</span><span>静音</span><span>绘画</span><span>逃离现实</span><span>我的世界</span><span>泰拉瑞亚</span><span>搞笑</span><span>调试</span><span>跨年</span><span>挑战</span><span>2024</span></div>
         </div>
         <button class="clear-search-btn">清除筛选</button>
       </div>
@@ -94,7 +95,36 @@
     <!-- 直播记录列表 -->
 
      
-   <div><div class="live-record" data-tags="2025,游戏,无畏契约,FPS">
+   <div><div class="live-record" data-tags="2025,杂谈,御姐,大版,OSaKa,无畏契约,FPS">
+  <div class="live-info">
+    <h2>OSAKA本体上线！</h2>
+    <p><strong>直播日期：</strong>2025年02月28日</p>
+    <p><strong>直播时间：</strong>21:27 - 00:33</p>
+    <p><strong>直播简介：</strong>OSAKA本体上线！</p>
+    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1hqXDYNEYq" target="_blank">点击观看</a></p>
+    <div class="tags">
+        <span class="tag" onclick="filterByTag('2025')">2025</span>
+        <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
+        <span class="tag" onclick="filterByTag('御姐')">御姐</span>
+        <span class="tag" onclick="filterByTag('大版')">大版</span>
+        <span class="tag" onclick="filterByTag('OSaKa')">OSaKa</span>
+        <span class="tag" onclick="filterByTag('无畏契约')">无畏契约</span>
+        <span class="tag" onclick="filterByTag('FPS')">FPS</span>
+    </div>
+  </div>
+</div></div><div><div class="live-record" data-tags="2025,杂谈">
+  <div class="live-info">
+    <h2>看比赛！！！(马上开学版）/这么晚了，还没睡吗~？</h2>
+    <p><strong>直播日期：</strong>2025年02月22日</p>
+    <p><strong>直播时间：</strong>23:23 - 01:16</p>
+    <p><strong>直播简介：</strong>曼谷大师赛事吧~</p>
+    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1Q6ADebEn7" target="_blank">点击观看</a></p>
+    <div class="tags">
+        <span class="tag" onclick="filterByTag('2025')">2025</span>
+        <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
+    </div>
+  </div>
+</div></div><div><div class="live-record" data-tags="2025,游戏,无畏契约,FPS">
   <div class="live-info">
     <h2>我要打！瓦！！！(马上开学版）</h2>
     <p><strong>直播日期：</strong>2025年02月19日</p>
@@ -102,7 +132,10 @@
     <p><strong>直播简介：</strong>有人急哭了，我不说是谁</p>
     <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1jfAHe9E1D/" target="_blank">点击观看</a></p>
     <div class="tags">
-      <span class="tag">2025</span><span class="tag">游戏</span><span class="tag">无畏契约</span><span class="tag">FPS</span>
+      <span class="tag" onclick="filterByTag('2025')">2025</span>
+      <span class="tag" onclick="filterByTag('游戏')">游戏</span>
+      <span class="tag" onclick="filterByTag('无畏契约')">无畏契约</span>
+      <span class="tag" onclick="filterByTag('FPS')">FPS</span>
     </div>
   </div>
 </div></div><div><div class="live-record" data-tags="2025,杂谈,仓鼠">
@@ -113,7 +146,9 @@
     <p><strong>直播简介：</strong>聊仓鼠</p>
     <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1b3AFejEwQ/" target="_blank">点击观看</a></p>
     <div class="tags">
-      <span class="tag">2025</span><span class="tag">杂谈</span><span class="tag">仓鼠</span>
+        <span class="tag" onclick="filterByTag('2025')">2025</span>
+        <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
+        <span class="tag" onclick="filterByTag('仓鼠')">仓鼠</span>
     </div>
   </div>
 </div></div><div><div class="live-record" data-tags="2025,杂谈,仓鼠">
@@ -135,7 +170,10 @@
     <p><strong>直播简介：</strong>犯困也打瓦</p>
     <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1JpANe5EPz/" target="_blank">点击观看</a></p>
     <div class="tags">
-      <span class="tag">2025</span><span class="tag">无畏契约</span><span class="tag">FPS</span><span class="tag">游戏</span>
+        <span class="tag" onclick="filterByTag('2025')">2025</span>
+        <span class="tag" onclick="filterByTag('无畏契约')">无畏契约</span>
+        <span class="tag" onclick="filterByTag('FPS')">FPS</span>
+        <span class="tag" onclick="filterByTag('游戏')">游戏</span>
     </div>
   </div>
 </div></div><div><div class="live-record" data-tags="2025,静音,绘画,无畏契约,FPS,游戏">
@@ -146,7 +184,12 @@
     <p><strong>直播简介：</strong>赶稿，然后打瓦</p>
     <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV17zN5e3Ejz/" target="_blank">点击观看</a></p>
     <div class="tags">
-      <span class="tag">2025</span><span class="tag">静音</span><span class="tag">绘画</span><span class="tag">无畏契约</span><span class="tag">FPS</span><span class="tag">游戏</span>
+        <span class="tag" onclick="filterByTag('2025')">2025</span>
+        <span class="tag" onclick="filterByTag('静音')">静音</span>
+        <span class="tag" onclick="filterByTag('绘画')">绘画</span>
+        <span class="tag" onclick="filterByTag('无畏契约')">无畏契约</span>
+        <span class="tag" onclick="filterByTag('FPS')">FPS</span>
+        <span class="tag" onclick="filterByTag('游戏')">游戏</span>
     </div>
   </div>
 </div></div><div><div class="live-record" data-tags="2025,静音,绘画">
@@ -168,7 +211,9 @@
     <p><strong>直播简介：</strong>先练了会枪，杂谈聊</p>
     <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1sdPme1EUq/" target="_blank">点击观看</a></p>
     <div class="tags">
-      <span class="tag">杂谈</span><span class="tag">逃离现实</span><span class="tag">2025</span><span class="tag">无畏契约</span><span class="tag">FPS</span><span class="tag">游戏</span>
+        <span class="tag" onclick="filterByTag('2025')">2025</span>
+        <span class="tag" onclick="filterByTag('静音')">静音</span>
+        <span class="tag" onclick="filterByTag('绘画')">绘画</span>
     </div>
   </div>
 </div></div><div><div class="live-record" data-tags="杂谈,逃离现实,2025">
@@ -179,7 +224,9 @@
     <p><strong>直播简介：</strong>杂谈聊</p>
     <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV19ENueJEzK/" target="_blank">点击观看</a></p>
     <div class="tags">
-      <span class="tag">杂谈</span><span class="tag">逃离现实</span><span class="tag">2025</span>
+        <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
+        <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
+        <span class="tag" onclick="filterByTag('2025')">2025</span>
     </div>
   </div>
 </div></div><div><div class="live-record" data-tags="2025,FPS,无畏契约,游戏">
@@ -190,7 +237,10 @@
     <p><strong>直播简介：</strong>想成为fps高手第一天捏</p>
     <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1ShPzefE8B" target="_blank">点击观看</a></p>
     <div class="tags">
-      <span class="tag">FPS</span><span class="tag">无畏契约</span><span class="tag">游戏</span><span class="tag">2025</span>
+        <span class="tag" onclick="filterByTag('FPS')">FPS</span>
+        <span class="tag" onclick="filterByTag('无畏契约')">无畏契约</span>
+        <span class="tag" onclick="filterByTag('游戏')">游戏</span>
+        <span class="tag" onclick="filterByTag('2025')">2025</span>
     </div>
   </div>
 </div></div><div><div class="live-record" data-tags="2025,逃离现实,游戏,无畏契约,FPS">
@@ -201,7 +251,11 @@
     <p><strong>直播简介：</strong>打瓦捏</p>
     <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1dyNAeMEpf" target="_blank">点击观看</a></p>
     <div class="tags">
-      <span class="tag">逃离现实</span><span class="tag">游戏</span><span class="tag">无畏契约</span><span class="tag">FPS</span><span class="tag">2025</span>
+        <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
+        <span class="tag" onclick="filterByTag('游戏')">游戏</span>
+        <span class="tag" onclick="filterByTag('无畏契约')">无畏契约</span>
+        <span class="tag" onclick="filterByTag('FPS')">FPS</span>
+        <span class="tag" onclick="filterByTag('2025')">2025</span>
     </div>
   </div>
 </div></div><div class="live-record" data-tags="2025,游戏,我的世界"> 
@@ -212,7 +266,9 @@
            <p><strong>直播简介：</strong>直播玩我的世界</p> 
            <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1cuF2eWEq4/" target="_blank">点击观看</a></p> 
            <div class="tags"> 
-               <span class="tag" onclick="filterByTag('游戏')">游戏</span><span class="tag" onclick="filterByTag('我的世界')">我的世界</span> <span class="tag">2025</span>
+               <span class="tag" onclick="filterByTag('游戏')">游戏</span>
+               <span class="tag" onclick="filterByTag('我的世界')">我的世界</span> 
+               <span class="tag" onclick="filterByTag('2025')">2025</span>
            </div> 
        </div> 
    </div> 
@@ -314,10 +370,12 @@
   <script>
     // 检索功能
     function filterByTag(tag) {
-      const searchBox = document.getElementById('search-box');
-      searchBox.value = tag;
-      triggerSearch();
-    }
+    const searchBox = document.getElementById('search-box');
+    searchBox.value = tag;
+    // 手动触发input事件来执行筛选
+    const event = new Event('input', { bubbles: true });
+    searchBox.dispatchEvent(event);
+}
 
     function triggerSearch() {
       const searchValue = document.getElementById('search-box').value.toLowerCase();
@@ -353,14 +411,20 @@
 
     // 添加记录功能
     document.getElementById('addButton').addEventListener('click', () => {
-      const newRecord = prompt('请输入新的直播记录代码...');
-      if (newRecord) {
-        const container = document.querySelector('.container');
-        const newDiv = document.createElement('div');
-        newDiv.innerHTML = newRecord;
-        container.insertBefore(newDiv, container.children[1]);
-        initTagList();
-      }
+        const newRecord = prompt('请输入新的直播记录代码...');
+        if (newRecord) {
+            const container = document.querySelector('.container');
+            const newDiv = document.createElement('div');
+            newDiv.innerHTML = newRecord;
+            container.insertBefore(newDiv, container.children[1]);
+            initTagList();
+            // 重新绑定所有标签的点击事件
+            document.querySelectorAll('.tag').forEach(tag => {
+                tag.onclick = () => {
+                    filterByTag(tag.textContent.trim());
+                };
+            });
+        }
     });
 
     // 保存功能
