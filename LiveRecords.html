@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>生成直播记录</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <style>
     /* 表单专属样式 */
     .form-panel {
@@ -91,9 +92,10 @@
     <div class="header-content">
       <div>
         <a href="index.html" class="nav-link">首页</a>
+        <a href="About.html" class="nav-link">关于</a>
         <a href="LiveHistory.html" class="nav-link">往期回放</a>
       </div>
-      <button class="bilibili-btn" onclick="history.back()">返回</button>
+      <button class="bilibili-btn" onclick="openBiligankAndCopy()">查询直播日志</button>
     </div>
   </header>
 
@@ -158,6 +160,12 @@
     </div>
   </div>
 
+   <!-- 页脚 --> 
+  <div style="text-align: center; padding: 30px; color: #666;"> 
+    <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p> 
+    <p>本站为粉丝自制，与哔哩哔哩官方无关</p> 
+  </div> 
+
   <script>
     // 标签管理功能
     function addTag() {
@@ -175,26 +183,37 @@
       }
     }
 
+    // 打开新标签页并复制指定文本
+    function openBiligankAndCopy() {
+     // 打开新标签页访问指定网址
+      window.open('https://biligank.com', '_blank');
+     // 复制指定文本
+      navigator.clipboard.writeText('12136555');
+   }
+
+
     // 生成代码功能
     function generateCode() {
-      const getValue = id => document.getElementById(id).value;
-      const tags = [...document.querySelectorAll('#tags-list .tag span:first-child')]
-                   .map(span => span.textContent);
+        const getValue = id => document.getElementById(id).value;
+        const tags = [...document.querySelectorAll('#tags-list .tag span:first-child')]
+                       .map(span => span.textContent);
 
-      const code = `
-<div class="live-record" data-tags="${tags.join(',')}">
-  <div class="live-info">
-    <h2>${getValue('title')}</h2>
-    <p><strong>直播日期：</strong>${formatDate(getValue('date'))}</p>
-    <p><strong>直播时间：</strong>${getValue('startTime')} - ${getValue('endTime')}</p>
-    <p><strong>直播简介：</strong>${getValue('description')}</p>
-    <p><strong>视频链接：</strong><a href="${getValue('link')}" target="_blank">点击观看</a></p>
-    <div class="tags">
-      ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
-    </div>
-  </div>
-</div>`;
-      document.getElementById('code-output').textContent = code;
+        const tagSpans = tags.map(t => `            <span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('\n');
+
+        const code = `
+    <div class="live-record" data-tags="${tags.join(',')}">
+      <div class="live-info">
+        <h2>${getValue('title')}</h2>
+        <p><strong>直播日期：</strong>${formatDate(getValue('date'))}</p>
+        <p><strong>直播时间：</strong>${getValue('startTime')} - ${getValue('endTime')}</p>
+        <p><strong>直播简介：</strong>${getValue('description')}</p>
+        <p><strong>视频链接：</strong><a href="${getValue('link')}" target="_blank">点击观看</a></p>
+        <div class="tags">
+${tagSpans}
+        </div>
+      </div>
+    </div>`;
+        document.getElementById('code-output').textContent = code;
     }
 
     // 日期格式化
