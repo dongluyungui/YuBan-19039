@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>御坂の画廊</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/tagsearch.css">
+    <script src="js/tagsearch.js"></script>
+    <script src="js/date.js"></script>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <style>
+        /* 画廊专属样式 */
+        .gallery-container {
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
+
+        .art-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .art-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .art-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-bottom: 2px solid #f0f0f0;
+            cursor: zoom-in;
+        }
+
+        .art-info {
+            padding: 15px;
+        }
+
+        .art-title {
+            color: #e91e63;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .art-details {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+
+            .art-image {
+                height: 220px;
+            }
+        }
+
+        /* 灯箱样式 */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="About.html" class="nav-link">关于</a>
+                <a href="time.html" class="nav-link active">时间轴</a>
+                <a href="Sound.html" class="nav-link active">语音按钮</a>
+                <a href="LiveHistory.html" class="nav-link">往期回放</a>
+            </div>
+            <div class="util-buttons">
+                <div class="search-container">
+                    <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
+                    <button class="bilibili-btn toggle-tags-btn">标签筛选</button>
+                    <div class="tags-list" id="tags-list"></div>
+                </div>
+                <button class="clear-search-btn">清除筛选</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="banner">
+            <h1>🎨 御坂画廊收藏集</h1>
+            <p>收藏每一份用心的作品 (๑>ᴗ<๑)</p>
+        </div>
+
+        <div class="gallery-container">
+            <div class="gallery-grid">
+                <!-- 分割 -->
+                <div class="art-card" data-tags="未完待续">
+                    <img src="img/gallery/To Be Continued.png" alt="未完待续" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">未完待续</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/484106430"
+                                    target="_blank"
+                                    class="source-link">
+                                    东陆云鬼
+                                </a>
+                            </p>
+                            <a>创作日期：</a><span id="date-dot"></span></p>
+                            <p>简介：等我更新</p>
+                            <p>出处：
+                                <a href="https://live.bilibili.com/8414339"
+                                    target="_blank"
+                                    class="source-link">
+                                     未完待续
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('未完待续')">未完待续</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="万圣节，MISAKA，SINA">
+                    <img src="img/gallery/8416f54200235473598c5310a8c8043312136555.jpg" alt="   万圣恐怖夜！" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">   万圣恐怖夜！</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：2024.11.01</p>
+                            <p>简介：   万圣恐怖夜！</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/994850262719922183"
+                                    target="_blank"
+                                    class="source-link">
+                                    内个（颤抖）不给糖就捣蛋QAQ（颤抖）
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('万圣节')">万圣节</span>
+                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="表情包，MISAKA">
+                    <img src="img/gallery/9c541e944419f842ccf8ae3d3fa3819a12136555.jpg" alt="直播间可以使用表情包啦！" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">直播间可以使用表情包啦！</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：2024.10.26</p>
+                            <p>简介：目前的所有表情都是免费使用（在直播间内）</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/992627844783800329"
+                                    target="_blank"
+                                    class="source-link">
+                                     直播间可以使用表情包啦！
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="表情包，SINA">
+                    <img src="img/gallery/71178d440f6bcec5d5a51fe7d04ef45f8a0588af.png" alt="酷盖" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">酷盖</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：未知</p>
+                            <p>简介：直播间表情</p>
+                            <p>出处：
+                                <a href="https://live.bilibili.com/8414339"
+                                    target="_blank"
+                                    class="source-link">
+                                     直播间
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="表情包，MISAKA">
+                    <img src="img/gallery/65c3819c35be945a798f605db1cf7d8d12136555.jpg" alt="表情！" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">表情</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：2024.09.20</p>
+                            <p>简介：表情</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/979172030079303687"
+                                    target="_blank"
+                                    class="source-link">
+                                     我本来要从平板用蓝牙把这张表情传到手机上的，结果点错传到别人手机上了😭我嘞个蓝牙啊
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="表情包，SINA">
+                    <img src="img/gallery/dc5bbc3a710525ed8e113d16c082eb6f12136555.jpg" alt="表情！" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">表情</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：2024.09.20</p>
+                            <p>简介：表情</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/979172030079303687"
+                                    target="_blank"
+                                    class="source-link">
+                                     我本来要从平板用蓝牙把这张表情传到手机上的，结果点错传到别人手机上了😭我嘞个蓝牙啊
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 分割 -->
+                <div class="art-card" data-tags="一百天，SINA">
+                    <img src="img/gallery/4156bc49b46deab108bb95a97c25248e12136555.jpg" alt="百日聊天回！" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">百日聊天回！</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：2024.09.06</p>
+                            <p>简介：等我更新</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/973982335205638151"
+                                    target="_blank"
+                                    class="source-link">
+                                     真的有一百天了(*´I`*)！
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('一百天')">一百天</span>
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="贺图，SINA，MISAKA">
+                    <img src="img/gallery/f995280bf26a8e51d7357761cd93c74412136555.jpg" alt="「To The Moon」" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">「To The Moon」</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：2024.08.29</p>
+                            <p>简介：MISAKA和SINA贴贴</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/971068826945847300"
+                                    target="_blank"
+                                    class="source-link">
+                                     月色真美
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('贺图')">贺图</span>
+                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="贺图,SINA">
+                    <img src="img/gallery/a273948466979c704f2040c2748c4aa012136555.jpg" alt="变回去叭！" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">变回去叭！</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：2024.06.14</p>
+                            <p>简介：8月好多事情繁忙</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/968079392234274838"
+                                    target="_blank"
+                                    class="source-link">
+                                    晚上才是SINA的主场
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('贺图')">贺图</span>
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="贺图，SINA，MISAKA">
+                    <img src="img/gallery/20b8d58f0c8c7bea7dcfb5aa8ffc825a12136555.jpg" alt="夏日庆会と双满月回！" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">夏日庆会と双满月回！</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：2024.07.24</p>
+                            <p>简介：双满啦</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/958088830160732165"
+                                    target="_blank"
+                                    class="source-link">
+                                    直播预约：夏日庆会と双满月回
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('贺图')">贺图</span>
+                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="洗脑，梗图">
+                    <img src="img/gallery/xinaolu.jpg" alt="🦌しかのこのこの🎶🐯ここしたんたん🎶" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">🦌しかのこのこの🎶🐯ここしたんたん</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：2024.07.11</p>
+                            <p>简介：🦌しかのこのこの🎶🐯ここしたんたん🎶</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/952890000130703368"
+                                    target="_blank"
+                                    class="source-link">
+                                    🦌しかのこのこの🎶🐯ここしたんたん🎶
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('洗脑')">洗脑</span>
+                            <span class="tag" onclick="filterByTag('梗图')">梗图</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="贺图">
+                    <img src="img/gallery/birthday_1.png" alt="1000粉贺图" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">1000粉贺图</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/16018113"
+                                    target="_blank"
+                                    class="source-link">
+                                    Nico小狐狸
+                                </a>
+                            </p>
+                            <p>创作日期：2024.06.14</p>
+                            <p>简介：千粉啦</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/942785165934985222"
+                                    target="_blank"
+                                    class="source-link">
+                                    呜呜呜是狐狸哥哥给sina画的贺图
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('贺图')">贺图</span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="表情包, 哭哭御坂, Q版">
+                    <img src="img/gallery/Q_ku.jpg" alt="Q版哭哭" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">Q版哭哭</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：2024.06.13</p>
+                            <p>简介：哭哭</p>
+                            <p>出处：
+                               <a href="https://www.bilibili.com/opus/942416524562399237"
+                                 target="_blank"
+                                 class="source-link">
+                                 这两天要回学校处理毕业的事情～
+                                <i class="fas fa-external-link-alt"></i>
+                              </a>     
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                            <span class="tag" onclick="filterByTag('Q版')">Q版</span>
+                            <span class="tag" onclick="filterByTag('哭哭御坂')">哭哭御坂</span>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <!-- 分割 -->
+                <div class="art-card" data-tags="直播封面">
+                    <img src="img/gallery/live_2.jpg" alt="直播常用封面2" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">直播常用封面2</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：未知</p>
+                            <p>简介：直播常用封面2</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/939271435991384073"
+                                    target="_blank"
+                                    class="source-link">
+                                    VUP出道！！！
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('直播封面')">直播封面</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="直播封面">
+                    <img src="img/gallery/live_1.jpg" alt="直播常用封面1" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">直播常用封面1</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：未知</p>
+                            <p>简介：直播常用封面1</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/937876331851415558"
+                                    target="_blank"
+                                    class="source-link">
+                                    先提前发个自我介绍吧
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('直播封面')">直播封面</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="哭哭御坂, 表情包">
+                    <img src="img/gallery/face_ku.jpg" alt="哭哭御坂" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">哭哭御坂</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：未知</p>
+                            <p>简介：哭哭御坂</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/937876331851415558"
+                                    target="_blank"
+                                    class="source-link">
+                                    先提前发个自我介绍吧
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('哭哭御坂')">哭哭御坂</span>
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 更多画作... -->
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <div style="text-align: center; padding: 30px; color: #666;">
+            <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
+            <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
+        </div>
+    </div>
+
+    <!-- 灯箱 -->
+    <div class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="放大的图片">
+    </div>
+
+    <script>
+        // 获取灯箱元素
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxImage = lightbox.querySelector('img');
+        const lightboxClose = lightbox.querySelector('.lightbox-close');
+
+        // 为所有图片添加点击事件
+        document.querySelectorAll('.art-image').forEach(img => {
+            img.addEventListener('click', () => {
+                openLightbox(img.src);
+            });
+        });
+
+        // 打开灯箱
+        function openLightbox(src) {
+            lightboxImage.src = src;
+            lightbox.style.display = 'flex';
+        }
+
+        // 关闭灯箱
+        lightboxClose.addEventListener('click', () => {
+            lightbox.style.display = 'none';
+        });
+
+        // 点击覆盖层关闭灯箱
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+
+</html>
