@@ -1,0 +1,79 @@
+/* 搜索相关样式 */
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+
+.search-box {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  flex: 1;
+}
+
+.tags-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  margin-top: 5px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none;
+}
+
+.tags-list.visible { display: block; }
+.tags-list span {
+  display: block;
+  padding: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.tags-list span:hover {
+  background: var(--secondary-color);
+  color: white;
+}
+
+.util-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.clear-search-btn {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.clear-search-btn:hover {
+  background: var(--hover-color);
+}
+
+
+.tag {
+  /* 使用 CSS 变量 --secondary-color 作为背景颜色，这样可以方便统一修改颜色 */
+  background-color: var(--secondary-color);
+  /* 设置文本颜色为白色 */
+  color: white;/* 设置元素的内边距，上下为 4 像素，左右为 10 像素 */
+padding: 4px 10px;
+/* 设置元素的边框圆角为 15 像素，使元素的边角呈现更圆润的效果 */
+border-radius: 15px;
+  /* 将鼠标指针的样式设置为手型，提示用户该元素是可点击的 */
+  cursor: pointer;
+}
+
+
+
+.tag:hover {
+  background-color: var(--hover-color);
+}
