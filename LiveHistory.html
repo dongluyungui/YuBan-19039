@@ -1,70 +1,13 @@
 <!DOCTYPE html><html lang="zh-CN"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>往期直播回放</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>御坂の往期直播回放</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tagsearch.css">
+  <script src="js/tagsearch.js"></script>
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <style>
-    /* 搜索相关样式 */
-    .search-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      position: relative;
-    }
-
-    .search-box {
-      padding: 8px 12px;
-      border: 1px solid #ddd;
-      border-radius: 20px;
-      flex: 1;
-    }
-
-    .tags-list {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: white;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      margin-top: 5px;
-      max-height: 200px;
-      overflow-y: auto;
-      z-index: 1000;
-      display: none;
-    }
-
-    .tags-list.visible { display: block; }
-    .tags-list span {
-      display: block;
-      padding: 8px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .tags-list span:hover {
-      background: var(--secondary-color);
-      color: white;
-    }
-
-    .util-buttons {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
     
-    .clear-search-btn {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .clear-search-btn:hover {
-      background: var(--hover-color);
-    }
   </style>
 </head>
 <body>
@@ -73,6 +16,8 @@
       <div>
         <a href="index.html" class="nav-link">首页</a>
         <a href="About.html" class="nav-link">关于</a>
+        <a href="gallery.html" class="nav-link active">画廊</a>
+        <a href="time.html" class="nav-link active">时间轴</a>
         <a href="Sound.html" class="nav-link active">语音按钮</a>
         <a href="LiveRecords.html" class="nav-link" target="_blank">生成记录</a>
         <button class="nav-link" id="addButton">添加记录</button>
@@ -101,7 +46,7 @@
     <p><strong>直播日期：</strong>2025年02月28日</p>
     <p><strong>直播时间：</strong>21:27 - 00:33</p>
     <p><strong>直播简介：</strong>OSAKA本体上线！</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1hqXDYNEYq" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1hqXDYNEYq" target="_blank">点击观看</a></p>
     <div class="tags">
         <span class="tag" onclick="filterByTag('2025')">2025</span>
         <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
@@ -118,7 +63,7 @@
     <p><strong>直播日期：</strong>2025年02月22日</p>
     <p><strong>直播时间：</strong>23:23 - 01:16</p>
     <p><strong>直播简介：</strong>曼谷大师赛事吧~</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1Q6ADebEn7" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1Q6ADebEn7" target="_blank">点击观看</a></p>
     <div class="tags">
         <span class="tag" onclick="filterByTag('2025')">2025</span>
         <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
@@ -130,7 +75,7 @@
     <p><strong>直播日期：</strong>2025年02月19日</p>
     <p><strong>直播时间：</strong>01:42 - 01:39</p>
     <p><strong>直播简介：</strong>有人急哭了，我不说是谁</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1jfAHe9E1D/" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1jfAHe9E1D/" target="_blank">点击观看</a></p>
     <div class="tags">
       <span class="tag" onclick="filterByTag('2025')">2025</span>
       <span class="tag" onclick="filterByTag('游戏')">游戏</span>
@@ -144,7 +89,7 @@
     <p><strong>直播日期：</strong>2025年02月17日</p>
     <p><strong>直播时间：</strong>23:24 - 02:03</p>
     <p><strong>直播简介：</strong>聊仓鼠</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1b3AFejEwQ/" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1b3AFejEwQ/" target="_blank">点击观看</a></p>
     <div class="tags">
         <span class="tag" onclick="filterByTag('2025')">2025</span>
         <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
@@ -157,7 +102,7 @@
     <p><strong>直播日期：</strong>2025年02月16日</p>
     <p><strong>直播时间：</strong>23:11 - 02:01</p>
     <p><strong>直播简介：</strong>聊吃的、仓鼠</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1CfATe4EMz" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1CfATe4EMz" target="_blank">点击观看</a></p>
     <div class="tags">
       <span class="tag">2025</span><span class="tag">杂谈</span><span class="tag">仓鼠</span>
     </div>
@@ -168,7 +113,7 @@
     <p><strong>直播日期：</strong>2025年02月15日</p>
     <p><strong>直播时间：</strong>01:26 - 03:06</p>
     <p><strong>直播简介：</strong>犯困也打瓦</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1JpANe5EPz/" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1JpANe5EPz/" target="_blank">点击观看</a></p>
     <div class="tags">
         <span class="tag" onclick="filterByTag('2025')">2025</span>
         <span class="tag" onclick="filterByTag('无畏契约')">无畏契约</span>
@@ -182,7 +127,7 @@
     <p><strong>直播日期：</strong>2025年02月13日</p>
     <p><strong>直播时间：</strong>20:50 - 01:28</p>
     <p><strong>直播简介：</strong>赶稿，然后打瓦</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV17zN5e3Ejz/" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV17zN5e3Ejz/" target="_blank">点击观看</a></p>
     <div class="tags">
         <span class="tag" onclick="filterByTag('2025')">2025</span>
         <span class="tag" onclick="filterByTag('静音')">静音</span>
@@ -198,7 +143,7 @@
     <p><strong>直播日期：</strong>2025年02月08日</p>
     <p><strong>直播时间：</strong>23:11 - 01:16</p>
     <p><strong>直播简介：</strong>赶稿</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV17zN5e3Ejz/" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV17zN5e3Ejz/" target="_blank">点击观看</a></p>
     <div class="tags">
       <span class="tag">2025</span><span class="tag">静音</span><span class="tag">绘画</span>
     </div>
@@ -209,7 +154,7 @@
     <p><strong>直播日期：</strong>2025年02月07日</p>
     <p><strong>直播时间：</strong>22:47 - 01:57</p>
     <p><strong>直播简介：</strong>先练了会枪，杂谈聊</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1sdPme1EUq/" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1sdPme1EUq/" target="_blank">点击观看</a></p>
     <div class="tags">
         <span class="tag" onclick="filterByTag('2025')">2025</span>
         <span class="tag" onclick="filterByTag('静音')">静音</span>
@@ -222,7 +167,7 @@
     <p><strong>直播日期：</strong>2025年02月05日</p>
     <p><strong>直播时间：</strong>22:55 - 01:25</p>
     <p><strong>直播简介：</strong>杂谈聊</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV19ENueJEzK/" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV19ENueJEzK/" target="_blank">点击观看</a></p>
     <div class="tags">
         <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
         <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
@@ -235,7 +180,7 @@
     <p><strong>直播日期：</strong>2025年02月04日</p>
     <p><strong>直播时间：</strong>23:02 - 01:43</p>
     <p><strong>直播简介：</strong>想成为fps高手第一天捏</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1ShPzefE8B" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1ShPzefE8B" target="_blank">点击观看</a></p>
     <div class="tags">
         <span class="tag" onclick="filterByTag('FPS')">FPS</span>
         <span class="tag" onclick="filterByTag('无畏契约')">无畏契约</span>
@@ -249,7 +194,7 @@
     <p><strong>直播日期：</strong>2025年02月03日</p>
     <p><strong>直播时间：</strong>22:45 - 02:49</p>
     <p><strong>直播简介：</strong>打瓦捏</p>
-    <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1dyNAeMEpf" target="_blank">点击观看</a></p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1dyNAeMEpf" target="_blank">点击观看</a></p>
     <div class="tags">
         <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
         <span class="tag" onclick="filterByTag('游戏')">游戏</span>
@@ -264,7 +209,7 @@
            <p><strong>直播日期：</strong>2025年2月3日</p> 
            <p><strong>直播时间：</strong>00:59 - 03:03</p> 
            <p><strong>直播简介：</strong>直播玩我的世界</p> 
-           <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1cuF2eWEq4/" target="_blank">点击观看</a></p> 
+           <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1cuF2eWEq4/" target="_blank">点击观看</a></p> 
            <div class="tags"> 
                <span class="tag" onclick="filterByTag('游戏')">游戏</span>
                <span class="tag" onclick="filterByTag('我的世界')">我的世界</span> 
@@ -280,7 +225,7 @@
         <p><strong>直播日期：</strong>2025年2月1日</p>
         <p><strong>直播时间：</strong>22:57 - 02:01</p>
         <p><strong>直播简介：</strong>逃离现实的第三天，继续探索未知的世界。</p>
-        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1uYFveMEzA" target="_blank">点击观看</a></p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1uYFveMEzA" target="_blank">点击观看</a></p>
         <div class="tags">
           <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
           <span class="tag" onclick="filterByTag('2025')">2025</span>
@@ -294,7 +239,7 @@
         <p><strong>直播日期：</strong>2025年1月26日</p>
         <p><strong>直播时间：</strong>23:21 - 02:02</p>
         <p><strong>直播简介：</strong>逃离现实的第二天，继续分享心得。</p>
-        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1HefCY1EBG" target="_blank">点击观看</a></p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1HefCY1EBG" target="_blank">点击观看</a></p>
         <div class="tags">
           <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
           <span class="tag" onclick="filterByTag('2025')">2025</span>
@@ -308,7 +253,7 @@
         <p><strong>直播日期：</strong>2025年1月25日</p>
         <p><strong>直播时间：</strong>22:59 - 01:26</p>
         <p><strong>直播简介：</strong>静音直播，逃离现实的第一天。</p>
-        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1bQFFeMEnE" target="_blank">点击观看</a></p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1bQFFeMEnE" target="_blank">点击观看</a></p>
         <div class="tags">
           <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
           <span class="tag" onclick="filterByTag('2025')">2025</span>
@@ -322,7 +267,7 @@
         <p><strong>直播日期：</strong>2025年1月25日</p>
         <p><strong>直播时间：</strong>00:05 - 20:05</p>
         <p><strong>直播简介：</strong>在泰拉瑞亚的世界里，背着家里人偷偷啵啵~</p>
-        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV12TfZY8En1" target="_blank">点击观看</a></p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV12TfZY8En1" target="_blank">点击观看</a></p>
         <div class="tags">
           <span class="tag" onclick="filterByTag('泰拉瑞亚')">泰拉瑞亚</span>
           <span class="tag" onclick="filterByTag('搞笑')">搞笑</span>
@@ -337,7 +282,7 @@
         <p><strong>直播日期：</strong>2025年1月18日</p>
         <p><strong>直播时间：</strong>23:21 - 01:03</p>
         <p><strong>直播简介：</strong>非正式直播，主要是调试设备。</p>
-        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1USwveVEfZ" target="_blank">点击观看</a></p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1USwveVEfZ" target="_blank">点击观看</a></p>
         <div class="tags">
           <span class="tag" onclick="filterByTag('调试')">调试</span>
           <span class="tag" onclick="filterByTag('2025')">2025</span>
@@ -351,7 +296,7 @@
         <p><strong>直播日期：</strong>2024年12月31日</p>
         <p><strong>直播时间：</strong>22:59 - 02:16</p>
         <p><strong>直播简介：</strong>跨年特别直播，一起参与不要笑挑战，共度美好时光。</p>
-        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1G669Y2EHQ" target="_blank">点击观看</a></p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1G669Y2EHQ" target="_blank">点击观看</a></p>
         <div class="tags">
           <span class="tag" onclick="filterByTag('跨年')">跨年</span>
           <span class="tag" onclick="filterByTag('挑战')">挑战</span>
@@ -368,47 +313,6 @@
   </div> 
 
   <script>
-    // 检索功能
-    function filterByTag(tag) {
-    const searchBox = document.getElementById('search-box');
-    searchBox.value = tag;
-    // 手动触发input事件来执行筛选
-    const event = new Event('input', { bubbles: true });
-    searchBox.dispatchEvent(event);
-}
-
-    function triggerSearch() {
-      const searchValue = document.getElementById('search-box').value.toLowerCase();
-      const liveRecords = document.querySelectorAll('.live-record');
-      
-      liveRecords.forEach(record => {
-        const tags = record.dataset.tags.split(/,\s*/);
-        const hasMatch = tags.some(t => t.toLowerCase().includes(searchValue));
-        record.style.display = hasMatch ? '' : 'none';
-      });
-    }
-
-    // 标签列表处理
-    function initTagList() {
-      const tagsList = document.getElementById('tags-list');
-      const allTags = new Set();
-
-      document.querySelectorAll('.tag').forEach(tag => {
-        allTags.add(tag.textContent.trim());
-      });
-
-      tagsList.innerHTML = '';
-      allTags.forEach(tag => {
-        const tagItem = document.createElement('span');
-        tagItem.textContent = tag;
-        tagItem.onclick = () => {
-          filterByTag(tag);
-          tagsList.classList.remove('visible');
-        };
-        tagsList.appendChild(tagItem);
-      });
-    }
-
     // 添加记录功能
     document.getElementById('addButton').addEventListener('click', () => {
         const newRecord = prompt('请输入新的直播记录代码...');
@@ -441,36 +345,6 @@
       link.click();
     });
 
-    // 初始化
-    document.addEventListener('DOMContentLoaded', () => {
-      // 标签列表功能
-      document.querySelector('.toggle-tags-btn').addEventListener('click', () => {
-        document.getElementById('tags-list').classList.toggle('visible');
-      });
-
-      document.addEventListener('click', (e) => {
-        if (!e.target.closest('.search-container')) {
-          document.getElementById('tags-list').classList.remove('visible');
-        }
-      });
-
-      // 清除筛选
-      document.querySelector('.clear-search-btn').addEventListener('click', () => {
-        document.getElementById('search-box').value = '';
-        triggerSearch();
-      });
-
-      // 实时搜索
-      document.getElementById('search-box').addEventListener('input', triggerSearch);
-      
-      // 初始化标签列表
-      initTagList();
-    });
-
-    // 回到顶部
-    function scrollToTop() {
-      window.scrollTo({top: 0, behavior: 'smooth'});
-    }
   </script>
 
 </body></html>
