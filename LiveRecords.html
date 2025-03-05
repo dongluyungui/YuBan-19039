@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>生成直播记录</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <style>
     /* 表单专属样式 */
@@ -207,7 +207,7 @@
         <p><strong>直播日期：</strong>${formatDate(getValue('date'))}</p>
         <p><strong>直播时间：</strong>${getValue('startTime')} - ${getValue('endTime')}</p>
         <p><strong>直播简介：</strong>${getValue('description')}</p>
-        <p><strong>视频链接：</strong><a href="${getValue('link')}" target="_blank">点击观看</a></p>
+        <p><strong>视频链接：</strong><a class="source-link" href="${getValue('link')}" target="_blank">点击观看</a></p>
         <div class="tags">
 ${tagSpans}
         </div>
