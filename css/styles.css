@@ -35,57 +35,39 @@ body {
 }
 
 .nav-link {
-    color: var(--primary-color);
-    text-decoration: none;
-    padding: 8px 15px;
-    border-radius: 20px;
-    transition: all 0.3s;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 16px; /* 设置与链接文本相同的字体大小 */
+  color: var(--primary-color);
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  transition: all 0.3s;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px; 
 }
  
 .nav-link:hover {
-    background: #fff0f3;
-    transform: translateY(-2px);
+  background: #fff0f3;
+  transform: translateY(-2px);
 }
-
+/* rigth按钮div */
+.util-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+height: 30px; /* 设置固定高度为 50 像素 */
+}
 /* 
   定义名为.bilibili-btn 的类选择器，用于设置具有哔哩哔哩风格按钮的样式
 */
 .bilibili-btn {
-  /* 
-    将元素显示为内联块级元素，使其既可以像内联元素一样在一行显示，又可以设置宽度和高度等块级元素的属性
-  */
   display: inline-block;
-  /* 
-    设置按钮的背景颜色为哔哩哔哩标志性的蓝色 #00a1d6
-  */
   background: #00a1d6;
-  /* 
-    设置按钮内文本的颜色为白色，使用!important 强制覆盖其他可能的颜色设置
-  */
   color: white !important;
-  /* 
-    设置按钮内文本的内边距，上方和下方为 12px，左右两侧为 25px，使按钮有合适的大小和内容间距
-  */
   padding: 12px 25px;
-  /* 
-    设置按钮的边框圆角为 25px，使按钮具有圆角效果，增加美观度
-  */
   border-radius: 25px;
-  /* 
-    设置按钮的外边距为 10px，使按钮与其他元素之间有一定的间隔
-  */
   margin: 10px;
-  /* 
-    去除按钮作为链接时的下划线文本装饰，使按钮看起来更简洁
-  */
   text-decoration: none;
-  /* 
-    为按钮的 transform 属性添加过渡效果，过渡时间为 0.3 秒，使按钮在状态改变（如悬停）时的变换更平滑
-  */
   transition: transform 0.3s;
 }
 
@@ -130,17 +112,72 @@ body {
 
 /* 来源链接 */
 .source-link {
-    color: var(--accent-color);
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    transition: all 0.3s ease;
-  /* 将鼠标指针的样式设置为手型，提示用户该元素是可点击的 */
+  color: var(--accent-color);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .source-link:hover {
-    color: var(--primary-color);
-    transform: translateX(3px);
+  color: var(--primary-color);
+  transform: translateX(3px);
+}
+
+/* 移动端适配核心设置 - 页头部分 */
+@media (max-width: 768px) {
+  /* 页头适配 */
+  .header {
+    padding: 10px 15px; /* 缩小内边距 */
+    position: sticky; /* 改为粘性定位 */
+  }
+
+  .header-content {
+    flex-wrap: wrap; /* 允许元素换行 */
+    gap: 10px;
+  }
+
+  .nav-link {
+    padding: 8px 12px; /* 调整内边距 */
+    font-size: 14px; /* 适当缩小字体 */
+    min-width: 60px; /* 保证最小点击区域 */
+    text-align: center; /* 文字居中 */
+  }
+
+  .util-buttons {
+    /* 工具按钮容器宽度设置为父元素宽度的 100%，以适应移动端布局 */
+    width: 100%;
+    /* space-between使工具按钮在容器内分散对齐，均匀分布空间，如果希望按钮有不同的对齐方式，可以改为 center（居中对齐）、flex-start（左对齐）等 */
+    justify-content: space-between; 
+  }
+
+  /* 哔哩哔哩风格按钮适配 */
+  .bilibili-btn {
+    padding: 10px 20px; /* 适当减小内边距，适应移动端 */
+    font-size: 14px; /* 适当缩小字体 */
+    margin: 8px; /* 适当减小外边距 */
+  }
+
+
+  /* 移动端隐藏非必要元素 */
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+/* 通用优化补充 - 涉及页头部分 */
+@media (hover: none) {
+  /* 触控设备悬停状态优化 */
+  .nav-link:hover {
+    transform: none;
+    background: transparent;
+  }
+
+  /* 触控设备上哔哩哔哩风格按钮悬停效果优化 */
+  .bilibili-btn:hover {
+    transform: none;
+    box-shadow: none;
+  }
 }

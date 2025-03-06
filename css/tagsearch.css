@@ -39,21 +39,55 @@
   background: var(--secondary-color);
   color: white;
 }
-
-.util-buttons {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+/* 标签搜索按钮样式 */
+.tag-search-btn {
+  /* 使元素显示为内联块级，允许设置宽高并保持同行显示 */
+  display: inline-block;
+  /* 使用哔哩哔哩标志性蓝色作为背景色 */
+  background: #00a1d6;
+  /* 强制文本颜色为白色，!important 用于覆盖其他可能的样式 */
+  color: white !important;
+  /* 设置内边距（垂直12px，水平25px），控制按钮尺寸 */
+  padding: 12px 25px;
+  /* 设置25px圆角，使按钮边角更圆润 */
+  border-radius: 25px;
+  /* 设置10px外边距，与其他元素保持间隔 */
+  margin: 10px;
+  /* 鼠标悬停时显示手型 */
+  cursor: pointer;
+  /* 去除下划线，保持按钮简洁 */
+  text-decoration: none;
+  /* 添加0.3秒过渡效果，使悬停动画更平滑 */
+  transition: transform 0.3s;
 }
 
+/* 标签搜索按钮悬停效果 */
+.tag-search-btn:hover {
+  /* 向上偏移3px，营造悬浮感 */
+  transform: translateY(-3px);
+  /* 添加模糊阴影，增强立体感 */
+  box-shadow: 0 5px 15px rgba(0, 161, 214, 0.3);
+}
+
+/* 清除搜索按钮样式 */
 .clear-search-btn {
+  /* 使用主题主色作为背景 */
   background: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 8px 16px;
+  color: white; /* 文本颜色为白色 */
+  border: none; /* 移除默认边框 */
+  padding: 8px 16px;/* 内边距 */
+  /* 20px圆角 */
   border-radius: 20px;
+  /* 鼠标悬停时显示手型 */
   cursor: pointer;
+  /* 背景颜色过渡效果 */
   transition: background 0.3s;
+}
+
+/* 清除搜索按钮悬停效果 */
+.clear-search-btn:hover {
+  /* 悬停时背景色变为主题悬停色 */
+  background: var(--hover-color);
 }
 .clear-search-btn:hover {
   background: var(--hover-color);
@@ -61,19 +95,73 @@
 
 
 .tag {
-  /* 使用 CSS 变量 --secondary-color 作为背景颜色，这样可以方便统一修改颜色 */
   background-color: var(--secondary-color);
-  /* 设置文本颜色为白色 */
-  color: white;/* 设置元素的内边距，上下为 4 像素，左右为 10 像素 */
-padding: 4px 10px;
-/* 设置元素的边框圆角为 15 像素，使元素的边角呈现更圆润的效果 */
-border-radius: 15px;
-  /* 将鼠标指针的样式设置为手型，提示用户该元素是可点击的 */
+  color: white;
+  padding: 4px 10px;
+  border-radius: 15px;
   cursor: pointer;
 }
 
-
-
 .tag:hover {
   background-color: var(--hover-color);
+}
+
+/* 移动端适配核心设置 - 搜索部分 */
+/* 此媒体查询适用于屏幕宽度最大为 768px 的设备，通常为移动端设备 */
+@media (max-width: 768px) {
+  /* 搜索容器适配 */
+  .search-container {
+    /* 将元素的显示方式设置为弹性布局（Flexbox），以实现灵活的子元素排列 */
+    display: flex;
+    /* column使弹性容器内的子元素垂直排列，在移动端更节省空间和便于操作 row：水平排列，从左到右。row-reverse：水平排列，从右到左。column：垂直排列，从上到下。column-reverse：垂直排列，从下到上。*/
+    flex-direction: row; 
+    /* 设置弹性容器内子元素之间的间距为 8 像素，增强元素之间的分隔感 */
+    gap: 8px; 
+    /* 设置该容器的宽度为其父元素宽度的 100%，以适应移动端屏幕宽度 */
+    width: 100%; 
+  }
+
+  .search-box {
+    /* 搜索框宽度设置为父元素宽度的 100%，实现全宽度显示，方便用户输入 */
+    width: 10%; 
+    /* 增大搜索框的内边距，增加点击区域，提高用户在移动端操作的准确性 */
+    padding: 12px 16px; 
+    /* 适当放大搜索框内的字体，便于在移动端查看输入内容 */
+    font-size: 16px; 
+  }
+
+  .tags-list {
+    /* 将标签列表的定位方式改为固定定位，使其在移动视图中位置固定 */
+    position: fixed; 
+    /* 设置标签列表距离顶部 60px，根据实际 header 高度进行调整，确保不被遮挡 */
+    top: 60px !important; 
+    /* 设置标签列表距离左侧 10px，确保左右有一定的边距 */
+    left: 10px !important;
+    /* 设置标签列表距离右侧 10px，确保左右有一定的边距 */
+    right: 10px !important;
+    /* 使用视口高度单位，设置标签列表的最大高度为视口高度的 60%，避免内容过长影响显示 */
+    max-height: 60vh; 
+  }
+
+  .clear-search-btn ，
+  .tag-search-btn {
+    padding: 10px 20px; /* 适当减小内边距，适应移动端 */
+    font-size: 14px; /* 适当缩小字体 */
+    margin: 8px; /* 适当减小外边距 */
+  }
+}
+
+/* 通用优化补充 - 涉及搜索部分 */
+@media (hover: none) {
+  /* 触控设备悬停状态优化 */
+  .tags-list span:hover {
+    background: inherit;
+  }
+}
+
+/* 横屏适配 */
+@media (max-width: 768px) and (orientation: landscape) {
+  .tags-list {
+    max-height: 50vh; /* 调整高度适应横屏 */
+  }
 }

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取舰长头像</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 200px;
+            margin: 10px;
+        }
+
+        #avatarContainer {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>获取舰长头像并下载示例</h1>
+    <button id="fetchAvatarBtn">获取舰长头像</button>
+    <button id="downloadAvatarBtn" disabled>下载头像</button>
+    <div id="avatarContainer"></div>
+
+    <script>
+        // 配置信息
+        const CONFIG = {
+            UID: 12136555,
+            ROOM_ID: 8414339,
+            CORS_PROXY: 'https://api.allorigins.win/get?url=', // 备用代理
+            PAGE_SIZE: 10
+        };
+
+        // 通用请求方法
+        async function fetchData(url) {
+            try {
+                const response = await fetch(`${CONFIG.CORS_PROXY}${encodeURIComponent(url)}`);
+                if (!response.ok) throw new Error('网络请求失败');
+
+                const data = await response.json();
+                return JSON.parse(data.contents);
+            } catch (error) {
+                console.error('数据获取失败:', error);
+                return null;
+            }
+        }
+
+        // 加载舰长头像数据
+        async function loadCaptainAvatars() {
+            const url = `https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=${CONFIG.ROOM_ID}&page=1&ruid=${CONFIG.UID}&page_size=${CONFIG.PAGE_SIZE}`;
+            const captainData = await fetchData(url);
+            console.log('处理后的舰长数据:', captainData);
+            if (captainData) {
+                // 合并 data.list 和 data.top3 中的舰长数据
+                const allCaptains = [
+                    ...(captainData.data.top3 || []),
+                    ...(captainData.data.list || [])
+                ];
+                const avatarContainer = document.getElementById('avatarContainer');
+                avatarContainer.innerHTML = '';
+                const avatarUrls = [];
+                allCaptains.forEach((captain) => {
+                    const img = document.createElement('img');
+                    const avatarUrl = captain.face;
+                    if (avatarUrl) {
+                        img.src = avatarUrl;
+                        img.alt = captain.username || '未知舰长';
+                        avatarContainer.appendChild(img);
+                        // 提取链接中的数字字符串作为文件名
+                        const match = avatarUrl.match(/\/([a-f0-9]+)\./);
+                        const fileName = match ? `${match[1]}.jpg` : `${img.alt}_avatar.jpg`;
+                        avatarUrls.push({ url: avatarUrl, name: fileName });
+                    }
+                });
+                const downloadAvatarBtn = document.getElementById('downloadAvatarBtn');
+                downloadAvatarBtn.disabled = false;
+                downloadAvatarBtn.addEventListener('click', async () => {
+                    for (const { url, name } of avatarUrls) {
+                        try {
+                            const response = await fetch(url);
+                            const blob = await response.blob();
+                            const link = document.createElement('a');
+                            link.href = URL.createObjectURL(blob);
+                            link.download = name;
+                            link.click();
+                            URL.revokeObjectURL(link.href);
+                        } catch (error) {
+                            console.error(`下载 ${name} 失败:`, error);
+                        }
+                    }
+                });
+            }
+        }
+
+        const fetchAvatarBtn = document.getElementById('fetchAvatarBtn');
+        fetchAvatarBtn.addEventListener('click', loadCaptainAvatars);
+    </script>
+</body>
+
+</html>

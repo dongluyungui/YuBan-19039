@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>往期直播回放</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* 搜索相关样式 */
+    .search-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+
+    .search-box {
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 20px;
+      flex: 1;
+    }
+
+    .tags-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-top: 5px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      display: none;
+    }
+
+    .tags-list.visible { display: block; }
+    .tags-list span {
+      display: block;
+      padding: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .tags-list span:hover {
+      background: var(--secondary-color);
+      color: white;
+    }
+
+    .util-buttons {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    
+    .clear-search-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .clear-search-btn:hover {
+      background: var(--hover-color);
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div>
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="About.html" class="nav-link">关于</a>
+        <a href="LiveRecords.html" class="nav-link" target="_blank">生成记录</a>
+        <button class="nav-link" id="addButton">添加记录</button>
+        <button class="nav-link" id="saveButton">保存页面</button>
+      </div>
+      <div class="util-buttons">
+        <div class="search-container">
+          <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
+          <button class="bilibili-btn toggle-tags-btn">标签筛选</button>
+          <div class="tags-list" id="tags-list">
+            <!-- 这里将动态插入标签 -->
+          </div>
+        </div>
+        <button class="clear-search-btn">清除筛选</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>🎥 御坂19039 - 往期直播回放</h1>
+    
+    <!-- 直播记录列表 -->
+
+     
+   <div class="live-record" data-tags="游戏,我的世界"> 
+       <div class="live-info"> 
+           <h2>动植物研究生存专家（我的世界）</h2> 
+           <p><strong>直播日期：</strong>2025年2月3日</p> 
+           <p><strong>直播时间：</strong>00:59 - 03:03</p> 
+           <p><strong>直播简介：</strong>直播玩我的世界</p> 
+           <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1cuF2eWEq4/" target="_blank">点击观看</a></p> 
+           <div class="tags"> 
+               <span class="tag" onclick="filterByTag('游戏')">游戏</span><span class="tag" onclick="filterByTag('我的世界')">我的世界</span> 
+           </div> 
+       </div> 
+   </div> 
+            
+
+    <div class="live-record" data-tags="逃离现实,2025">
+      <div class="live-info">
+        <h2>逃离现实第三天</h2>
+        <p><strong>直播日期：</strong>2025年2月1日</p>
+        <p><strong>直播时间：</strong>22:57 - 02:01</p>
+        <p><strong>直播简介：</strong>逃离现实的第三天，继续探索未知的世界。</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1uYFveMEzA" target="_blank">点击观看</a></p>
+        <div class="tags">
+          <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
+          <span class="tag" onclick="filterByTag('2025')">2025</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="live-record" data-tags="逃离现实,2025">
+      <div class="live-info">
+        <h2>逃离现实第二天</h2>
+        <p><strong>直播日期：</strong>2025年1月26日</p>
+        <p><strong>直播时间：</strong>23:21 - 02:02</p>
+        <p><strong>直播简介：</strong>逃离现实的第二天，继续分享心得。</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1HefCY1EBG" target="_blank">点击观看</a></p>
+        <div class="tags">
+          <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
+          <span class="tag" onclick="filterByTag('2025')">2025</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="live-record" data-tags="逃离现实,2025">
+      <div class="live-info">
+        <h2>逃离现实第一天</h2>
+        <p><strong>直播日期：</strong>2025年1月25日</p>
+        <p><strong>直播时间：</strong>22:59 - 01:26</p>
+        <p><strong>直播简介：</strong>静音直播，逃离现实的第一天。</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1bQFFeMEnE" target="_blank">点击观看</a></p>
+        <div class="tags">
+          <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
+          <span class="tag" onclick="filterByTag('2025')">2025</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="live-record" data-tags="泰拉瑞亚,搞笑,2025">
+      <div class="live-info">
+        <h2>背着家里人偷偷啵啵~</h2>
+        <p><strong>直播日期：</strong>2025年1月25日</p>
+        <p><strong>直播时间：</strong>00:05 - 20:05</p>
+        <p><strong>直播简介：</strong>在泰拉瑞亚的世界里，背着家里人偷偷啵啵~</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV12TfZY8En1" target="_blank">点击观看</a></p>
+        <div class="tags">
+          <span class="tag" onclick="filterByTag('泰拉瑞亚')">泰拉瑞亚</span>
+          <span class="tag" onclick="filterByTag('搞笑')">搞笑</span>
+          <span class="tag" onclick="filterByTag('2025')">2025</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="live-record" data-tags="调试,2025">
+      <div class="live-info">
+        <h2>调试中···</h2>
+        <p><strong>直播日期：</strong>2025年1月18日</p>
+        <p><strong>直播时间：</strong>23:21 - 01:03</p>
+        <p><strong>直播简介：</strong>非正式直播，主要是调试设备。</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1USwveVEfZ" target="_blank">点击观看</a></p>
+        <div class="tags">
+          <span class="tag" onclick="filterByTag('调试')">调试</span>
+          <span class="tag" onclick="filterByTag('2025')">2025</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="live-record" data-tags="跨年,挑战,2024">
+      <div class="live-info">
+        <h2>不要笑挑战！一起跨年~</h2>
+        <p><strong>直播日期：</strong>2024年12月31日</p>
+        <p><strong>直播时间：</strong>22:59 - 02:16</p>
+        <p><strong>直播简介：</strong>跨年特别直播，一起参与不要笑挑战，共度美好时光。</p>
+        <p><strong>视频链接：</strong><a href="https://www.bilibili.com/video/BV1G669Y2EHQ" target="_blank">点击观看</a></p>
+        <div class="tags">
+          <span class="tag" onclick="filterByTag('跨年')">跨年</span>
+          <span class="tag" onclick="filterByTag('挑战')">挑战</span>
+          <span class="tag" onclick="filterByTag('2024')">2024</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- 页脚 --> 
+  <div style="text-align: center; padding: 30px; color: #666;"> 
+    <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p> 
+    <p>本站为粉丝自制，与哔哩哔哩官方无关</p> 
+  </div> 
+
+  <script>
+    // 检索功能
+    function filterByTag(tag) {
+      const searchBox = document.getElementById('search-box');
+      searchBox.value = tag;
+      triggerSearch();
+    }
+
+    function triggerSearch() {
+      const searchValue = document.getElementById('search-box').value.toLowerCase();
+      const liveRecords = document.querySelectorAll('.live-record');
+      
+      liveRecords.forEach(record => {
+        const tags = record.dataset.tags.split(/,\s*/);
+        const hasMatch = tags.some(t => t.toLowerCase().includes(searchValue));
+        record.style.display = hasMatch ? '' : 'none';
+      });
+    }
+
+    // 标签列表处理
+    function initTagList() {
+      const tagsList = document.getElementById('tags-list');
+      const allTags = new Set();
+
+      document.querySelectorAll('.tag').forEach(tag => {
+        allTags.add(tag.textContent.trim());
+      });
+
+      tagsList.innerHTML = '';
+      allTags.forEach(tag => {
+        const tagItem = document.createElement('span');
+        tagItem.textContent = tag;
+        tagItem.onclick = () => {
+          filterByTag(tag);
+          tagsList.classList.remove('visible');
+        };
+        tagsList.appendChild(tagItem);
+      });
+    }
+
+    // 添加记录功能
+    document.getElementById('addButton').addEventListener('click', () => {
+      const newRecord = prompt('请输入新的直播记录代码...');
+      if (newRecord) {
+        const container = document.querySelector('.container');
+        const newDiv = document.createElement('div');
+        newDiv.innerHTML = newRecord;
+        container.insertBefore(newDiv, container.children[1]);
+        initTagList();
+      }
+    });
+
+    // 保存功能
+    document.getElementById('saveButton').addEventListener('click', () => {
+      const date = new Date().toISOString().slice(0,10).replace(/-/g, '');
+      const filename = `LiveHistory_${date}.html`;
+      
+      const html = `<!DOCTYPE html>${document.documentElement.outerHTML}`;
+      const blob = new Blob([html], {type: 'text/html'});
+      
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+    });
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      // 标签列表功能
+      document.querySelector('.toggle-tags-btn').addEventListener('click', () => {
+        document.getElementById('tags-list').classList.toggle('visible');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.search-container')) {
+          document.getElementById('tags-list').classList.remove('visible');
+        }
+      });
+
+      // 清除筛选
+      document.querySelector('.clear-search-btn').addEventListener('click', () => {
+        document.getElementById('search-box').value = '';
+        triggerSearch();
+      });
+
+      // 实时搜索
+      document.getElementById('search-box').addEventListener('input', triggerSearch);
+      
+      // 初始化标签列表
+      initTagList();
+    });
+
+    // 回到顶部
+    function scrollToTop() {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+  </script>
+</body>
+</html>
