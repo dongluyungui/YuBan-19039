@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生成艺术卡片记录</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <style>
+        /* 表单专属样式 */
+       .form-panel {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+       .form-group {
+            margin-bottom: 15px;
+        }
+
+       .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+       .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+       .tags-container {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+       .tag-input {
+            flex: 1;
+            padding: 6px;
+        }
+
+       .tag {
+            display: inline-flex;
+            align-items: center;
+            background: var(--secondary-color);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            margin: 2px;
+        }
+
+       .delete-btn {
+            margin-left: 6px;
+            cursor: pointer;
+            color: #ffcccc;
+        }
+
+       .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+       .result {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 20px;
+        }
+
+       .result pre {
+            white-space: pre-wrap;
+            word-break: break-all;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <a href="../index.html" class="nav-link">首页</a>
+                <a href="../About.html" class="nav-link">关于</a>
+                <a href="../gallery.html" class="nav-link">画廊</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>生成艺术卡片记录</h1>
+
+        <div class="form-panel">
+            <div class="form-group">
+                <label for="title">作品标题：</label>
+                <input type="text" id="title" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="author">作者：</label>
+                <input type="text" id="author" class="form-control" placeholder="御坂">
+            </div>
+
+            <div class="form-group">
+                <label for="authorLink">作者哔哩哔哩空间链接：</label>
+                <input type="url" id="authorLink" class="form-control"
+                    placeholder="https://space.bilibili.com/12136555">
+            </div>
+
+            <div class="form-group">
+                <label for="date">创作日期：</label>
+                <input type="date" id="date" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">作品简介：</label>
+                <textarea id="description" class="form-control" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="sourceName">出处名称：</label>
+                <input type="text" id="sourceName" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="sourceLink">出处链接：</label>
+                <input type="url" id="sourceLink" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="imageName">图片名称：</label>
+                <input type="text" id="imageName" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="originSuffix">原始图片后缀：</label>
+                <select id="originSuffix" class="form-control">
+                    <option value="jpg">jpg</option>
+                    <option value="png">png</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>标签管理：</label>
+                <div class="tags-container">
+                    <input type="text" class="form-control tag-input" placeholder="输入新标签">
+                    <button class="bilibili-btn" onclick="addTag()">添加</button>
+                </div>
+                <div id="tags-list" class="tags-container"></div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="bilibili-btn" onclick="generateCode()">生成代码</button>
+                <button class="bilibili-btn" onclick="copyCode()">复制代码</button>
+            </div>
+        </div>
+
+        <div class="result">
+            <pre id="code-output"></pre>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div style="text-align: center; padding: 30px; color: #666;">
+        <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
+        <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
+    </div>
+
+    <script>
+        // 标签管理功能
+        function addTag() {
+            const tagInput = document.querySelector('.tag-input');
+            const tagValue = tagInput.value.trim();
+            if (tagValue) {
+                const tagElement = document.createElement('div');
+                tagElement.className = 'tag';
+                tagElement.innerHTML = `
+                    <span>${tagValue}</span>
+                    <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
+                `;
+                document.getElementById('tags-list').appendChild(tagElement);
+                tagInput.value = '';
+            }
+        }
+
+        // 生成代码功能
+        function generateCode() {
+            const getValue = id => document.getElementById(id).value;
+            const tags = [...document.querySelectorAll('#tags-list .tag span:first-child')]
+               .map(span => span.textContent);
+
+            const tagSpans = tags.map(t => `                            <span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('\n');
+
+            let author = getValue('author');
+            let authorLink = getValue('authorLink');
+            if (!author) {
+                author = '御坂';
+            }
+            if (!authorLink) {
+                authorLink = 'https://space.bilibili.com/12136555';
+            }
+
+            const imageName = getValue('imageName');
+            let imageWeb = `img/gallery/web/${imageName}.webp`;
+            const originSuffix = getValue('originSuffix');
+            let imageOrigin = `img/gallery/origin/${imageName}.${originSuffix}`;
+
+            const code = `
+                <!-- 分割 -->
+                <div class="art-card" data-tags="${tags.join(',')}">
+                    <img src="${imageWeb}" alt="${getValue('title')}" class="art-image" data-origin="${imageOrigin}">
+                    <div class="art-info">
+                        <h3 class="art-title">${getValue('title')}</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="${authorLink}"
+                                    target="_blank"
+                                    class="source-link">
+                                    ${author}
+                                </a>
+                            </p>
+                            <p>创作日期：${formatDate(getValue('date'))}</p>
+                            <p>简介：${getValue('description')}</p>
+                            <p>出处：
+                                <a href="${getValue('sourceLink')}"
+                                    target="_blank"
+                                    class="source-link">
+                                    ${getValue('sourceName')}
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+${tagSpans}
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('code-output').textContent = code;
+        }
+
+        // 日期格式化
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return `${date.getFullYear()}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getDate().toString().padStart(2, '0')}`;
+        }
+
+        // 复制功能
+        function copyCode() {
+            const output = document.getElementById('code-output');
+            navigator.clipboard.writeText(output.textContent);
+        }
+
+        // 初始化标签输入
+        document.querySelector('.tag-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') addTag();
+        });
+    </script>
+</body>
+
+</html>
