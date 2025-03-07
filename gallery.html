@@ -103,6 +103,17 @@
             font-size: 30px;
             cursor: pointer;
         }
+        .lightbox .toggle-original-btn {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -115,6 +126,7 @@
                 <a href="time.html" class="nav-link active">时间轴</a>
                 <a href="Sound.html" class="nav-link active">语音按钮</a>
                 <a href="LiveHistory.html" class="nav-link">往期回放</a>
+                <a href="tools/galleryRecords.html" class="nav-link" target="_blank">添加作品</a>
             </div>
             <div class="util-buttons">
                 <div class="search-container">
@@ -637,6 +649,7 @@
     <div class="lightbox">
         <span class="lightbox-close">&times;</span>
         <img src="" alt="放大的图片">
+        <button class="toggle-original-btn">查看原图</button>
     </div>
 
     <script>
@@ -644,19 +657,41 @@
         const lightbox = document.querySelector('.lightbox');
         const lightboxImage = lightbox.querySelector('img');
         const lightboxClose = lightbox.querySelector('.lightbox-close');
+        const toggleOriginalBtn = document.querySelector('.toggle-original-btn');
 
-        // 为所有图片添加点击事件，点击后部分原始图片
+        // 为所有图片添加点击事件，点击后显示缩略图
         document.querySelectorAll('.art-image').forEach(img => {
             img.addEventListener('click', () => {
+                const smallSrc = img.src;
                 const largeSrc = img.dataset.origin;
-                openLightbox(largeSrc);
+                openLightbox(smallSrc, largeSrc);
             });
         });
 
         // 打开灯箱
-        function openLightbox(src) {
-            lightboxImage.src = src;
+        function openLightbox(smallSrc, largeSrc) {
+            let isOriginal = false;
+            lightboxImage.src = smallSrc;
             lightbox.style.display = 'flex';
+            toggleOriginalBtn.textContent = '查看原图';
+
+            // 移除之前可能存在的点击事件监听器
+            toggleOriginalBtn.removeEventListener('click', toggleImage);
+
+            // 定义切换图片的函数
+            function toggleImage() {
+                if (isOriginal) {
+                    lightboxImage.src = smallSrc;
+                    toggleOriginalBtn.textContent = '查看原图';
+                } else {
+                    lightboxImage.src = largeSrc;
+                    toggleOriginalBtn.textContent = '查看缩略图';
+                }
+                isOriginal = !isOriginal;
+            }
+
+            // 添加新的点击事件监听器
+            toggleOriginalBtn.addEventListener('click', toggleImage);
         }
 
         // 关闭灯箱
