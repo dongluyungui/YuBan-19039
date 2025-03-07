@@ -658,6 +658,7 @@
         const lightboxImage = lightbox.querySelector('img');
         const lightboxClose = lightbox.querySelector('.lightbox-close');
         const toggleOriginalBtn = document.querySelector('.toggle-original-btn');
+        let currentToggleImage; // 用于存储当前的切换函数
 
         // 为所有图片添加点击事件，点击后显示缩略图
         document.querySelectorAll('.art-image').forEach(img => {
@@ -675,11 +676,13 @@
             lightbox.style.display = 'flex';
             toggleOriginalBtn.textContent = '查看原图';
 
-            // 移除之前可能存在的点击事件监听器
-            toggleOriginalBtn.removeEventListener('click', toggleImage);
+            // 移除之前的点击事件监听器
+            if (currentToggleImage) {
+                toggleOriginalBtn.removeEventListener('click', currentToggleImage);
+            }
 
             // 定义切换图片的函数
-            function toggleImage() {
+            currentToggleImage = function () {
                 if (isOriginal) {
                     lightboxImage.src = smallSrc;
                     toggleOriginalBtn.textContent = '查看原图';
@@ -688,25 +691,27 @@
                     toggleOriginalBtn.textContent = '查看缩略图';
                 }
                 isOriginal = !isOriginal;
-            }
+            };
 
             // 添加新的点击事件监听器
-            toggleOriginalBtn.addEventListener('click', toggleImage);
+            toggleOriginalBtn.addEventListener('click', currentToggleImage);
         }
 
         // 关闭灯箱
         lightboxClose.addEventListener('click', () => {
             lightbox.style.display = 'none';
-            // 移除切换按钮的点击事件
-            toggleOriginalBtn.removeEventListener('click', () => {});
+            if (currentToggleImage) {
+                toggleOriginalBtn.removeEventListener('click', currentToggleImage);
+            }
         });
 
         // 点击覆盖层关闭灯箱
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
                 lightbox.style.display = 'none';
-                // 移除切换按钮的点击事件
-                toggleOriginalBtn.removeEventListener('click', () => {});
+                if (currentToggleImage) {
+                    toggleOriginalBtn.removeEventListener('click', currentToggleImage);
+                }
             }
         });
     </script>
