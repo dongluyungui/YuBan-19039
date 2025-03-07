@@ -51,6 +51,11 @@
       /* 新让子元素绝对定位相对于此元素 */
     }
 
+    /* 定义 times 类的基本样式 */
+    .times {
+        margin-left: auto;
+    }
+
     .avatar {
       width: 200px;
       height: 200px;
@@ -174,6 +179,38 @@
         transform: translateY(-5px); /* 上浮效果 */
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 阴影加深效果 */
     }
+
+        /* 媒体查询，当屏幕宽度小于等于 768px 时应用以下样式 */
+    @media (max-width: 768px) {
+        .profile-card {
+            /* 缩小内边距 */
+            padding: 10px;
+            /* 缩小上下外边距 */
+            margin: 10px 0;
+            /* 调整为垂直布局，在移动端更合适 */
+            flex-direction: column;
+            /* 让子元素水平居中 */
+            align-items: center;
+        }
+        /* 倒计时 */
+        .times {
+             margin-left: auto;
+             margin-right: auto;
+        }
+        #countdown {
+          text-align: center;
+          font-size: 15px;
+        }
+        #fans-difference {
+          text-align: center;
+          font-size: 15px;
+        }
+
+        #debut-time {
+         text-align: center;
+         font-size: 15px;
+        }
+    }
   </style>
 </head>
 
@@ -217,7 +254,7 @@
           <a href="https://live.bilibili.com/8414339/" target="_blank" class="bilibili-btn">直播间</a>
         </div>
       </div>
-      <div style="margin-left: auto;">
+      <div class="times">
         <div id="countdown">生日回倒计时：加载中...</div>
         <!-- 新增元素，用于显示已出道时间 -->
         <div id="debut-time">已出道：加载中...</div>

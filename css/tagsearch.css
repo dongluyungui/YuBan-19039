@@ -145,7 +145,7 @@
 
   .clear-search-btn ，
   .tag-search-btn {
-    padding: 10px 20px; /* 适当减小内边距，适应移动端 */
+    padding: 10px 20px; /* 适当减小内边距，适应移动端 第一个是高度距离、第二个是左右距离*/
     font-size: 14px; /* 适当缩小字体 */
     margin: 8px; /* 适当减小外边距 */
   }

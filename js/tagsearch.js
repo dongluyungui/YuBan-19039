@@ -19,6 +19,10 @@ function triggerSearch() {
 
 // 获取可搜索的元素，根据不同页面可能有不同的类名
 function getSearchableElements() {
+    let soundRecords = document.querySelectorAll('.category-box');
+    if (soundRecords.length > 0) {
+        return soundRecords;
+    }
     // 对于直播回放页面
     let liveRecords = document.querySelectorAll('.live-record');
     if (liveRecords.length > 0) {
@@ -52,6 +56,11 @@ function initTagList() {
 
 // 获取标签元素，根据不同页面可能有不同的类名
 function getTagElements() {
+    // 新增 Sounds 页面处理
+    let soundTags = document.querySelectorAll('.category-title');
+    if (soundTags.length > 0) {
+        return soundTags;
+    }
     // 对于直播回放页面
     let liveTags = document.querySelectorAll('.tag');
     if (liveTags.length > 0) {
