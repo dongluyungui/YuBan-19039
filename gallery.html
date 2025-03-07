@@ -114,6 +114,15 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .loading {
+            display: none;
+            color: white;
+            font-size: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 </head>
 
@@ -513,7 +522,7 @@
 
                 <!-- 分割 -->
                 <div class="art-card" data-tags="表情包, 哭哭御坂, Q版">
-                    <img src="img/gallery/web/71178d440f6bcec5d5a51fe7d04ef45f8a0588af.webp" alt="Q版哭哭" class="art-image" data-origin="img/gallery/origin/71178d440f6bcec5d5a51fe7d04ef45f8a0588af.png">
+                    <img src="img/gallery/web/2660c8bc520c7257ad2b6706b330e23e12136555.webp" alt="Q版哭哭" class="art-image" data-origin="img/gallery/origin/2660c8bc520c7257ad2b6706b330e23e12136555.jpg">
                     <div class="art-info">
                         <h3 class="art-title">Q版哭哭</h3>
                         <div class="art-details">
@@ -650,70 +659,78 @@
         <span class="lightbox-close">&times;</span>
         <img src="" alt="放大的图片">
         <button class="toggle-original-btn">查看原图</button>
+        <div class="loading">正在加载原图...</div>
     </div>
 
     <script>
-        // 获取灯箱元素
-        const lightbox = document.querySelector('.lightbox');
-        const lightboxImage = lightbox.querySelector('img');
-        const lightboxClose = lightbox.querySelector('.lightbox-close');
-        const toggleOriginalBtn = document.querySelector('.toggle-original-btn');
-        let currentToggleImage; // 用于存储当前的切换函数
+    // 获取灯箱元素
+    const lightbox = document.querySelector('.lightbox');
+    const lightboxImage = lightbox.querySelector('img');
+    const lightboxClose = lightbox.querySelector('.lightbox-close');
+    const toggleOriginalBtn = document.querySelector('.toggle-original-btn');
+    let currentToggleImage; // 用于存储当前的切换函数
 
-        // 为所有图片添加点击事件，点击后显示缩略图
-        document.querySelectorAll('.art-image').forEach(img => {
-            img.addEventListener('click', () => {
-                const smallSrc = img.src;
-                const largeSrc = img.dataset.origin;
-                openLightbox(smallSrc, largeSrc);
-            });
+    // 为所有图片添加点击事件，点击后显示缩略图
+    document.querySelectorAll('.art-image').forEach(img => {
+        img.addEventListener('click', () => {
+            const smallSrc = img.src;
+            const largeSrc = img.dataset.origin;
+            openLightbox(smallSrc, largeSrc);
         });
+    });
 
-        // 打开灯箱
-        function openLightbox(smallSrc, largeSrc) {
-            let isOriginal = false;
-            lightboxImage.src = smallSrc;
-            lightbox.style.display = 'flex';
-            toggleOriginalBtn.textContent = '查看原图';
+    // 打开灯箱
+    function openLightbox(smallSrc, largeSrc) {
+        let isOriginal = false;
+        lightboxImage.src = smallSrc;
+        lightbox.style.display = 'flex';
+        toggleOriginalBtn.textContent = '查看原图';
 
-            // 移除之前的点击事件监听器
-            if (currentToggleImage) {
-                toggleOriginalBtn.removeEventListener('click', currentToggleImage);
-            }
-
-            // 定义切换图片的函数
-            currentToggleImage = function () {
-                if (isOriginal) {
-                    lightboxImage.src = smallSrc;
-                    toggleOriginalBtn.textContent = '查看原图';
-                } else {
-                    lightboxImage.src = largeSrc;
-                    toggleOriginalBtn.textContent = '查看缩略图';
-                }
-                isOriginal = !isOriginal;
-            };
-
-            // 添加新的点击事件监听器
-            toggleOriginalBtn.addEventListener('click', currentToggleImage);
+        // 移除之前的点击事件监听器
+        if (currentToggleImage) {
+            toggleOriginalBtn.removeEventListener('click', currentToggleImage);
         }
 
-        // 关闭灯箱
-        lightboxClose.addEventListener('click', () => {
+        // 定义切换图片的函数
+        currentToggleImage = function () {
+            if (isOriginal) {
+                lightboxImage.src = smallSrc;
+                toggleOriginalBtn.textContent = '查看原图';
+            } else {
+                const loading = document.querySelector('.loading');
+                loading.style.display = 'block'; // 显示加载提示
+                const img = new Image();
+                img.src = largeSrc;
+                img.onload = function () {
+                    lightboxImage.src = largeSrc;
+                    toggleOriginalBtn.textContent = '查看缩略图';
+                    loading.style.display = 'none'; // 隐藏加载提示
+                };
+            }
+            isOriginal = !isOriginal;
+        };
+
+        // 添加新的点击事件监听器
+        toggleOriginalBtn.addEventListener('click', currentToggleImage);
+    }
+
+    // 关闭灯箱
+    lightboxClose.addEventListener('click', () => {
+        lightbox.style.display = 'none';
+        if (currentToggleImage) {
+            toggleOriginalBtn.removeEventListener('click', currentToggleImage);
+        }
+    });
+
+    // 点击覆盖层关闭灯箱
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
             lightbox.style.display = 'none';
             if (currentToggleImage) {
                 toggleOriginalBtn.removeEventListener('click', currentToggleImage);
             }
-        });
-
-        // 点击覆盖层关闭灯箱
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) {
-                lightbox.style.display = 'none';
-                if (currentToggleImage) {
-                    toggleOriginalBtn.removeEventListener('click', currentToggleImage);
-                }
-            }
-        });
+        }
+    });
     </script>
 </body>
 
