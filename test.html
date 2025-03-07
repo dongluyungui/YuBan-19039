@@ -4,93 +4,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>御坂の语音按钮站</title>
+    <title>御坂の画廊</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/tagsearch.css">
     <script src="js/tagsearch.js"></script>
-    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/date.js"></script>
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-
     <style>
-        /* 新增按钮样式 */
-        .category-box {
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 15px;
-            padding: 20px;
-            margin: 20px 0;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        /* 画廊专属样式 */
+        .gallery-container {
+            padding: 30px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .category-title {
-            color: #e91e63;
-            font-size: 1.5em;
-            margin: 0 0 15px 10px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #ff9eb5;
-        }
-
-        .button-grid {
+        .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            padding: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
         }
 
-        .sound-btn {
-            background: #fff;
+        .art-card {
+            background: white;
             border-radius: 12px;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border: 2px solid var(--primary-color);
-            font-size: 14px;
-            position: relative;
             overflow: hidden;
-            background: rgba(255, 158, 181, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
         }
 
-        .sound-btn.purple-btn {
-            border-color: #9c27b0;
-            color: #9c27b0;
-            background: #f3e5f5;
+        .art-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
-        .sound-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        .art-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border-bottom: 2px solid #f0f0f0;
+            cursor: zoom-in;
         }
 
-        .sound-btn:active {
-            transform: translateY(1px);
+        .art-info {
+            padding: 15px;
         }
 
-        /* 音频播放器隐藏 */
-        #audioPlayer {
+        .art-title {
+            color: #e91e63;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .art-details {
+            color: #666;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+
+            .art-image {
+                height: 220px;
+            }
+        }
+
+        /* 灯箱样式 */
+        .lightbox {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* 进度条样式 */
-        .progress-bar {
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
             position: absolute;
-            /* 将进度条设置为绝对定位 */
-            top: 50%;
-            /* 将进度条的顶部边缘定位到父元素的垂直中心 */
-            left: 0;
-            /* 将进度条的左侧边缘定位到父元素的水平中心 */
-            transform: translate(0%,-50%);
-            /* 将进度条向上移动自身宽度和高度的一半，实现居中 */
-            height: 100%;
-            /* 设置进度条的高度，可根据需要调整 */
-            background-color: #e91e63;
-            /* 将进度条的背景颜色设置为白色 */
-            width: 0;
-            /* 初始宽度为 0，随着进度变化而增加 */
-            transition: width 0.1s ease;
-            /* 设置宽度变化的过渡效果，持续时间为 0.1 秒，过渡曲线为 ease */
-            background-color: rgba(233, 30, 99, 0.5);
-            /* 使用半透明白色背景色，rgba 最后一个参数为透明度，范围 0 - 1 */
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -100,714 +111,138 @@
         <div class="header-content">
             <div>
                 <a href="index.html" class="nav-link">首页</a>
-                <a href="About.html" class="nav-link">关于</a>           
-                <a href="gallery.html" class="nav-link active">画廊</a>
+                <a href="About.html" class="nav-link">关于</a>
                 <a href="time.html" class="nav-link active">时间轴</a>
+                <a href="Sound.html" class="nav-link active">语音按钮</a>
                 <a href="LiveHistory.html" class="nav-link">往期回放</a>
             </div>
-            <div>
             <div class="util-buttons">
                 <div class="search-container">
                     <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
                     <button class="bilibili-btn toggle-tags-btn">标签筛选</button>
                     <div class="tags-list" id="tags-list"></div>
+                    <button class="clear-search-btn">清除筛选</button>
                 </div>
-                <button class="clear-search-btn">清除筛选</button>
             </div>
         </div>
     </header>
 
     <div class="container">
         <div class="banner">
-            <h1>🎤御坂19039语音按钮🎤</h1>
-            <div class="dynamic-item">
-                <p>点击按钮即可播放御坂的经典语录哦～(≧▽≦)/~</p>
+            <h1>🎨 御坂画廊收藏集</h1>
+            <p>收藏每一份用心的作品 (๑>ᴗ<๑)</p>
+            <p>图片过多导致加载很慢</p>
+        </div>
+
+        <div class="gallery-container">
+            <div class="gallery-grid">
+                <!-- 分割 -->
+                <div class="art-card" data-tags="未完待续">
+                    <img src="img/gallery/To Be Continued.png" alt="未完待续" class="art-image"data-large-src="img/gallery/face_ku.jpg">
+                    <div class="art-info">
+                        <h3 class="art-title">未完待续</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/484106430"
+                                    target="_blank"
+                                    class="source-link">
+                                    东陆云鬼
+                                </a>
+                            </p>
+                            <a>创作日期：</a><span id="date-dot"></span></p>
+                            <p>简介：等我更新</p>
+                            <p>出处：
+                                <a href="https://live.bilibili.com/8414339"
+                                    target="_blank"
+                                    class="source-link">
+                                     未完待续
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('未完待续')">未完待续</span>
+                        </div>
+                    </div>
+                </div>
+
+                                <!-- 分割 -->
+                <div class="art-card" data-tags="哭哭御坂, 表情包">
+                    <img src="img/gallery/face_ku.webp" alt="哭哭御坂" class="art-image">
+                    <div class="art-info">
+                        <h3 class="art-title">哭哭御坂</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：未知</p>
+                            <p>简介：哭哭御坂</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/937876331851415558"
+                                    target="_blank"
+                                    class="source-link">
+                                    先提前发个自我介绍吧
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('哭哭御坂')">哭哭御坂</span>
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 更多画作... -->
             </div>
         </div>
 
-        <!-- 欢迎词分组 -->
-        <div class="category-box"data-tags="欢迎">
-            <!-- 这是一个分组 -->
-            <h2 class="category-title">欢迎</h2>
-            <div class="button-grid">
-                <!-- 这是一行按钮，多行复制这个 -->
-                <div class="sound-btn purple-btn" onclick="playSound('goodnight_O.mp3', this)">
-                    晚上好
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn purple-btn" onclick="playSound('thank_O.mp3', this)">
-                    谢谢
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('goodnight_JP__Y.mp3', this)">
-                    晚上好（日语）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('Night_Y_JP.mp3', this)">
-                    晚安（日语）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('Thank_Y_JP.mp3', this)">
-                    谢谢（日语）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('Huanyinhuilai_Y.mp3', this)">
-                    欢迎回来
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
+        <!-- 页脚 -->
+        <div style="text-align: center; padding: 30px; color: #666;">
+            <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
+            <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
         </div>
-
-
-        <!-- 口头禅分组 -->
-        <div class="category-box" data-tags="经典口头禅"">
-            <h2 class="category-title">经典口头禅</h2>
-            <div class="button-grid">
-                <div class="sound-btn purple-btn" onclick="playSound('HoMuHoMu_O.mp3', this)">
-                    是这样子的喵～
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn purple-btn" onclick="playSound('HanXiao_O.mp3', this)">
-                    哈哈哈～
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('BuHaoSuo_Y.mp3', this)">
-                    不好说了～
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('HoMu_Y.mp3', this)">
-                    HoMu
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('CiaLo_Y.mp3', this)">
-                    Ciallo～(∠・ω< )⌒★
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ZheMe_Y.mp3', this)">
-                    这么晚了还没睡吗
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('Fun_JP_Y.mp3', this)">
-                    有趣（日语）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-        </div>
-
-         <!-- 怪叫分组 -->
-        <div class="category-box"data-tags="怪叫">
-            <h2 class="category-title">怪叫</h2>
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('AiYa_Y.mp3', this)">
-                    哎呀～
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ChiNImong_Y.mp3', this)">
-                    吃柠檬
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('Guai1_Y.mp3', this)">
-                    伊哇哇
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('guai2.mp3', this)">
-                    哈哼
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-        </div>
-
-        
-
-        <!-- 电流音分组 -->
-        <div class="category-box"data-tags="电流音">
-            <h2 class="category-title">电流音</h2>
-            <div class="button-grid">
-                <div class="sound-btn purple-btn" onclick="playSound('MoShiMoShi.mp3', this)">
-                    莫西莫西（电流音）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-        </div>
-       
-        <!-- 杂分组 -->
-        <div class="category-box"data-tags="杂">
-            <h2 class="category-title">杂</h2>
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('DaoShu54321_Y.mp3', this)">
-                    倒数
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('QQkongjianQidong_Y.mp3', this)">
-                      扣扣空间
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ShenQi_Y.mp3', this)">
-                      生气了
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('YinYin_Y.mp3', this)">
-                      嘤嘤嘤
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('Zhenbeihaolema_Y.mp3', this)">
-                      准备好了吗孩子们
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('2025XinNianKuaiLe.mp3', this)">
-                      2025新年快乐
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-        </div>
-
-    
-        <!-- 日语五十音图分组 -->
-        <div class="category-box"data-tags="日语五十音图">
-            <h2 class="category-title">日语五十音图</h2>           
-            <!-- 五十音 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('JP.mp3', this)">
-                    ALL
-                    <div class="progress-bar"></div>
-                </div>               
-            </div>
-            <!-- 清音 - あ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('a.mp3', this)">
-                    あ（a）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('i.mp3', this)">
-                    い（i）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('u.mp3', this)">
-                    う（u）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('e.mp3', this)">
-                    え（e）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('o.mp3', this)">
-                    お（o）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音 - か行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('ka.mp3', this)">
-                    か（ka）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ki.mp3', this)">
-                    き（ki）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ku.mp3', this)">
-                    く（ku）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ke.mp3', this)">
-                    け（ke）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ko.mp3', this)">
-                    こ（ko）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音 - さ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('sa.mp3', this)">
-                    さ（sa）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('shi.mp3', this)">
-                    し（shi）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('su.mp3', this)">
-                    す（su）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('se.mp3', this)">
-                    せ（se）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('so.mp3', this)">
-                    そ（so）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音 - た行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('ta.mp3', this)">
-                    た（ta）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('chi.mp3', this)">
-                    ち（chi）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('tsu.mp3', this)">
-                    つ（tsu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('te.mp3', this)">
-                    て（te）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('to.mp3', this)">
-                    と（to）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音 - な行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('na.mp3', this)">
-                    な（na）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ni.mp3', this)">
-                    に（ni）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('nu.mp3', this)">
-                    ぬ（nu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ne.mp3', this)">
-                    ね（ne）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('no.mp3', this)">
-                    の（no）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音 - は行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('ha.mp3', this)">
-                    は（ha）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('hi.mp3', this)">
-                    ひ（hi）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('fu.mp3', this)">
-                    ふ（fu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('he.mp3', this)">
-                    へ（he）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ho.mp3', this)">
-                    ほ（ho）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音 - ま行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('ma.mp3', this)">
-                    ま（ma）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('mi.mp3', this)">
-                    み（mi）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('mu.mp3', this)">
-                    む（mu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('me.mp3', this)">
-                    め（me）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('mo.mp3', this)">
-                    も（mo）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音 - や行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('ya.mp3', this)">
-                    や（ya）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('yu.mp3', this)">
-                    ゆ（yu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('yo.mp3', this)">
-                    よ（yo）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音 - ら行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('ra.mp3', this)">
-                    ら（ra）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ri.mp3', this)">
-                    り（ri）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ru.mp3', this)">
-                    る（ru）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('re.mp3', this)">
-                    れ（re）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ro.mp3', this)">
-                    ろ（ro）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音 - わ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('wa.mp3', this)">
-                    わ（wa）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('wo.mp3', this)">
-                    を（wo）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('n.mp3', this)">
-                    ん（n）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 浊音 - が行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('ga.mp3', this)">
-                    が（ga）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('gi.mp3', this)">
-                    ぎ（gi）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('gu.mp3', this)">
-                    ぐ（gu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ge.mp3', this)">
-                    げ（ge）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('go.mp3', this)">
-                    ご（go）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 浊音 - ざ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('za.mp3', this)">
-                    ざ（za）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ji.mp3', this)">
-                    じ（ji）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('zu.mp3', this)">
-                    ず（zu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ze.mp3', this)">
-                    ぜ（ze）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('zo.mp3', this)">
-                    ぞ（zo）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 浊音 - だ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('da.mp3', this)">
-                    だ（da）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ji_da.mp3', this)">
-                    ぢ（ji）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('zu_da.mp3', this)">
-                    づ（zu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('de.mp3', this)">
-                    で（de）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('do.mp3', this)">
-                    ど（do）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 浊音 - ば行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('ba.mp3', this)">
-                    ば（ba）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('bi.mp3', this)">
-                    び（bi）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('bu.mp3', this)">
-                    ぶ（bu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('be.mp3', this)">
-                    べ（be）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('bo.mp3', this)">
-                    ぼ（bo）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 半浊音 - ぱ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('pa.mp3', this)">
-                    ぱ（pa）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('pi.mp3', this)">
-                    ぴ（pi）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('pu.mp3', this)">
-                    ぷ（pu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('pe.mp3', this)">
-                    ぺ（pe）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('po.mp3', this)">
-                    ぽ（po）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音拗音 - きゃ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('kya.mp3', this)">
-                    きゃ（kya）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('kyu.mp3', this)">
-                    きゅ（kyu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('kyo.mp3', this)">
-                    きょ（kyo）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音拗音 - しゃ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('sha.mp3', this)">
-                    しゃ（sha）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('shu.mp3', this)">
-                    しゅ（shu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('sho.mp3', this)">
-                    しょ（sho）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音拗音 - ちゃ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('cha.mp3', this)">
-                    ちゃ（cha）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('chu.mp3', this)">
-                    ちゅ（chu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('cho.mp3', this)">
-                    ちょ（cho）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音拗音 - にゃ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('nya.mp3', this)">
-                    にゃ（nya）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('nyu.mp3', this)">
-                    にゅ（nyu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('nyo.mp3', this)">
-                    にょ（nyo）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音拗音 - ひゃ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('hya.mp3', this)">
-                    ひゃ（hya）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('hyu.mp3', this)">
-                    ひゅ（hyu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('hyo.mp3', this)">
-                    ひょ（hyo）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 浊音拗音 - びゃ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('bya.mp3', this)">
-                    びゃ（bya）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('byu.mp3', this)">
-                    びゅ（byu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('byo.mp3', this)">
-                    びょ（byo）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音拗音 - みゃ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('mya.mp3', this)">
-                    みゃ（mya）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('myu.mp3', this)">
-                    みゅ（myu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('myo.mp3', this)">
-                    みょ（myo）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-            <!-- 清音拗音 - りゃ行 -->
-            <div class="button-grid">
-                <div class="sound-btn" onclick="playSound('rya.mp3', this)">
-                    りゃ（rya）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ryu.mp3', this)">
-                    りゅ（ryu）
-                    <div class="progress-bar"></div>
-                </div>
-                <div class="sound-btn" onclick="playSound('ryo.mp3', this)">
-                    りょ（ryo）
-                    <div class="progress-bar"></div>
-                </div>
-            </div>
-        </div>
-
-    <audio id="audioPlayer"></audio>
-
-    <!-- 页脚 -->
-    <div style="text-align: center; padding: 30px; color: #666;">
-        <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
-        <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
     </div>
 
-<script>
-    let currentButton = null;
-    const audio = document.getElementById('audioPlayer');
+    <!-- 灯箱 -->
+    <div class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="放大的图片">
+    </div>
 
-    // 全局监听音频时间更新事件
-    audio.addEventListener('timeupdate', function() {
-        if (currentButton && !audio.paused) {
-            const progress = (audio.currentTime / audio.duration) * 100;
-            currentButton.querySelector('.progress-bar').style.width = progress + '%';
-        }
-    });
+    <script>
+        // 获取灯箱元素
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxImage = lightbox.querySelector('img');
+        const lightboxClose = lightbox.querySelector('.lightbox-close');
 
-    // 全局监听音频结束事件
-    audio.addEventListener('ended', function() {
-        if (currentButton) {
-            currentButton.querySelector('.progress-bar').style.width = '0%';
-            currentButton = null;
-        }
-    });
-
-    function playSound(soundFile, button) {
-        // 检查当前点击的按钮是否正在播放音频
-        if (currentButton === button && !audio.paused) {
-            // 暂停音频并重置进度条
-            audio.pause();
-            audio.currentTime = 0;
-            button.querySelector('.progress-bar').style.width = '0%';
-            currentButton = null;
-        } else {
-            // 重置上一个按钮的进度条宽度
-            if (currentButton) {
-                currentButton.querySelector('.progress-bar').style.width = '0%';
-            }
-
-            // 暂停当前音频并重置时间以触发进度条重置
-            audio.pause();
-            audio.currentTime = 0;
-
-            // 设置新音频源并播放
-            audio.src = 'Sounds/' + soundFile;
-            audio.play();
-
-            // 更新当前活动按钮
-            currentButton = button;
+        // 为所有图片添加点击事件
+        document.querySelectorAll('.art-image').forEach(img => {
+            img.addEventListener('click', () => {
+                const largeSrc = img.dataset.largeSrc;
+                openLightbox(largeSrc);
+            });
+        });
+        // 打开灯箱
+        function openLightbox(src) {
+            lightboxImage.src = src;
+            lightbox.style.display = 'flex';
         }
 
-        // 添加点击动画效果
-        button.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            button.style.transform = '';
-        }, 200);
-    }
+        // 关闭灯箱
+        lightboxClose.addEventListener('click', () => {
+            lightbox.style.display = 'none';
+        });
 
-    // 预加载所有音频文件（保持原样）
-    window.addEventListener('load', () => {
-        const buttons = document.querySelectorAll('.sound-btn');
-        const loadedFiles = new Set();
-
-        buttons.forEach(button => {
-            const onclickContent = button.getAttribute('onclick');
-            const match = onclickContent.match(/playSound\('(.*?)'\)/);
-            if (match && match[1]) {
-                const filename = 'Sounds/' + match[1];
-                if (!loadedFiles.has(filename)) {
-                    new Audio(filename);
-                    loadedFiles.add(filename);
-                }
+        // 点击覆盖层关闭灯箱
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                lightbox.style.display = 'none';
             }
         });
-    });
-</script>
+    </script>
 </body>
 
 </html>

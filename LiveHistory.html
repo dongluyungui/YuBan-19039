@@ -19,9 +19,7 @@
         <a href="gallery.html" class="nav-link active">画廊</a>
         <a href="time.html" class="nav-link active">时间轴</a>
         <a href="Sound.html" class="nav-link active">语音按钮</a>
-        <a href="LiveRecords.html" class="nav-link" target="_blank">生成记录</a>
-        <button class="nav-link" id="addButton">添加记录</button>
-        <button class="nav-link" id="saveButton">保存页面</button>
+        <a href="tools/LiveRecords.html" class="nav-link" target="_blank">生成记录</a>
       </div>
       <div class="util-buttons">
         <div class="search-container">
@@ -313,37 +311,7 @@
   </div> 
 
   <script>
-    // 添加记录功能
-    document.getElementById('addButton').addEventListener('click', () => {
-        const newRecord = prompt('请输入新的直播记录代码...');
-        if (newRecord) {
-            const container = document.querySelector('.container');
-            const newDiv = document.createElement('div');
-            newDiv.innerHTML = newRecord;
-            container.insertBefore(newDiv, container.children[1]);
-            initTagList();
-            // 重新绑定所有标签的点击事件
-            document.querySelectorAll('.tag').forEach(tag => {
-                tag.onclick = () => {
-                    filterByTag(tag.textContent.trim());
-                };
-            });
-        }
-    });
 
-    // 保存功能
-    document.getElementById('saveButton').addEventListener('click', () => {
-      const date = new Date().toISOString().slice(0,10).replace(/-/g, '');
-      const filename = `LiveHistory_${date}.html`;
-      
-      const html = `<!DOCTYPE html>${document.documentElement.outerHTML}`;
-      const blob = new Blob([html], {type: 'text/html'});
-      
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-      link.click();
-    });
 
   </script>
 
