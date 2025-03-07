@@ -697,12 +697,16 @@
         // 关闭灯箱
         lightboxClose.addEventListener('click', () => {
             lightbox.style.display = 'none';
+            // 移除切换按钮的点击事件
+            toggleOriginalBtn.removeEventListener('click', () => {});
         });
 
         // 点击覆盖层关闭灯箱
         lightbox.addEventListener('click', (e) => {
             if (e.target === lightbox) {
                 lightbox.style.display = 'none';
+                // 移除切换按钮的点击事件
+                toggleOriginalBtn.removeEventListener('click', () => {});
             }
         });
     </script>
