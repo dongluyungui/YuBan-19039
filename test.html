@@ -157,17 +157,6 @@
 .lightbox img.flipping {
     transform: rotateY(180deg);
 }
-.original-link-btn {
-    position: absolute;
-    bottom: 60px; /* 根据现有按钮位置调整 */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
     </style>
 </head>
 
@@ -711,19 +700,44 @@
     <div class="lightbox">
         <span class="lightbox-close">&times;</span>
         <img src="" alt="放大的图片">
-         <button class="original-link-btn">原链接</button>
         <button class="toggle-original-btn">查看原图</button>
         <div class="loading">正在加载原图...</div>
     </div>
 
     <script>
+
+          // 修改后的预加载函数（添加缓存机制）
+        const imageCache = {};
+
+        function preloadAllImages() {
+            const images = document.querySelectorAll('.art-image');
+            images.forEach(img => {
+                const original = img.dataset.origin;
+                if (original && !imageCache[original]) {
+                    const imgLoader = new Image();
+                    imgLoader.src = original;
+                    imgLoader.onload = () => {
+                        imageCache[original] = imgLoader; // 存入缓存
+                        console.log(`预加载完成: ${original}`);
+                    };
+                    imgLoader.onerror = () => {
+                        console.log(`预加载失败: ${original}`);
+                    };
+                }
+            });
+        }
+
+        // 在DOM加载完成后立即执行预加载
+        document.addEventListener('DOMContentLoaded', () => {
+            preloadAllImages();
+        });
+
+
         // 灯箱相关变量
         let currentImageLoader = null;  // 当前正在加载的图片对象
         let currentToggleHandler = null; // 当前的切换处理函数
         let isLightboxOpen = false;  // 标记灯箱是否处于打开状态
         let currentOriginalLink = null; // 新增变量
-        // 定义白名单，存储不允许跳转的链接哈希值
-        const whitelist = ['To Be Continued.jpg', '71178d440f6bcec5d5a51fe7d04ef45f8a0588af.png']; 
 
         // 获取页面元素
         const lightbox = document.querySelector('.lightbox'); // 灯箱容器
@@ -760,68 +774,50 @@
             toggleOriginalBtn.addEventListener('click', currentToggleHandler);
         }
 
-        /**
-        * 创建一个用于切换显示缩略图和原图的处理函数
-        */
+        // 修改后的灯箱切换逻辑
         function createToggleHandler(thumbnail, original) {
-            // 标记当前是否显示的是原图，初始值为 false 表示当前显示的是缩略图
-            let isOriginal = false; 
-            // 标记当前是否正在加载图片，初始值为 false 表示没有正在加载
-            let isLoading = false; 
+            let isOriginal = false;
+            let isLoading = false;
 
-            // 返回一个事件处理函数，用于处理点击“查看原图”或“查看缩略图”按钮的事件
             return function() {
-                // 如果正在加载图片或者灯箱处于关闭状态，则不执行后续操作，直接返回
-                if (isLoading || !isLightboxOpen) return; 
+                if (isLoading || !isLightboxOpen) return;
 
-                // 如果当前显示的是原图
                 if (isOriginal) {
-                    // 调用 startFlipAnimation 函数启动图片翻转动画，动画完成后执行回调函数
                     startFlipAnimation(() => {
-                        // 将灯箱中显示的图片路径设置为缩略图路径
-                        lightboxImage.src = thumbnail; 
-                        // 将按钮的文本设置为“查看原图”
-                        toggleOriginalBtn.textContent = '查看原图'; 
-                        // 标记当前显示的不是原图
-                        isOriginal = false; 
+                        lightboxImage.src = thumbnail;
+                        toggleOriginalBtn.textContent = '查看原图';
+                        isOriginal = false;
                     });
                 } else {
-                    // 如果当前显示的是缩略图，标记正在加载图片
-                    isLoading = true; 
-                    // 调用 startFlipAnimation 函数启动图片翻转动画，动画完成后执行回调函数
+                    isLoading = true;
                     startFlipAnimation(() => {
-                        // 显示加载指示器，提示用户正在加载原图
-                        loadingIndicator.style.display = 'flex'; 
+                        // 检查缓存
+                        if (imageCache[original]) {
+                            // 直接使用缓存
+                            lightboxImage.src = original;
+                            toggleOriginalBtn.textContent = '查看缩略图';
+                            isOriginal = true;
+                            isLoading = false;
+                        } else {
+                            // 未缓存时加载
+                            loadingIndicator.style.display = 'flex';
+                            currentImageLoader = new Image();
+                            currentImageLoader.src = original;
+                    
+                            currentImageLoader.onload = () => {
+                                imageCache[original] = currentImageLoader; // 缓存加载结果
+                                lightboxImage.src = original;
+                                toggleOriginalBtn.textContent = '查看缩略图';
+                                isOriginal = true;
+                                loadingIndicator.style.display = 'none';
+                                isLoading = false;
+                            };
 
-                        // 创建一个新的 Image 对象，用于加载原图
-                        currentImageLoader = new Image(); 
-                        // 将 Image 对象的 src 属性设置为原图的路径，开始加载原图
-                        currentImageLoader.src = original; 
-                        // 调用 finishImageLoad 函数完成图片加载后的处理，显示原图
-                        finishImageLoad(original); 
-
-                        // 为 Image 对象的 onload 事件绑定回调函数，当图片加载成功时执行
-                        currentImageLoader.onload = () => {
-                            // 如果灯箱处于打开状态
-                            if (isLightboxOpen) {
-                                  loadingIndicator.style.display = 'none'; // 隐藏加载提示
-                                // 标记当前显示的是原图
-                                isOriginal = true; 
-                            }
-                            // 标记加载完成
-                            isLoading = false; 
-                        };
-
-                        // 为 Image 对象的 onerror 事件绑定回调函数，当图片加载失败时执行
-                        currentImageLoader.onerror = () => {
-                            // 如果灯箱处于打开状态
-                            if (isLightboxOpen) {
-                                // 调用 handleLoadError 函数处理图片加载失败的情况
-                                handleLoadError(); 
-                            }
-                            // 标记加载完成
-                            isLoading = false; 
-                        };
+                            currentImageLoader.onerror = () => {
+                                handleLoadError();
+                                isLoading = false;
+                            };
+                        }
                     });
                 }
             };
@@ -875,6 +871,13 @@
             // 重置视觉状态
             lightboxImage.style.transform = 'rotateY(0deg)';
             loadingIndicator.style.display = 'none';
+
+            // 新增：取消加载中的图片请求
+            if (currentImageLoader) {
+                currentImageLoader.onload = null;
+                currentImageLoader.onerror = null;
+                currentImageLoader = null;
+            }
         }
 
         // 关闭灯箱事件
@@ -901,20 +904,6 @@
             }
         });
 
-        // 在灯箱初始化代码后添加
-        document.querySelector('.original-link-btn').addEventListener('click', () => {
-            if (currentOriginalLink) {
-                // 提取哈希部分并构造链接
-                const hash = currentOriginalLink.replace('img/gallery/origin/', '');
-                const url = `https://i0.hdslb.com/bfs/new_dyn/${hash}`;
-                // 检查哈希值是否在白名单中
-                if (!whitelist.includes(hash)) {
-                    window.open(url, '_blank');
-                } else {
-                    alert('该链接在白名单中，禁止跳转。');
-                }
-            }
-        });
         
     </script>
 </body>

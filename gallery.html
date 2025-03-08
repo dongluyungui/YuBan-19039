@@ -157,17 +157,6 @@
 .lightbox img.flipping {
     transform: rotateY(180deg);
 }
-.original-link-btn {
-    position: absolute;
-    bottom: 60px; /* 根据现有按钮位置调整 */
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-}
     </style>
 </head>
 
@@ -711,7 +700,6 @@
     <div class="lightbox">
         <span class="lightbox-close">&times;</span>
         <img src="" alt="放大的图片">
-         <button class="original-link-btn">原链接</button>
         <button class="toggle-original-btn">查看原图</button>
         <div class="loading">正在加载原图...</div>
     </div>
@@ -722,8 +710,6 @@
         let currentToggleHandler = null; // 当前的切换处理函数
         let isLightboxOpen = false;  // 标记灯箱是否处于打开状态
         let currentOriginalLink = null; // 新增变量
-        // 定义白名单，存储不允许跳转的链接哈希值
-        const whitelist = ['To Be Continued.jpg', '71178d440f6bcec5d5a51fe7d04ef45f8a0588af.png']; 
 
         // 获取页面元素
         const lightbox = document.querySelector('.lightbox'); // 灯箱容器
@@ -901,20 +887,6 @@
             }
         });
 
-        // 在灯箱初始化代码后添加
-        document.querySelector('.original-link-btn').addEventListener('click', () => {
-            if (currentOriginalLink) {
-                // 提取哈希部分并构造链接
-                const hash = currentOriginalLink.replace('img/gallery/origin/', '');
-                const url = `https://i0.hdslb.com/bfs/new_dyn/${hash}`;
-                // 检查哈希值是否在白名单中
-                if (!whitelist.includes(hash)) {
-                    window.open(url, '_blank');
-                } else {
-                    alert('该链接在白名单中，禁止跳转。');
-                }
-            }
-        });
         
     </script>
 </body>
