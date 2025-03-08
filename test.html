@@ -743,6 +743,13 @@
                         isOriginal = false;
                     });
                 } else {
+                    // 立即显示原图（占位状态）
+                    startFlipAnimation(() => {
+                        lightboxImage.src = original;
+                        toggleOriginalBtn.textContent = '查看缩略图';
+                        isOriginal = true;
+                    });
+
                     // 开始加载原图
                     isLoading = true;
                     loadingIndicator.style.display = 'flex';
@@ -751,29 +758,16 @@
                     imageToLoad = new Image();
                     imageToLoad.src = original;
 
-                    startFlipAnimation(() => {
-                        // 无论预加载是否完成，立即切换显示原图
-                        lightboxImage.src = original;
-                        toggleOriginalBtn.textContent = '查看缩略图';
-                        isOriginal = true;
+                    imageToLoad.onload = () => {
+                        isLoading = false;
+                        loadingIndicator.style.display = 'none';
+                    };
 
-                        // 处理加载完成状态
-                        if (imageToLoad.complete) {
-                            isLoading = false;
-                            loadingIndicator.style.display = 'none';
-                        } else {
-                            imageToLoad.onload = () => {
-                                isLoading = false;
-                                loadingIndicator.style.display = 'none';
-                            };
-
-                            imageToLoad.onerror = () => {
-                                handleLoadError();
-                                isLoading = false;
-                                loadingIndicator.style.display = 'none';
-                            };
-                        }
-                    });
+                    imageToLoad.onerror = () => {
+                        handleLoadError();
+                        isLoading = false;
+                        loadingIndicator.style.display = 'none';
+                    };
                 }
             };
         }
