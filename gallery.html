@@ -157,7 +157,17 @@
 .lightbox img.flipping {
     transform: rotateY(180deg);
 }
-
+.original-link-btn {
+    position: absolute;
+    bottom: 60px; /* 根据现有按钮位置调整 */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
     </style>
 </head>
 
@@ -701,14 +711,19 @@
     <div class="lightbox">
         <span class="lightbox-close">&times;</span>
         <img src="" alt="放大的图片">
+         <button class="original-link-btn">原链接</button>
         <button class="toggle-original-btn">查看原图</button>
         <div class="loading">正在加载原图...</div>
     </div>
+
     <script>
         // 灯箱相关变量
         let currentImageLoader = null;  // 当前正在加载的图片对象
         let currentToggleHandler = null; // 当前的切换处理函数
         let isLightboxOpen = false;  // 标记灯箱是否处于打开状态
+        let currentOriginalLink = null; // 新增变量
+        // 定义白名单，存储不允许跳转的链接哈希值
+        const whitelist = ['To Be Continued.jpg', '71178d440f6bcec5d5a51fe7d04ef45f8a0588af.png']; 
 
         // 获取页面元素
         const lightbox = document.querySelector('.lightbox'); // 灯箱容器
@@ -734,6 +749,7 @@
         function openLightbox(thumbnail, original) {
             resetLightboxState(); // 重置灯箱状态
             isLightboxOpen = true; // 标记灯箱已打开
+            currentOriginalLink = original; // 保存原图链接
 
             lightboxImage.src = thumbnail; // 显示缩略图
             lightbox.style.display = 'flex'; // 显示灯箱
@@ -746,12 +762,6 @@
 
         /**
         * 创建一个用于切换显示缩略图和原图的处理函数
-        * 
-        * @param {string} thumbnail - 图片的缩略图路径。当用户点击“查看原图”按钮前，灯箱中显示的就是该缩略图；当用户在查看原图后点击“查看缩略图”时，也会切换到这个缩略图路径对应的图片进行显示。
-        * @param {string} original - 图片的原图路径。当用户点击“查看原图”按钮时，会尝试加载并显示该路径对应的图片。
-        * 
-        * @returns {function} - 返回一个事件处理函数，该函数用于处理点击“查看原图”或“查看缩略图”按钮的事件。
-        * 这个返回的函数会根据当前显示的是缩略图还是原图，执行相应的切换操作，并在加载原图时处理加载状态和可能出现的错误。
         */
         function createToggleHandler(thumbnail, original) {
             // 标记当前是否显示的是原图，初始值为 false 表示当前显示的是缩略图
@@ -888,6 +898,21 @@
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') { // 检测到ESC键
                 closeLightbox();
+            }
+        });
+
+        // 在灯箱初始化代码后添加
+        document.querySelector('.original-link-btn').addEventListener('click', () => {
+            if (currentOriginalLink) {
+                // 提取哈希部分并构造链接
+                const hash = currentOriginalLink.replace('img/gallery/origin/', '');
+                const url = `https://i0.hdslb.com/bfs/new_dyn/${hash}`;
+                // 检查哈希值是否在白名单中
+                if (!whitelist.includes(hash)) {
+                    window.open(url, '_blank');
+                } else {
+                    alert('该链接在白名单中，禁止跳转。');
+                }
             }
         });
         
