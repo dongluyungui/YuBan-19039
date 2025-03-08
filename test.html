@@ -730,42 +730,54 @@
         function createToggleHandler(thumbnail, original) {
             let isOriginal = false;
             let isLoading = false;
+            let imageToLoad = null; // 用于存储预加载的图片对象
 
             return function() {
                 if (isLoading || !isLightboxOpen) return;
 
                 if (isOriginal) {
-                    // 切换回缩略图
+                    // 切换回缩略图，反转图片
                     startFlipAnimation(() => {
                         lightboxImage.src = thumbnail;
                         toggleOriginalBtn.textContent = '查看原图';
                         isOriginal = false;
                     });
                 } else {
-                    //切换为原图
-                    lightboxImage.src = original;
                     // 开始加载原图
                     isLoading = true;
+                    loadingIndicator.style.display = 'flex';
+
+                    // 预加载原图
+                    imageToLoad = new Image();
+                    imageToLoad.src = original;
+
+                    // 反转图片
                     startFlipAnimation(() => {
-                        loadingIndicator.style.display = 'flex';
-                
-                        currentImageLoader = new Image();
-                        currentImageLoader.src = original;
-                
-                        currentImageLoader.onload = () => {
-                            if (isLightboxOpen) {
-                                finishImageLoad(original);
-                                isOriginal = true;
-                            }
+                        if (imageToLoad.complete) {
+                            // 如果图片已经加载完成
+                            finishImageLoad(original);
+                            isOriginal = true;
                             isLoading = false;
-                        };
-                
-                        currentImageLoader.onerror = () => {
-                            if (isLightboxOpen) {
-                                handleLoadError();
-                            }
-                            isLoading = false;
-                        };
+                            loadingIndicator.style.display = 'none';
+                        } else {
+                            // 如果图片还未加载完成
+                            imageToLoad.onload = () => {
+                                if (isLightboxOpen) {
+                                    finishImageLoad(original);
+                                    isOriginal = true;
+                                }
+                                isLoading = false;
+                                loadingIndicator.style.display = 'none';
+                            };
+
+                            imageToLoad.onerror = () => {
+                                if (isLightboxOpen) {
+                                    handleLoadError();
+                                }
+                                isLoading = false;
+                                loadingIndicator.style.display = 'none';
+                            };
+                        }
                     });
                 }
             };
