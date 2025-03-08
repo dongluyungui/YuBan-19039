@@ -693,140 +693,177 @@
         <button class="toggle-original-btn">查看原图</button>
         <div class="loading">正在加载原图...</div>
     </div>
-<script>
-// 修改后的JavaScript代码
-let currentImageLoader = null;
-let currentToggleHandler = null;
-let isLightboxOpen = false;
+    <script>
+        // 修改后的JavaScript代码
+        let currentImageLoader = null;
+        let currentToggleHandler = null;
+        let isLightboxOpen = false;
 
-// 灯箱元素
-const lightbox = document.querySelector('.lightbox');
-const lightboxImage = lightbox.querySelector('img');
-const lightboxClose = lightbox.querySelector('.lightbox-close');
-const toggleOriginalBtn = document.querySelector('.toggle-original-btn');
-const loadingIndicator = document.querySelector('.loading');
+        // 灯箱元素
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxImage = lightbox.querySelector('img');
+        const lightboxClose = lightbox.querySelector('.lightbox-close');
+        const toggleOriginalBtn = document.querySelector('.toggle-original-btn');
+        const loadingIndicator = document.querySelector('.loading');
 
-// 初始化图片点击事件
-document.querySelectorAll('.art-image').forEach(img => {
-    img.addEventListener('click', () => {
-        const thumbnail = img.src;
-        const original = img.dataset.origin;
-        openLightbox(thumbnail, original);
-    });
-});
+        // 初始化图片点击事件
+        document.querySelectorAll('.art-image').forEach(img => {
+            img.addEventListener('click', () => {
+                const thumbnail = img.src;
+                const original = img.dataset.origin;
+                openLightbox(thumbnail, original);
+            });
+        });
 
-function openLightbox(thumbnail, original) {
-    resetLightboxState();
-    isLightboxOpen = true;
+        function openLightbox(thumbnail, original) {
+            resetLightboxState();
+            isLightboxOpen = true;
     
-    lightboxImage.src = thumbnail;
-    lightbox.style.display = 'flex';
-    toggleOriginalBtn.textContent = '查看原图';
+            lightboxImage.src = thumbnail;
+            lightbox.style.display = 'flex';
+            toggleOriginalBtn.textContent = '查看原图';
 
-    currentToggleHandler = createToggleHandler(thumbnail, original);
-    toggleOriginalBtn.addEventListener('click', currentToggleHandler);
-}
-
-function createToggleHandler(thumbnail, original) {
-    let isOriginal = false;
-    let isLoading = false;
-
-    return function() {
-        if (isLoading || !isLightboxOpen) return;
-
-        if (isOriginal) {
-            // 切换回缩略图
-            startFlipAnimation(() => {
-                lightboxImage.src = thumbnail;
-                toggleOriginalBtn.textContent = '查看原图';
-                isOriginal = false;
-            });
-        } else {
-            // 开始加载原图
-            isLoading = true;
-            startFlipAnimation(() => {
-                loadingIndicator.style.display = 'flex';
-                
-                currentImageLoader = new Image();
-                currentImageLoader.src = original;
-                
-                currentImageLoader.onload = () => {
-                    if (isLightboxOpen) {
-                        finishImageLoad(original);
-                        isOriginal = true;
-                    }
-                    isLoading = false;
-                };
-                
-                currentImageLoader.onerror = () => {
-                    if (isLightboxOpen) {
-                        handleLoadError();
-                    }
-                    isLoading = false;
-                };
-            });
+            currentToggleHandler = createToggleHandler(thumbnail, original);
+            toggleOriginalBtn.addEventListener('click', currentToggleHandler);
         }
-    };
-}
 
-function startFlipAnimation(callback) {
-    lightboxImage.style.transform = 'rotateY(180deg)';
-    setTimeout(() => {
-        callback();
-        lightboxImage.style.transform = 'rotateY(0deg)';
-    }, 300);
-}
+        function createToggleHandler(thumbnail, original) {
+            let isOriginal = false;
+            let isLoading = false;
 
-function finishImageLoad(src) {
-    loadingIndicator.style.display = 'none';
-    lightboxImage.src = src;
-    toggleOriginalBtn.textContent = '查看缩略图';
-}
+            return function() {
+                if (isLoading || !isLightboxOpen) return;
 
-function handleLoadError() {
-    loadingIndicator.style.display = 'none';
-    lightboxImage.style.transform = 'rotateY(0deg)';
-    alert('原图加载失败，请稍后再试 (＞﹏＜)');
-}
+                if (isOriginal) {
+                    // 切换回缩略图
+                    startFlipAnimation(() => {
+                        lightboxImage.src = thumbnail;
+                        toggleOriginalBtn.textContent = '查看原图';
+                        isOriginal = false;
+                    });
+                } else {
+                    // 开始加载原图
+                    isLoading = true;
+                    loadingIndicator.style.display = 'flex';
 
-function resetLightboxState() {
-    // 中止正在进行的加载
-    if (currentImageLoader) {
-        currentImageLoader.src = '';
-        currentImageLoader = null;
-    }
+                    currentImageLoader = new Image();
+                    currentImageLoader.src = original;
+
+                    currentImageLoader.onload = () => {
+                        if (isLightboxOpen) {
+                            loadingIndicator.style.display = 'none';
+                            // 原图加载完成后开始翻转显示原图
+                            startFlipAnimation(() => {
+                                lightboxImage.src = original;
+                                toggleOriginalBtn.textContent = '查看缩略图';
+                                isOriginal = true;
+                            });
+                        }
+                        isLoading = false;
+                    };
+
+                    currentImageLoader.onerror = () => {
+                        if (isLightboxOpen) {
+                            handleLoadError();
+                        }
+                        isLoading = false;
+                    };
+                }
+            };
+        }
+            // 预加载原图功能
+        window.addEventListener('DOMContentLoaded', function() {
+            // 获取所有原图地址并去重
+            const originImages = [...new Set(
+                Array.from(document.querySelectorAll('.art-image'))
+                    .map(img => img.dataset.origin)
+            )];
+
+            // 创建静默预加载队列
+            const preloadQueue = [];
+            originImages.forEach(url => {
+                const loader = new Image();
+                loader.src = url;
+                preloadQueue.push(
+                    new Promise((resolve, reject) => {
+                        loader.onload = resolve;
+                        loader.onerror = reject;
+                    })
+                );
+            });
+
+            // 可选：控制并发数量
+            const MAX_CONCURRENT = 5;
+            for (let i = 0; i < preloadQueue.length; i += MAX_CONCURRENT) {
+                Promise.allSettled(preloadQueue.slice(i, i + MAX_CONCURRENT))
+                    .then(results => {
+                        results.forEach((result, index) => {
+                            if (result.status === 'rejected') {
+                                console.warn(`预加载失败: ${originImages[i + index]}`);
+                            }
+                        });
+                    });
+            }
+        });
+
+        function startFlipAnimation(callback) {
+            lightboxImage.style.transform = 'rotateY(180deg)';// 触发翻转
+            setTimeout(() => {
+                callback();
+                lightboxImage.style.transform = 'rotateY(0deg)';// 恢复旋转
+            }, 300);
+        }
+
+        function finishImageLoad(src) {
+            loadingIndicator.style.display = 'none';
+            lightboxImage.src = src;
+            toggleOriginalBtn.textContent = '查看缩略图';
+        }
+
+        function handleLoadError() {
+            loadingIndicator.style.display = 'none';
+            lightboxImage.style.transform = 'rotateY(0deg)';
+            alert('原图加载失败，请稍后再试 (＞﹏＜)');
+        }
+
+        function resetLightboxState() {
+            // 中止正在进行的加载
+            if (currentImageLoader) {
+                currentImageLoader.src = '';
+                currentImageLoader = null;
+            }
     
-    // 移除旧的事件监听
-    if (currentToggleHandler) {
-        toggleOriginalBtn.removeEventListener('click', currentToggleHandler);
-    }
+            // 移除旧的事件监听
+            if (currentToggleHandler) {
+                toggleOriginalBtn.removeEventListener('click', currentToggleHandler);
+            }
     
-    // 重置视觉状态
-    lightboxImage.style.transform = 'rotateY(0deg)';
-    loadingIndicator.style.display = 'none';
-}
+            // 重置视觉状态
+            lightboxImage.style.transform = 'rotateY(0deg)';
+            loadingIndicator.style.display = 'none';
+        }
 
-// 关闭灯箱事件
-function closeLightbox() {
-    isLightboxOpen = false;
-    lightbox.style.display = 'none';
-    resetLightboxState();
-}
+        // 关闭灯箱事件
+        function closeLightbox() {
+            isLightboxOpen = false;
+            lightbox.style.display = 'none';
+            resetLightboxState();
+        }
 
-lightboxClose.addEventListener('click', closeLightbox);
-lightbox.addEventListener('click', (e) => {
-    if (e.target === lightbox) {
-        closeLightbox();
-    }
-});
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
 
-// ESC键关闭支持
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        closeLightbox();
-    }
-});
-</script>
+        // ESC键关闭支持
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+    </script>
 </body>
 
 </html>
