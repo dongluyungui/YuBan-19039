@@ -193,7 +193,7 @@
             <div class="gallery-grid">
                 <!-- 分割 -->
                 <div class="art-card" data-tags="未完待续">
-                    <img src="img/gallery/web/To Be Continued.png"  alt="未完待续"class="art-image" data-origin="img/gallery/origin/To Be Continued.jpg">
+                    <img src="img/gallery/web/To Be Continued.webp"  alt="未完待续"class="art-image" data-origin="img/gallery/origin/To Be Continued.jpg">
                     <div class="art-info">
                         <h3 class="art-title">未完待续</h3>
                         <div class="art-details">
@@ -705,34 +705,6 @@
     </div>
 
     <script>
-
-          // 修改后的预加载函数（添加缓存机制）
-        const imageCache = {};
-
-        function preloadAllImages() {
-            const images = document.querySelectorAll('.art-image');
-            images.forEach(img => {
-                const original = img.dataset.origin;
-                if (original && !imageCache[original]) {
-                    const imgLoader = new Image();
-                    imgLoader.src = original;
-                    imgLoader.onload = () => {
-                        imageCache[original] = imgLoader; // 存入缓存
-                        console.log(`预加载完成: ${original}`);
-                    };
-                    imgLoader.onerror = () => {
-                        console.log(`预加载失败: ${original}`);
-                    };
-                }
-            });
-        }
-
-        // 在DOM加载完成后立即执行预加载
-        document.addEventListener('DOMContentLoaded', () => {
-            preloadAllImages();
-        });
-
-
         // 灯箱相关变量
         let currentImageLoader = null;  // 当前正在加载的图片对象
         let currentToggleHandler = null; // 当前的切换处理函数
@@ -774,7 +746,9 @@
             toggleOriginalBtn.addEventListener('click', currentToggleHandler);
         }
 
-        // 修改后的灯箱切换逻辑
+        /**
+        * 创建一个用于切换显示缩略图和原图的处理函数
+        */
         function createToggleHandler(thumbnail, original) {
             let isOriginal = false;
             let isLoading = false;
@@ -791,33 +765,28 @@
                 } else {
                     isLoading = true;
                     startFlipAnimation(() => {
-                        // 检查缓存
-                        if (imageCache[original]) {
-                            // 直接使用缓存
-                            lightboxImage.src = original;
-                            toggleOriginalBtn.textContent = '查看缩略图';
+                        loadingIndicator.style.display = 'flex';
+                
+                        // 移除旧的监听器
+                        lightboxImage.onload = null;
+                        lightboxImage.onerror = null;
+
+                        // 直接设置原图地址
+                        lightboxImage.src = original;
+                        toggleOriginalBtn.textContent = '查看缩略图';
+
+                        // 监听加载事件
+                        lightboxImage.onload = () => {
+                            loadingIndicator.style.display = 'none';
                             isOriginal = true;
                             isLoading = false;
-                        } else {
-                            // 未缓存时加载
-                            loadingIndicator.style.display = 'flex';
-                            currentImageLoader = new Image();
-                            currentImageLoader.src = original;
-                    
-                            currentImageLoader.onload = () => {
-                                imageCache[original] = currentImageLoader; // 缓存加载结果
-                                lightboxImage.src = original;
-                                toggleOriginalBtn.textContent = '查看缩略图';
-                                isOriginal = true;
-                                loadingIndicator.style.display = 'none';
-                                isLoading = false;
-                            };
+                        };
 
-                            currentImageLoader.onerror = () => {
-                                handleLoadError();
-                                isLoading = false;
-                            };
-                        }
+                        lightboxImage.onerror = () => {
+                            loadingIndicator.style.display = 'none';
+                            handleLoadError();
+                            isLoading = false;
+                        };
                     });
                 }
             };
@@ -857,27 +826,13 @@
          * 重置灯箱状态
          */
         function resetLightboxState() {
-            // 取消正在进行的图片加载
-            if (currentImageLoader) {
-                currentImageLoader.src = '';
-                currentImageLoader = null;
-            }
-
-            // 移除旧的事件监听器
-            if (currentToggleHandler) {
-                toggleOriginalBtn.removeEventListener('click', currentToggleHandler);
-            }
-
-            // 重置视觉状态
+            // 移除旧的监听器
+            lightboxImage.onload = null;
+            lightboxImage.onerror = null;
+    
+            // 重置状态
             lightboxImage.style.transform = 'rotateY(0deg)';
             loadingIndicator.style.display = 'none';
-
-            // 新增：取消加载中的图片请求
-            if (currentImageLoader) {
-                currentImageLoader.onload = null;
-                currentImageLoader.onerror = null;
-                currentImageLoader = null;
-            }
         }
 
         // 关闭灯箱事件
