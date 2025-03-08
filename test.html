@@ -783,7 +783,7 @@
                         currentImageLoader.onload = () => {
                             // 如果灯箱处于打开状态
                             if (isLightboxOpen) {
-                                
+                                  loadingIndicator.style.display = 'none'; // 隐藏加载提示
                                 // 标记当前显示的是原图
                                 isOriginal = true; 
                             }
@@ -823,7 +823,6 @@
          * @param {string} src 加载成功的图片路径
          */
         function finishImageLoad(src) {
-            loadingIndicator.style.display = 'none'; // 隐藏加载提示
             lightboxImage.src = src; // 显示原图
             toggleOriginalBtn.textContent = '查看缩略图'; // 设置按钮文本
         }
