@@ -4,6 +4,8 @@
   <title>御坂の往期直播回放</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/tagsearch.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <script src="js/pages.js"></script>
   <script src="js/tagsearch.js"></script>
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <style>
@@ -214,7 +216,7 @@
                <span class="tag" onclick="filterByTag('2025')">2025</span>
            </div> 
        </div> 
-   </div> 
+</div> 
             
 
     <div class="live-record" data-tags="逃离现实,2025">
@@ -301,9 +303,30 @@
           <span class="tag" onclick="filterByTag('2024')">2024</span>
         </div>
       </div>
-    </div>
-  </div>
+     </div>
 
+    <div class="live-record" data-tags="2024">
+      <div class="live-info">
+        <h2>夏日观影？双满庆会！</h2>
+        <p><strong>直播日期：</strong>2024年07月30日</p>
+        <p><strong>直播时间：</strong>00:00 - 03:00</p>
+        <p><strong>直播简介：</strong></p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1Kf421i79x" target="_blank">点击观看</a></p>
+        <div class="tags">
+            <span class="tag" onclick="filterByTag('2024')">2024</span>
+        </div>
+      </div>
+    </div>
+</div>
+
+  <div class="pagination-container">
+            <div class="page-info">共<span id="total-count">0</span>个记录，当前第<span id="current-page">1</span>页/共<span id="total-pages">1</span>页</div>
+            <div class="page-buttons" id="page-buttons"></div>
+            <div class="jump-to">
+                跳转到第<input type="number" id="jump-page" min="1">页
+                <button onclick="jumpToPage()">跳转</button>
+            </div>
+        </div>
    <!-- 页脚 --> 
   <div style="text-align: center; padding: 30px; color: #666;"> 
     <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p> 

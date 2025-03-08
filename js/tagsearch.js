@@ -85,8 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 清除筛选
     document.querySelector('.clear-search-btn').addEventListener('click', () => {
-        document.getElementById('search-box').value = '';
-        triggerSearch();
+        //document.getElementById('search-box').value = '';
+        //triggerSearch();
+        location.reload();//本地刷新location.reload();
     });
 
     // 实时搜索

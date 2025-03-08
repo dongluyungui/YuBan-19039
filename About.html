@@ -6,8 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>关于小站</title> 
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <script src="js/pages.js"></script>
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <style>
+       .date-log{ 
+        background: #fff; 
+        border-radius: 10px; 
+        padding: 5px;    /* padding 属性用于设置元素内容与边框之间的间距。这里将内边距统一设置为 15 像素，即元素内容与边框在上下左右四个方向上都有 15 像素的间距。 */
+        margin-bottom: 5px;     /* margin-bottom 属性用于设置元素与其下方相邻元素之间的外边距。 这里将元素的下外边距设置为 15 像素，确保该元素与下方元素之间有 15 像素的空白间隔。*/
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+        } 
        .dynamic-item { 
         background: #fff; 
         border-radius: 10px; 
@@ -63,25 +72,27 @@
                  </div> 
                  
                 <h2 style="color: #e91e63; margin-top: 20px;">更新日志</h2> 
-                 <div class="dynamic-item">   
-                      <p>前言：我可能懒得写这东西</p> 
-                 </div> 
+                <h6 margin-top: 2px;>前言：我肯定懒得写这东西</h6> 
           <!--  <div class="dynamic-item">    
                      <p>模板</p> 
                  </div>  -->
-                 <div class="dynamic-item">
-                     <p>2025/3/6</p> 
-                     <p>适配了移动端、规范文件格式</p> 
+                 <div class="date-log">
+                     <a>2025/3/6</a> 
+                     <a>适配了移动端、规范文件格式</a> 
                  </div> 
-                 <div class="dynamic-item">
-                     <p>2025/3/5</p> 
-                     <p>网页添加了画廊、时间轴（还要修改）先这样吧、移除了him</p> 
+                 <div class="date-log">
+                     <a>2025/3/5</a> 
+                     <a>网页添加了画廊、时间轴（还要修改）先这样吧、移除了him</a> 
                  </div> 
-                 <div class="dynamic-item">
-                     <p>2025/3/3</p> 
-                     <p>网页添加了图标🍥、添加了五十音图声音、修复录播tag搜索功能、主页添加舰长列表、添加倒计时</p> 
+                 <div class="date-log">
+                     <a>2025/3/3</a> 
+                     <a>网页添加了图标🍥、添加了五十音图声音、修复录播tag搜索功能、主页添加舰长列表、添加倒计时</a> 
                  </div> 
-
+                 <div class="date-log">
+                       <div class="page-info">共<span id="total-count">0</span>条，当前第<span id="current-page">1</span>页/共<span id="total-pages">1</span>页</div>
+                        <div class="page-buttons" id="page-buttons"></div>
+                        
+                 </div> 
             </div> 
         </div> 
  

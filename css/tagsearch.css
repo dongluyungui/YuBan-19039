@@ -93,11 +93,17 @@
   background: var(--hover-color);
 }
 
+/* 添加以下样式来处理.tags 容器 */
+.tags {
+  display: flex; /* 使用弹性布局 */
+  flex-wrap: wrap; /* 允许标签换行 */
+  gap: 2.5px; /* 设置标签之间的间距 */
+}
 
 .tag {
   background-color: var(--secondary-color);
   color: white;
-  padding: 4px 10px;
+  padding: 5px 10px;
   border-radius: 15px;
   cursor: pointer;
 }

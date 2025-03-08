@@ -1,0 +1,36 @@
+﻿.pagination-container {
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.page-buttons button {
+    margin: 0 5px;
+    padding: 8px 16px;
+    background: #e91e63;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.page-buttons button:hover {
+    background: #c2185b;
+}
+
+.page-buttons button.active {
+    background: #c2185b;
+    transform: scale(1.05);
+}
+
+.jump-to {
+    margin-top: 15px;
+}
+
+.jump-to input {
+    padding: 6px;
+    margin-right: 5px;
+    width: 60px;
+}
