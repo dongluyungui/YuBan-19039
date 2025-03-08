@@ -730,13 +730,13 @@
         function createToggleHandler(thumbnail, original) {
             let isOriginal = false;
             let isLoading = false;
-            let imageToLoad = null; // 用于存储预加载的图片对象
+            let imageToLoad = null;
 
             return function() {
                 if (isLoading || !isLightboxOpen) return;
 
                 if (isOriginal) {
-                    // 切换回缩略图，反转图片
+                    // 切换回缩略图
                     startFlipAnimation(() => {
                         lightboxImage.src = thumbnail;
                         toggleOriginalBtn.textContent = '查看原图';
@@ -751,29 +751,24 @@
                     imageToLoad = new Image();
                     imageToLoad.src = original;
 
-                    // 反转图片
                     startFlipAnimation(() => {
+                        // 无论预加载是否完成，立即切换显示原图
+                        lightboxImage.src = original;
+                        toggleOriginalBtn.textContent = '查看缩略图';
+                        isOriginal = true;
+
+                        // 处理加载完成状态
                         if (imageToLoad.complete) {
-                            // 如果图片已经加载完成
-                            finishImageLoad(original);
-                            isOriginal = true;
                             isLoading = false;
                             loadingIndicator.style.display = 'none';
                         } else {
-                            // 如果图片还未加载完成
                             imageToLoad.onload = () => {
-                                if (isLightboxOpen) {
-                                    finishImageLoad(original);
-                                    isOriginal = true;
-                                }
                                 isLoading = false;
                                 loadingIndicator.style.display = 'none';
                             };
 
                             imageToLoad.onerror = () => {
-                                if (isLightboxOpen) {
-                                    handleLoadError();
-                                }
+                                handleLoadError();
                                 isLoading = false;
                                 loadingIndicator.style.display = 'none';
                             };
