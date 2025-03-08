@@ -103,7 +103,6 @@
             font-size: 30px;
             cursor: pointer;
         }
-
         .lightbox .toggle-original-btn {
             position: absolute;
             bottom: 20px;
@@ -115,46 +114,47 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 24px;
-            animation: pulse 1s infinite;
-        }
+            /* ===== 新增CSS样式 ===== */
+.loading {
+    display: none;
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 25px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    align-items: center;
+}
 
-        @keyframes pulse {
-            0% {
-                opacity: 0.6;
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0.6;
-            }
-        }
+.loading::after {
+    content: " ";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    border: 3px solid #ff69b4; /* 粉色边框 */
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
 
-        .progress-bar {
-            position: absolute;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            height: 10px;
-            background-color: #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-        }
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
 
-        .progress {
-            height: 100%;
-            background-color: #007BFF;
-            width: 0%;
-            transition: width 0.3s;
-        }
+.lightbox img {
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+.lightbox img.flipping {
+    transform: rotateY(180deg);
+}
     </style>
 </head>
 
@@ -167,6 +167,7 @@
                 <a href="time.html" class="nav-link active">时间轴</a>
                 <a href="Sound.html" class="nav-link active">语音按钮</a>
                 <a href="LiveHistory.html" class="nav-link">往期回放</a>
+                <a href="tools/galleryRecords.html" class="nav-link" target="_blank">添加作品</a>
             </div>
             <div class="util-buttons">
                 <div class="search-container">
@@ -190,7 +191,7 @@
             <div class="gallery-grid">
                 <!-- 分割 -->
                 <div class="art-card" data-tags="未完待续">
-                    <img src="img/gallery/web/To Be Continued.png"  alt="未完待续" class="art-image" data-origin="img/gallery/origin/To Be Continued.jpg">
+                    <img src="img/gallery/web/To Be Continued.png"  alt="未完待续"class="art-image" data-origin="img/gallery/origin/To Be Continued.jpg">
                     <div class="art-info">
                         <h3 class="art-title">未完待续</h3>
                         <div class="art-details">
@@ -213,6 +214,187 @@
                         </div>
                         <div class="tags">
                             <span class="tag" onclick="filterByTag('未完待续')">未完待续</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="万圣节，MISAKA，SINA">
+                    <img src="img/gallery/web/8416f54200235473598c5310a8c8043312136555.webp" alt="   万圣恐怖夜！" class="art-image" data-origin="img/gallery/origin/8416f54200235473598c5310a8c8043312136555.jpg">
+                    <div class="art-info">
+                        <h3 class="art-title">   万圣恐怖夜！</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：2024.11.01</p>
+                            <p>简介：   万圣恐怖夜！</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/994850262719922183"
+                                    target="_blank"
+                                    class="source-link">
+                                    内个（颤抖）不给糖就捣蛋QAQ（颤抖）
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('万圣节')">万圣节</span>
+                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="表情包，MISAKA">
+                    <img src="img/gallery/web/9c541e944419f842ccf8ae3d3fa3819a12136555.webp" alt="直播间可以使用表情包啦！" class="art-image" data-origin="img/gallery/origin/9c541e944419f842ccf8ae3d3fa3819a12136555.jpg">
+                    <div class="art-info">
+                        <h3 class="art-title">直播间可以使用表情包啦！</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：2024.10.26</p>
+                            <p>简介：目前的所有表情都是免费使用（在直播间内）</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/992627844783800329"
+                                    target="_blank"
+                                    class="source-link">
+                                     直播间可以使用表情包啦！
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="表情包，SINA">
+                    <img src="img/gallery/web/71178d440f6bcec5d5a51fe7d04ef45f8a0588af.webp" alt="酷盖" class="art-image" data-origin="img/gallery/origin/71178d440f6bcec5d5a51fe7d04ef45f8a0588af.png">
+                    <div class="art-info">
+                        <h3 class="art-title">酷盖</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：未知</p>
+                            <p>简介：直播间表情</p>
+                            <p>出处：
+                                <a href="https://live.bilibili.com/8414339"
+                                    target="_blank"
+                                    class="source-link">
+                                     直播间
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="表情包，MISAKA">
+                    <img src="img/gallery/web/65c3819c35be945a798f605db1cf7d8d12136555.webp" alt="表情！" class="art-image" data-origin="img/gallery/origin/65c3819c35be945a798f605db1cf7d8d12136555.jpg">
+                    <div class="art-info">
+                        <h3 class="art-title">表情</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：2024.09.20</p>
+                            <p>简介：表情</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/979172030079303687"
+                                    target="_blank"
+                                    class="source-link">
+                                     我本来要从平板用蓝牙把这张表情传到手机上的，结果点错传到别人手机上了😭我嘞个蓝牙啊
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="表情包，SINA">
+                    <img src="img/gallery/web/dc5bbc3a710525ed8e113d16c082eb6f12136555.webp" alt="表情！" class="art-image" data-origin="img/gallery/origin/dc5bbc3a710525ed8e113d16c082eb6f12136555.jpg">
+                    <div class="art-info">
+                        <h3 class="art-title">表情</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：2024.09.20</p>
+                            <p>简介：表情</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/979172030079303687"
+                                    target="_blank"
+                                    class="source-link">
+                                     我本来要从平板用蓝牙把这张表情传到手机上的，结果点错传到别人手机上了😭我嘞个蓝牙啊
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 分割 -->
+                <div class="art-card" data-tags="一百天，SINA">
+                    <img src="img/gallery/web/4156bc49b46deab108bb95a97c25248e12136555.webp" alt="百日聊天回！" class="art-image" data-origin="img/gallery/origin/4156bc49b46deab108bb95a97c25248e12136555.jpg">
+                    <div class="art-info">
+                        <h3 class="art-title">百日聊天回！</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <a>创作日期：2024.09.06</p>
+                            <p>简介：等我更新</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/973982335205638151"
+                                    target="_blank"
+                                    class="source-link">
+                                     真的有一百天了(*´I`*)！
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('一百天')">一百天</span>
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
                         </div>
                     </div>
                 </div>
@@ -402,9 +584,70 @@
                     </div>
                 </div>
 
+                
+                <!-- 分割 -->
+                <div class="art-card" data-tags="直播封面">
+                    <img src="img/gallery/web/cff6182bce7be259ed0459cf5b1bee8f12136555.webp" alt="直播常用封面2" class="art-image" data-origin="img/gallery/origin/cff6182bce7be259ed0459cf5b1bee8f12136555.jpg">
+                    <div class="art-info">
+                        <h3 class="art-title">直播常用封面2</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：未知</p>
+                            <p>简介：直播常用封面2</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/939271435991384073"
+                                    target="_blank"
+                                    class="source-link">
+                                    VUP出道！！！
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('直播封面')">直播封面</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分割 -->
+                <div class="art-card" data-tags="直播封面">
+                    <img src="img/gallery/web/a910d782290e4e8f32eae88b9040f30112136555.webp" alt="直播常用封面1" class="art-image" data-origin="img/gallery/origin/a910d782290e4e8f32eae88b9040f30112136555.jpg">
+                    <div class="art-info">
+                        <h3 class="art-title">直播常用封面1</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：未知</p>
+                            <p>简介：直播常用封面1</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/937876331851415558"
+                                    target="_blank"
+                                    class="source-link">
+                                    先提前发个自我介绍吧
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('直播封面')">直播封面</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- 分割 -->
                 <div class="art-card" data-tags="哭哭御坂, 表情包">
-                    <img src="img/gallery/web/25f0c608cdd7302b9c85adffa1337c1612136555.webp" alt="哭哭御坂" class="art-image" data-origin="img/gallery/origin/25f0c60cdd7302b9c85adffa1337c1612136555.jpg">
+                    <img src="img/gallery/web/25f0c608cdd7302b9c85adffa1337c1612136555.webp" alt="哭哭御坂" class="art-image" data-origin="img/gallery/origin/25f0c608cdd7302b9c85adffa1337c1612136555.jpg">
                     <div class="art-info">
                         <h3 class="art-title">哭哭御坂</h3>
                         <div class="art-details">
@@ -448,145 +691,142 @@
         <span class="lightbox-close">&times;</span>
         <img src="" alt="放大的图片">
         <button class="toggle-original-btn">查看原图</button>
-        <div class="loading" style="display: none;">加载中...</div>
-        <div class="progress-bar" style="display: none;">
-            <div class="progress"></div>
-        </div>
+        <div class="loading">正在加载原图...</div>
     </div>
+<script>
+// 修改后的JavaScript代码
+let currentImageLoader = null;
+let currentToggleHandler = null;
+let isLightboxOpen = false;
 
-    <script>
-       
-    // 获取灯箱元素
-    const lightbox = document.querySelector('.lightbox');
-    const lightboxImage = lightbox.querySelector('img');
-    const lightboxClose = lightbox.querySelector('.lightbox-close');
-    const toggleOriginalBtn = document.querySelector('.toggle-original-btn');
-    const loading = document.querySelector('.loading');
-    const progressBar = document.querySelector('.progress-bar');
-    const progress = document.querySelector('.progress');
+// 灯箱元素
+const lightbox = document.querySelector('.lightbox');
+const lightboxImage = lightbox.querySelector('img');
+const lightboxClose = lightbox.querySelector('.lightbox-close');
+const toggleOriginalBtn = document.querySelector('.toggle-original-btn');
+const loadingIndicator = document.querySelector('.loading');
 
-    // 状态管理对象
-    const lightboxState = {
-        current: {
-            smallSrc: '',
-            largeSrc: '',
-            isOriginal: false,
-            loading: false
-        },
-        imageLoad: null
-    };
-
-    // 为所有图片添加点击事件
-    document.querySelectorAll('.art-image').forEach(img => {
-        img.addEventListener('click', () => {
-            const smallSrc = img.src;
-            const largeSrc = img.dataset.origin;
-            openLightbox(smallSrc, largeSrc);
-        });
+// 初始化图片点击事件
+document.querySelectorAll('.art-image').forEach(img => {
+    img.addEventListener('click', () => {
+        const thumbnail = img.src;
+        const original = img.dataset.origin;
+        openLightbox(thumbnail, original);
     });
+});
 
-    // 打开灯箱
-    function openLightbox(smallSrc, largeSrc) {
-        // 重置状态
-        lightboxState.current = {
-            smallSrc,
-            largeSrc,
-            isOriginal: false,
-            loading: false
-        };
+function openLightbox(thumbnail, original) {
+    resetLightboxState();
+    isLightboxOpen = true;
+    
+    lightboxImage.src = thumbnail;
+    lightbox.style.display = 'flex';
+    toggleOriginalBtn.textContent = '查看原图';
 
-        // 显示初始缩略图
-        lightboxImage.src = smallSrc;
-        lightbox.style.display = 'flex';
-        toggleOriginalBtn.textContent = '查看原图';
+    currentToggleHandler = createToggleHandler(thumbnail, original);
+    toggleOriginalBtn.addEventListener('click', currentToggleHandler);
+}
 
-        // 绑定切换事件
-        toggleOriginalBtn.onclick = toggleImage;
-    }
+function createToggleHandler(thumbnail, original) {
+    let isOriginal = false;
+    let isLoading = false;
 
-    // 切换图片
-    function toggleImage() {
-        const state = lightboxState.current;
-        
-        if (state.loading) return;
+    return function() {
+        if (isLoading || !isLightboxOpen) return;
 
-        if (!state.isOriginal) {
-            // 切换到原图
-            state.loading = true;
-            showLoading();
-            
-            cancelImageLoad();
-            
-            state.imageLoad = new Image();
-            state.imageLoad.src = state.largeSrc;
-
-            state.imageLoad.onload = () => {
-                state.loading = false;
-                hideLoading();
-                lightboxImage.src = state.largeSrc;
-                toggleOriginalBtn.textContent = '查看缩略图';
-                state.isOriginal = true;
-            };
-
-            state.imageLoad.onerror = () => {
-                state.loading = false;
-                hideLoading();
-                console.error('图片加载失败');
-            };
-
-            state.imageLoad.onprogress = (e) => {
-                if (e.lengthComputable) {
-                    const percent = (e.loaded / e.total) * 100;
-                    updateProgress(percent);
-                }
-            };
-        } else {
+        if (isOriginal) {
             // 切换回缩略图
-            lightboxImage.src = state.smallSrc;
-            toggleOriginalBtn.textContent = '查看原图';
-            state.isOriginal = false;
+            startFlipAnimation(() => {
+                lightboxImage.src = thumbnail;
+                toggleOriginalBtn.textContent = '查看原图';
+                isOriginal = false;
+            });
+        } else {
+            // 开始加载原图
+            isLoading = true;
+            startFlipAnimation(() => {
+                loadingIndicator.style.display = 'flex';
+                
+                currentImageLoader = new Image();
+                currentImageLoader.src = original;
+                
+                currentImageLoader.onload = () => {
+                    if (isLightboxOpen) {
+                        finishImageLoad(original);
+                        isOriginal = true;
+                    }
+                    isLoading = false;
+                };
+                
+                currentImageLoader.onerror = () => {
+                    if (isLightboxOpen) {
+                        handleLoadError();
+                    }
+                    isLoading = false;
+                };
+            });
         }
+    };
+}
+
+function startFlipAnimation(callback) {
+    lightboxImage.style.transform = 'rotateY(180deg)';
+    setTimeout(() => {
+        callback();
+        lightboxImage.style.transform = 'rotateY(0deg)';
+    }, 300);
+}
+
+function finishImageLoad(src) {
+    loadingIndicator.style.display = 'none';
+    lightboxImage.src = src;
+    toggleOriginalBtn.textContent = '查看缩略图';
+}
+
+function handleLoadError() {
+    loadingIndicator.style.display = 'none';
+    lightboxImage.style.transform = 'rotateY(0deg)';
+    alert('原图加载失败，请稍后再试 (＞﹏＜)');
+}
+
+function resetLightboxState() {
+    // 中止正在进行的加载
+    if (currentImageLoader) {
+        currentImageLoader.src = '';
+        currentImageLoader = null;
     }
-
-    // 关闭灯箱
-    lightboxClose.addEventListener('click', () => {
-        lightbox.style.display = 'none';
-        cancelImageLoad();
-        hideLoading();
-    });
-
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
-            lightbox.style.display = 'none';
-            cancelImageLoad();
-            hideLoading();
-        }
-    });
-
-    function showLoading() {
-        loading.style.display = 'block';
-        progressBar.style.display = 'block';
+    
+    // 移除旧的事件监听
+    if (currentToggleHandler) {
+        toggleOriginalBtn.removeEventListener('click', currentToggleHandler);
     }
+    
+    // 重置视觉状态
+    lightboxImage.style.transform = 'rotateY(0deg)';
+    loadingIndicator.style.display = 'none';
+}
 
-    function hideLoading() {
-        loading.style.display = 'none';
-        progressBar.style.display = 'none';
-        progress.style.width = '0%';
+// 关闭灯箱事件
+function closeLightbox() {
+    isLightboxOpen = false;
+    lightbox.style.display = 'none';
+    resetLightboxState();
+}
+
+lightboxClose.addEventListener('click', closeLightbox);
+lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+        closeLightbox();
     }
+});
 
-    function updateProgress(percent) {
-        progress.style.width = `${percent}%`;
+// ESC键关闭支持
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeLightbox();
     }
-
-    function cancelImageLoad() {
-        if (lightboxState.imageLoad) {
-            lightboxState.imageLoad.src = '';
-            lightboxState.imageLoad = null;
-        }
-    }
-
-
-    </script>
+});
+</script>
 </body>
 
 </html>

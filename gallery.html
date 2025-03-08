@@ -114,15 +114,47 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .loading {
-            display: none;
-            color: white;
-            font-size: 20px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+            /* ===== 新增CSS样式 ===== */
+.loading {
+    display: none;
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 25px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    align-items: center;
+}
+
+.loading::after {
+    content: " ";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    border: 3px solid #ff69b4; /* 粉色边框 */
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.lightbox img {
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+}
+
+.lightbox img.flipping {
+    transform: rotateY(180deg);
+}
     </style>
 </head>
 
@@ -661,76 +693,139 @@
         <button class="toggle-original-btn">查看原图</button>
         <div class="loading">正在加载原图...</div>
     </div>
-
     <script>
-    // 获取灯箱元素
-    const lightbox = document.querySelector('.lightbox');
-    const lightboxImage = lightbox.querySelector('img');
-    const lightboxClose = lightbox.querySelector('.lightbox-close');
-    const toggleOriginalBtn = document.querySelector('.toggle-original-btn');
-    let currentToggleImage; // 用于存储当前的切换函数
+        // 修改后的JavaScript代码
+        let currentImageLoader = null;
+        let currentToggleHandler = null;
+        let isLightboxOpen = false;
 
-    // 为所有图片添加点击事件，点击后显示缩略图
-    document.querySelectorAll('.art-image').forEach(img => {
-        img.addEventListener('click', () => {
-            const smallSrc = img.src;
-            const largeSrc = img.dataset.origin;
-            openLightbox(smallSrc, largeSrc);
+        // 灯箱元素
+        const lightbox = document.querySelector('.lightbox');
+        const lightboxImage = lightbox.querySelector('img');
+        const lightboxClose = lightbox.querySelector('.lightbox-close');
+        const toggleOriginalBtn = document.querySelector('.toggle-original-btn');
+        const loadingIndicator = document.querySelector('.loading');
+
+        // 初始化图片点击事件
+        document.querySelectorAll('.art-image').forEach(img => {
+            img.addEventListener('click', () => {
+                const thumbnail = img.src;
+                const original = img.dataset.origin;
+                openLightbox(thumbnail, original);
+            });
         });
-    });
 
-    // 打开灯箱
-    function openLightbox(smallSrc, largeSrc) {
-        let isOriginal = false;
-        lightboxImage.src = smallSrc;
-        lightbox.style.display = 'flex';
-        toggleOriginalBtn.textContent = '查看原图';
+        function openLightbox(thumbnail, original) {
+            resetLightboxState();
+            isLightboxOpen = true;
+    
+            lightboxImage.src = thumbnail;
+            lightbox.style.display = 'flex';
+            toggleOriginalBtn.textContent = '查看原图';
 
-        // 移除之前的点击事件监听器
-        if (currentToggleImage) {
-            toggleOriginalBtn.removeEventListener('click', currentToggleImage);
+            currentToggleHandler = createToggleHandler(thumbnail, original);
+            toggleOriginalBtn.addEventListener('click', currentToggleHandler);
         }
 
-        // 定义切换图片的函数
-        currentToggleImage = function () {
-            if (isOriginal) {
-                lightboxImage.src = smallSrc;
-                toggleOriginalBtn.textContent = '查看原图';
-            } else {
-                const loading = document.querySelector('.loading');
-                loading.style.display = 'block'; // 显示加载提示
-                const img = new Image();
-                img.src = largeSrc;
-                img.onload = function () {
-                    lightboxImage.src = largeSrc;
-                    toggleOriginalBtn.textContent = '查看缩略图';
-                    loading.style.display = 'none'; // 隐藏加载提示
-                };
+        function createToggleHandler(thumbnail, original) {
+            let isOriginal = false;
+            let isLoading = false;
+
+            return function() {
+                if (isLoading || !isLightboxOpen) return;
+
+                if (isOriginal) {
+                    // 切换回缩略图
+                    startFlipAnimation(() => {
+                        lightboxImage.src = thumbnail;
+                        toggleOriginalBtn.textContent = '查看原图';
+                        isOriginal = false;
+                    });
+                } else {
+                    // 开始加载原图
+                    isLoading = true;
+                    startFlipAnimation(() => {
+                        loadingIndicator.style.display = 'flex';
+                
+                        currentImageLoader = new Image();
+                        currentImageLoader.src = original;
+                
+                        currentImageLoader.onload = () => {
+                            if (isLightboxOpen) {
+                                finishImageLoad(original);
+                                isOriginal = true;
+                            }
+                            isLoading = false;
+                        };
+                
+                        currentImageLoader.onerror = () => {
+                            if (isLightboxOpen) {
+                                handleLoadError();
+                            }
+                            isLoading = false;
+                        };
+                    });
+                }
+            };
+        }
+
+        function startFlipAnimation(callback) {
+            lightboxImage.style.transform = 'rotateY(180deg)';
+            setTimeout(() => {
+                callback();
+                lightboxImage.style.transform = 'rotateY(0deg)';
+            }, 300);
+        }
+
+        function finishImageLoad(src) {
+            loadingIndicator.style.display = 'none';
+            lightboxImage.src = src;
+            toggleOriginalBtn.textContent = '查看缩略图';
+        }
+
+        function handleLoadError() {
+            loadingIndicator.style.display = 'none';
+            lightboxImage.style.transform = 'rotateY(0deg)';
+            alert('原图加载失败，请稍后再试 (＞﹏＜)');
+        }
+
+        function resetLightboxState() {
+            // 中止正在进行的加载
+            if (currentImageLoader) {
+                currentImageLoader.src = '';
+                currentImageLoader = null;
             }
-            isOriginal = !isOriginal;
-        };
-
-        // 添加新的点击事件监听器
-        toggleOriginalBtn.addEventListener('click', currentToggleImage);
-    }
-
-    // 关闭灯箱
-    lightboxClose.addEventListener('click', () => {
-        lightbox.style.display = 'none';
-        if (currentToggleImage) {
-            toggleOriginalBtn.removeEventListener('click', currentToggleImage);
+    
+            // 移除旧的事件监听
+            if (currentToggleHandler) {
+                toggleOriginalBtn.removeEventListener('click', currentToggleHandler);
+            }
+    
+            // 重置视觉状态
+            lightboxImage.style.transform = 'rotateY(0deg)';
+            loadingIndicator.style.display = 'none';
         }
-    });
 
-    // 点击覆盖层关闭灯箱
-    lightbox.addEventListener('click', (e) => {
-        if (e.target === lightbox) {
+        // 关闭灯箱事件
+        function closeLightbox() {
+            isLightboxOpen = false;
             lightbox.style.display = 'none';
-            if (currentToggleImage) {
-                toggleOriginalBtn.removeEventListener('click', currentToggleImage);
-            }
+            resetLightboxState();
         }
-    });
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // ESC键关闭支持
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
     </script>
 </body>
 
