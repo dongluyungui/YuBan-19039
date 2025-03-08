@@ -47,7 +47,7 @@ body {
   /* 设置弹性布局中项目的垂直排列方式为居中对齐 */
   align-items: center;
 }
-
+.tools-link,
 .nav-link {
   color: var(--primary-color);
   text-decoration: none;
@@ -59,7 +59,7 @@ body {
   cursor: pointer;
   font-size: 16px; 
 }
- 
+.tools-link:hover,
 .nav-link:hover {
   background: #fff0f3;
   transform: translateY(-2px);
@@ -172,6 +172,9 @@ height: 30px; /* 设置固定高度为 50 像素 */
     min-width: 60px; /* 保证最小点击区域 */
     text-align: center; /* 文字居中 */
   }
+  .tools-link{
+    display: none; /* 隐藏元素 */
+  }
 
   .util-buttons {
     /* 工具按钮容器宽度设置为父元素宽度的 100%，以适应移动端布局 */
@@ -181,11 +184,12 @@ height: 30px; /* 设置固定高度为 50 像素 */
   }
 
   /* 哔哩哔哩风格按钮适配 */
-  .bilibili-btn {
-    padding: 10px 20px; /* 适当减小内边距，适应移动端 */
-    font-size: 14px; /* 适当缩小字体 */
-    margin: 8px; /* 适当减小外边距 */
-  }
+    .bilibili-btn {
+        padding: 10px 20px; /* 适当减小内边距，适应移动端 */
+        font-size: 14px; /* 适当缩小字体 */
+        margin: 8px; /* 适当减小外边距 */
+        display: none; /* 隐藏元素 */
+    }
   /* 主内容区 */
   .container {
      /* 设置容器的外边距。外边距按照上、左右、下的顺序设置。
