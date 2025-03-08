@@ -742,75 +742,40 @@
                         isOriginal = false;
                     });
                 } else {
+                    //切换为原图
+                    lightboxImage.src = original;
                     // 开始加载原图
                     isLoading = true;
-                    loadingIndicator.style.display = 'flex';
-
-                    currentImageLoader = new Image();
-                    currentImageLoader.src = original;
-
-                    currentImageLoader.onload = () => {
-                        if (isLightboxOpen) {
-                            loadingIndicator.style.display = 'none';
-                            // 原图加载完成后开始翻转显示原图
-                            startFlipAnimation(() => {
-                                lightboxImage.src = original;
-                                toggleOriginalBtn.textContent = '查看缩略图';
+                    startFlipAnimation(() => {
+                        loadingIndicator.style.display = 'flex';
+                
+                        currentImageLoader = new Image();
+                        currentImageLoader.src = original;
+                
+                        currentImageLoader.onload = () => {
+                            if (isLightboxOpen) {
+                                finishImageLoad(original);
                                 isOriginal = true;
-                            });
-                        }
-                        isLoading = false;
-                    };
-
-                    currentImageLoader.onerror = () => {
-                        if (isLightboxOpen) {
-                            handleLoadError();
-                        }
-                        isLoading = false;
-                    };
+                            }
+                            isLoading = false;
+                        };
+                
+                        currentImageLoader.onerror = () => {
+                            if (isLightboxOpen) {
+                                handleLoadError();
+                            }
+                            isLoading = false;
+                        };
+                    });
                 }
             };
         }
-            // 预加载原图功能
-        window.addEventListener('DOMContentLoaded', function() {
-            // 获取所有原图地址并去重
-            const originImages = [...new Set(
-                Array.from(document.querySelectorAll('.art-image'))
-                    .map(img => img.dataset.origin)
-            )];
-
-            // 创建静默预加载队列
-            const preloadQueue = [];
-            originImages.forEach(url => {
-                const loader = new Image();
-                loader.src = url;
-                preloadQueue.push(
-                    new Promise((resolve, reject) => {
-                        loader.onload = resolve;
-                        loader.onerror = reject;
-                    })
-                );
-            });
-
-            // 可选：控制并发数量
-            const MAX_CONCURRENT = 5;
-            for (let i = 0; i < preloadQueue.length; i += MAX_CONCURRENT) {
-                Promise.allSettled(preloadQueue.slice(i, i + MAX_CONCURRENT))
-                    .then(results => {
-                        results.forEach((result, index) => {
-                            if (result.status === 'rejected') {
-                                console.warn(`预加载失败: ${originImages[i + index]}`);
-                            }
-                        });
-                    });
-            }
-        });
 
         function startFlipAnimation(callback) {
-            lightboxImage.style.transform = 'rotateY(180deg)';// 触发翻转
+            lightboxImage.style.transform = 'rotateY(180deg)';
             setTimeout(() => {
                 callback();
-                lightboxImage.style.transform = 'rotateY(0deg)';// 恢复旋转
+                lightboxImage.style.transform = 'rotateY(0deg)';
             }, 300);
         }
 
