@@ -1,0 +1,22 @@
+
+/* 右键菜单样式 */
+#context-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    z-index: 9999; /* 添加 z-index 属性，设置较高的值 */
+}
+
+#context-menu li {
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+#context-menu li:hover {
+    background-color: #f0f0f0;
+}

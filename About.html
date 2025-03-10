@@ -7,9 +7,11 @@
     <title>关于小站</title> 
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/menu.css">
     <script src="js/pages.js"></script>
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <style>
+       .date-log-page,
        .date-log{ 
         background: #fff; 
         border-radius: 10px; 
@@ -28,6 +30,12 @@
 </head> 
  
 <body> 
+    <div id="fireworks-container"></div>
+        <!-- 右键菜单 -->
+        <ul id="context-menu">
+       
+            <li>彩蛋</li>
+        </ul>
     <header class="header"> 
         <div class="header-content"> 
             <div> 
@@ -76,6 +84,14 @@
           <!--  <div class="dynamic-item">    
                      <p>模板</p> 
                  </div>  -->
+                  <div class="date-log">
+                     <a>2025/3/18</a> 
+                     <a>添加左键菜单，还需要修改页码功能</a> 
+                 </div> 
+                 <div class="date-log">
+                     <a>2025/3/10</a> 
+                     <a>搞了个app（就是嵌套了网页）（用的fusion app）<a href="other/yuban_1.0.0_release.apk"download class="source-link" style="margin-left: 10px;">📥 点击下载APP</a> 
+                 </div> 
                  <div class="date-log">
                      <a>2025/3/8</a> 
                      <a>搞了一天画廊动画、想要优化加载、太复杂、放弃</a> 
@@ -92,7 +108,7 @@
                      <a>2025/3/3</a> 
                      <a>网页添加了图标🍥、添加了五十音图声音、修复录播tag搜索功能、主页添加舰长列表、添加倒计时</a> 
                  </div> 
-                 <div class="date-log">
+                 <div class="date-log-page">
                        <div class="page-info">共<span id="total-count">0</span>条，当前第<span id="current-page">1</span>页/共<span id="total-pages">1</span>页</div>
                         <div class="page-buttons" id="page-buttons"></div>
                         
@@ -108,6 +124,9 @@
         <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p> 
         <p>本站为粉丝自制，与哔哩哔哩官方无关</p> 
     </div> 
+
+    <script src="js/fireworks.js"></script>
+    <script src="js/menu.js"></script>
  
 </body> 
  

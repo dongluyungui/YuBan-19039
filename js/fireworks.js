@@ -1,5 +1,5 @@
 !(function () {
-    // 创建画布
+    // 创建画布  <div id="fireworks-container"></div>
     var canvas = document.createElement("canvas");
     document.body.appendChild(canvas);
 
@@ -29,16 +29,15 @@
     // 粒子数组，用于存储所有烟花粒子
     var particles = [];
     // 烟花数组，用于存储上升中的烟花
-    var fireworks = [];
+    window.fireworks = [];
 
     // 创建音频元素
     var launchSound = new Audio('Sounds/fireworks/lunch.mp3');
     var explosionSound = new Audio('Sounds/fireworks/twinkle.mp3');
 
     // 烟花类
-    class Firework {
+    window.Firework = class Firework {
         constructor() {
-	    
             // 烟花生成后播放发射声音
             launchSound.play();
 
@@ -192,13 +191,13 @@
         }
 
         // 遍历所有上升中的烟花
-        for (var i = 0; i < fireworks.length; i++) {
-            var firework = fireworks[i];
+        for (var i = 0; i < window.fireworks.length; i++) {
+            var firework = window.fireworks[i];
             firework.update();
             if (!firework.exploded) {
                 firework.draw();
             } else {
-                fireworks.splice(i, 1);
+                window.fireworks.splice(i, 1);
                 i--;
             }
         }
@@ -224,8 +223,8 @@
             // 随机生成烟花数量，范围 20 - 50
             var numFireworks = Math.floor(Math.random() * 31) + 20;
             for (var i = 0; i < numFireworks; i++) {
-                fireworks.push(new Firework());
+                window.fireworks.push(new window.Firework());
             }
         });
     }
-})();
+})();    

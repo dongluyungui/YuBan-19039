@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>御坂の时间轴</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/menu.css">
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <style>
         /* 时间轴容器 */
@@ -173,7 +174,12 @@
 </head>
 
 <body>
-        <div id="fireworks-container"></div>
+    <div id="fireworks-container"></div>
+        <!-- 右键菜单 -->
+        <ul id="context-menu">
+       
+            <li>彩蛋</li>
+        </ul>
     <header class="header">
         <div class="header-content">
             <div>
@@ -183,7 +189,6 @@
                 <a href="Sound.html" class="nav-link active">语音按钮</a>
                 <a href="LiveHistory.html" class="nav-link">往期回放</a>
             </div>
-
         </div>
     </header>
 
@@ -558,8 +563,9 @@
         document.addEventListener('DOMContentLoaded', initTimeline);
         window.addEventListener('resize', initTimeline);
     </script>
-        <script src="js/date.js"></script>
+    <script src="js/date.js"></script>
     <script src="js/fireworks.js"></script>
+    <script src="js/menu.js"></script>
 </body>
 
 </html>

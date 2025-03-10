@@ -5,6 +5,7 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/tagsearch.css">
   <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/menu.css">
   <script src="js/pages.js"></script>
   <script src="js/tagsearch.js"></script>
   <link rel="icon" href="img/favicon.ico" type="image/x-icon">
@@ -13,6 +14,12 @@
   </style>
 </head>
 <body>
+    <div id="fireworks-container"></div>
+        <!-- 右键菜单 -->
+        <ul id="context-menu">
+        
+            <li>彩蛋</li>
+        </ul>
   <header class="header">
     <div class="header-content">
       <div>
@@ -40,6 +47,63 @@
     <!-- 直播记录列表 -->
 
      
+    <div class="live-record" data-tags="2025,绘画,静音">
+      <div class="live-info">
+        <h2>进行一个画的赶</h2>
+        <p><strong>直播日期：</strong>2025年03月16日</p>
+        <p><strong>直播时间：</strong>22:32 - 00:28</p>
+        <p><strong>直播简介：</strong>直播赶画</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1fHXjY7Ewx/" target="_blank">点击观看</a></p>
+        <div class="tags">
+            <span class="tag" onclick="filterByTag('2025')">2025</span>
+            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
+            <span class="tag" onclick="filterByTag('静音')">静音</span>
+        </div>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,绘画,静音,摸鱼">
+      <div class="live-info">
+        <h2>不想上课，，，</h2>
+        <p><strong>直播日期：</strong>2025年03月14日</p>
+        <p><strong>直播时间：</strong>09:11 - 10:05</p>
+        <p><strong>直播简介：</strong>上课摸鱼</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1VKQuYHEfT/" target="_blank">点击观看</a></p>
+        <div class="tags">
+            <span class="tag" onclick="filterByTag('2025')">2025</span>
+            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
+            <span class="tag" onclick="filterByTag('静音')">静音</span>
+            <span class="tag" onclick="filterByTag('摸鱼')">摸鱼</span>
+        </div>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,绘画,静音">
+      <div class="live-info">
+        <h2>进行一个事情的乱做</h2>
+        <p><strong>直播日期：</strong>2025年03月11日</p>
+        <p><strong>直播时间：</strong>11:11 - 12:03</p>
+        <p><strong>直播简介：</strong>静音绘画、弹幕交流</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1xbREYME7m/" target="_blank">点击观看</a></p>
+        <div class="tags">
+            <span class="tag" onclick="filterByTag('2025')">2025</span>
+            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
+            <span class="tag" onclick="filterByTag('静音')">静音</span>
+        </div>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,无畏契约,绘画">
+      <div class="live-info">
+        <h2>进行一个事情的乱做</h2>
+        <p><strong>直播日期：</strong>2025年03月08日</p>
+        <p><strong>直播时间：</strong>21:34 - 01:53</p>
+        <p><strong>直播简介：</strong>绘画，然后打瓦，然后下播</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1GVRaYdEdY/" target="_blank">点击观看</a></p>
+        <div class="tags">
+            <span class="tag" onclick="filterByTag('2025')">2025</span>
+            <span class="tag" onclick="filterByTag('无畏契约')">无畏契约</span>
+            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
+        </div>
+      </div>
+    </div>
    <div><div class="live-record" data-tags="2025,杂谈,御姐,大版,OSaKa,无畏契约,FPS">
   <div class="live-info">
     <h2>OSAKA本体上线！</h2>
@@ -57,6 +121,7 @@
         <span class="tag" onclick="filterByTag('FPS')">FPS</span>
     </div>
   </div>
+
 </div></div><div><div class="live-record" data-tags="2025,杂谈">
   <div class="live-info">
     <h2>看比赛！！！(马上开学版）/这么晚了，还没睡吗~？</h2>
@@ -333,9 +398,11 @@
     <p>本站为粉丝自制，与哔哩哔哩官方无关</p> 
   </div> 
 
-  <script>
+
+  <script src="js/fireworks.js"></script>
+<script src="js/menu.js"></script>
 
 
-  </script>
+</body>
 
-</body></html>
+</html>

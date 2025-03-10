@@ -2,893 +2,766 @@
 <html lang="zh-CN">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>御坂の画廊</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/tagsearch.css">
-    <link rel="stylesheet" href="css/pages.css">
-    <script src="js/pages.js"></script>
-    <script src="js/tagsearch.js"></script>
-    <script src="js/date.js"></script>
-    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
-    <style>
-        /* 画廊专属样式 */
-        .gallery-container {
-            padding: 0px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>御坂19039の温馨小站</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/menu.css">
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+  <style>
+    /* 新增动态样式 */
+    .dynamic-list {
+      margin-top: 20px;
+    }
 
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            padding: 20px 0;
-        }
+    .dynamic-item {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
 
-        .art-card {
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-        }
+    .dynamic-time {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 8px;
+    }
 
-        .art-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
+    .dynamic-content {
+      line-height: 1.6;
+    }
 
-        .art-image {
-            width: 100%;
-            height: 280px;
-            object-fit: cover;
-            border-bottom: 2px solid #f0f0f0;
-            cursor: zoom-in;
-        }
+    /* 首页专属样式 */
+    .banner {
+      background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
 
-        .art-info {
-            padding: 15px;
-        }
+    .profile-card {
+      background: white;
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      margin: 20px 0;
+      position: relative;
+      /* 新让子元素绝对定位相对于此元素 */
+    }
 
-        .art-title {
-            color: #e91e63;
-            font-size: 1.1em;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
+    /* 定义 times 类的基本样式 */
+    .times {
+        margin-left: auto;
+    }
 
-        .art-details {
-            color: #666;
-            font-size: 0.9em;
-            line-height: 1.5;
-        }
+    .avatar {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      margin-right: 30px;
+      border: 5px solid var(--secondary-color);
+    }
 
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin: 40px 0;
+    }
 
-            .art-image {
-                height: 220px;
-            }
-        }
+    .stat-card {
+      background-color: white;
+      /* 卡片背景颜色为白色 */
+      border-radius: 10px;
+      /* 卡片圆角 */
+      padding: 15px;
+      /* 卡片内边距 */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      /* 卡片阴影效果 */
+      text-align: center;
+      /* 卡片内文本居中显示 */
 
-        /* 灯箱样式 */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            z-index: 1000;
-            justify-content: center;
+    }
+
+    .stat-number {
+      color: var(--primary-color);
+      font-size: 2.5em;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    #countdown {
+      text-align: right;
+      /* 文字右对齐 */
+      font-size: 20px;
+      margin-top: 20px;
+    }
+
+    /* 新增样式，用于显示距离一万粉丝的差值 */
+    #fans-difference {
+      text-align: right;
+      font-size: 20px;
+      margin-top: 10px;
+    }
+
+    #debut-time {
+      text-align: right;
+      font-size: 20px;
+      margin-top: 10px;
+    }
+
+    /* 新增舰长统计卡片样式 */
+    #captain-count {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    #captain-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .captain-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      transition: all 0.3s ease; /* 添加过渡效果 */
+    }
+
+    .captain-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .captain-card:hover {
+      transform: translateY(-5px); /* 上浮效果 */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 阴影加深效果 */
+      cursor: pointer; /* 鼠标悬停时指针变为手型 */
+    }
+    .captain-card.rank1 {
+      border: 3px solid #e91e63; /* 较粗的边框 */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* 更深的阴影 */
+      background-color: #fde6e9; /* 背景色 */
+    }
+
+    .captain-card.rank2 {
+      border: 2px solid #9c27b0; /* 中等粗细的边框 */
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* 中等深度的阴影 */
+      background-color: #f3e5f5; /* 背景色 */
+    }
+
+    .captain-card.rank3 {
+      border: 1px solid #03a9f4; /* 较细的边框 */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 较浅的阴影 */
+      background-color: #e3f2fd; /* 背景色 */
+    }
+    /*数据页面 */
+    .stat-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: all 0.3s ease; /* 添加过渡效果 */
+}
+
+    .stat-card:hover {
+        transform: translateY(-5px); /* 上浮效果 */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 阴影加深效果 */
+        cursor: pointer; /* 鼠标悬停时指针变为手型 */
+    }
+
+        /* 媒体查询，当屏幕宽度小于等于 768px 时应用以下样式 */
+    @media (max-width: 768px) {
+        .profile-card {
+            /* 缩小内边距 */
+            padding: 10px;
+            /* 缩小上下外边距 */
+            margin: 10px 0;
+            /* 调整为垂直布局，在移动端更合适 */
+            flex-direction: column;
+            /* 让子元素水平居中 */
             align-items: center;
         }
-
-        .lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            object-fit: contain;
+        /* 倒计时 */
+        .times {
+             margin-left: auto;
+             margin-right: auto;
+        }
+        #countdown {
+          text-align: center;
+          font-size: 15px;
+        }
+        #fans-difference {
+          text-align: center;
+          font-size: 15px;
         }
 
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: white;
-            font-size: 30px;
-            cursor: pointer;
+        #debut-time {
+         text-align: center;
+         font-size: 15px;
         }
-        .lightbox .toggle-original-btn {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-            /* ===== 新增CSS样式 ===== */
-.loading {
-    display: none;
-    color: white;
-    font-size: 20px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    padding: 15px 25px;
-    background: rgba(0, 0, 0, 0.8);
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    align-items: center;
-}
-
-.loading::after {
-    content: " ";
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    margin-left: 10px;
-    border: 3px solid #ff69b4; /* 粉色边框 */
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.lightbox img {
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-}
-
-.lightbox img.flipping {
-    transform: rotateY(180deg);
-}
-    </style>
+    }
+  </style>
 </head>
 
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div>
-                <a href="index.html" class="nav-link">首页</a>
-                <a href="About.html" class="nav-link">关于</a>
-                <a href="time.html" class="nav-link active">时间轴</a>
-                <a href="Sound.html" class="nav-link active">语音按钮</a>
-                <a href="LiveHistory.html" class="nav-link">往期回放</a>
-                <a href="tools/galleryRecords.html" class="nav-link" target="_blank">添加作品</a>
-            </div>
-            <div class="util-buttons">
-                <div class="search-container">
-                    <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
-                    <button class="bilibili-btn toggle-tags-btn">标签筛选</button>
-                    <div class="tags-list" id="tags-list"></div>
-                    <button class="clear-search-btn">清除筛选</button>
-                </div>
-            </div>
-        </div>
-    </header>
 
-    <div class="container">
-        <div class="banner">
-            <h1>🎨 御坂画廊收藏集</h1>
-            <p>收藏每一份用心的作品 (๑>ᴗ<๑)</p>
-            <p>点击图片加载原图</p>
-        </div>
+  <div id="fireworks-container"></div>
+    <!-- 右键菜单 -->
+    <ul id="context-menu">
+        <li>打开网页</li>
+        <li>粘贴</li>
+        <li>彩蛋</li>
+    </ul>
+  <header class="header">
+    <div class="header-content">
+      <div>
+        <a href="index.html" class="nav-link">首页</a>
+        <a href="About.html" class="nav-link">关于</a>
+        <a href="gallery.html" class="nav-link active">画廊</a>
+        <a href="time.html" class="nav-link active">时间轴</a>
+        <a href="Sound.html" class="nav-link active">语音按钮</a>
+        <a href="LiveHistory.html" class="nav-link">往期回放</a>
+      </div>
+      <div>
+          <div class="util-buttons">
+            <a href="https://space.bilibili.com/12136555" target="_blank" class="bilibili-btn">个人主页</a>
+            <a href="https://live.bilibili.com/8414339" target="_blank" class="bilibili-btn">进入直播间</a>
+          </div>
+      </div>
+    </div>
+  </header>
 
-        <div class="gallery-container">
-            <div class="gallery-grid">
-                <!-- 分割 -->
-                <div class="art-card" data-tags="未完待续">
-                    <img src="img/gallery/web/To Be Continued.webp"  alt="未完待续"class="art-image" data-origin="img/gallery/origin/To Be Continued.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">未完待续</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/484106430"
-                                    target="_blank"
-                                    class="source-link">
-                                    东陆云鬼
-                                </a>
-                            </p>
-                            <a>创作日期：</a><span id="date-dot"></span></p>
-                            <p>简介：等我更新</p>
-                            <p>出处：
-                                <a href="https://live.bilibili.com/8414339"
-                                    target="_blank"
-                                    class="source-link">
-                                     未完待续
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('未完待续')">未完待续</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="万圣节，MISAKA，SINA">
-                    <img src="img/gallery/web/8416f54200235473598c5310a8c8043312136555.webp" alt="   万圣恐怖夜！" class="art-image" data-origin="img/gallery/origin/8416f54200235473598c5310a8c8043312136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">   万圣恐怖夜！</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <a>创作日期：2024.11.01</p>
-                            <p>简介：   万圣恐怖夜！</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/994850262719922183"
-                                    target="_blank"
-                                    class="source-link">
-                                    内个（颤抖）不给糖就捣蛋QAQ（颤抖）
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('万圣节')">万圣节</span>
-                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
-                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="表情包，MISAKA">
-                    <img src="img/gallery/web/9c541e944419f842ccf8ae3d3fa3819a12136555.webp" alt="直播间可以使用表情包啦！" class="art-image" data-origin="img/gallery/origin/9c541e944419f842ccf8ae3d3fa3819a12136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">直播间可以使用表情包啦！</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <a>创作日期：2024.10.26</p>
-                            <p>简介：目前的所有表情都是免费使用（在直播间内）</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/992627844783800329"
-                                    target="_blank"
-                                    class="source-link">
-                                     直播间可以使用表情包啦！
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
-                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="表情包，SINA">
-                    <img src="img/gallery/web/71178d440f6bcec5d5a51fe7d04ef45f8a0588af.webp" alt="酷盖" class="art-image" data-origin="img/gallery/origin/71178d440f6bcec5d5a51fe7d04ef45f8a0588af.png">
-                    <div class="art-info">
-                        <h3 class="art-title">酷盖</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <a>创作日期：未知</p>
-                            <p>简介：直播间表情</p>
-                            <p>出处：
-                                <a href="https://live.bilibili.com/8414339"
-                                    target="_blank"
-                                    class="source-link">
-                                     直播间
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
-                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="表情包，MISAKA">
-                    <img src="img/gallery/web/65c3819c35be945a798f605db1cf7d8d12136555.webp" alt="表情！" class="art-image" data-origin="img/gallery/origin/65c3819c35be945a798f605db1cf7d8d12136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">表情</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <a>创作日期：2024.09.20</p>
-                            <p>简介：表情</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/979172030079303687"
-                                    target="_blank"
-                                    class="source-link">
-                                     我本来要从平板用蓝牙把这张表情传到手机上的，结果点错传到别人手机上了😭我嘞个蓝牙啊
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
-                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="表情包，SINA">
-                    <img src="img/gallery/web/dc5bbc3a710525ed8e113d16c082eb6f12136555.webp" alt="表情！" class="art-image" data-origin="img/gallery/origin/dc5bbc3a710525ed8e113d16c082eb6f12136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">表情</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <a>创作日期：2024.09.20</p>
-                            <p>简介：表情</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/979172030079303687"
-                                    target="_blank"
-                                    class="source-link">
-                                     我本来要从平板用蓝牙把这张表情传到手机上的，结果点错传到别人手机上了😭我嘞个蓝牙啊
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
-                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 分割 -->
-                <div class="art-card" data-tags="一百天，SINA">
-                    <img src="img/gallery/web/4156bc49b46deab108bb95a97c25248e12136555.webp" alt="百日聊天回！" class="art-image" data-origin="img/gallery/origin/4156bc49b46deab108bb95a97c25248e12136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">百日聊天回！</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <a>创作日期：2024.09.06</p>
-                            <p>简介：等我更新</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/973982335205638151"
-                                    target="_blank"
-                                    class="source-link">
-                                     真的有一百天了(*´I`*)！
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('一百天')">一百天</span>
-                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="贺图，SINA，MISAKA">
-                    <img src="img/gallery/web/f995280bf26a8e51d7357761cd93c74412136555.webp" alt="「To The Moon」" class="art-image" data-origin="img/gallery/origin/f995280bf26a8e51d7357761cd93c74412136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">「To The Moon」</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <p>创作日期：2024.08.29</p>
-                            <p>简介：MISAKA和SINA贴贴</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/971068826945847300"
-                                    target="_blank"
-                                    class="source-link">
-                                     月色真美
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('贺图')">贺图</span>
-                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
-                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="贺图,SINA">
-                    <img src="img/gallery/web/a273948466979c704f2040c2748c4aa012136555.webp" alt="变回去叭！" class="art-image" data-origin="img/gallery/origin/a273948466979c704f2040c2748c4aa012136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">变回去叭！</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <p>创作日期：2024.06.14</p>
-                            <p>简介：8月好多事情繁忙</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/968079392234274838"
-                                    target="_blank"
-                                    class="source-link">
-                                    晚上才是SINA的主场
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('贺图')">贺图</span>
-                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="贺图，SINA，MISAKA">
-                    <img src="img/gallery/web/20b8d58f0c8c7bea7dcfb5aa8ffc825a12136555.webp" alt="夏日庆会と双满月回！" class="art-image" data-origin="img/gallery/origin/20b8d58f0c8c7bea7dcfb5aa8ffc825a12136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">夏日庆会と双满月回！</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <p>创作日期：2024.07.24</p>
-                            <p>简介：双满啦</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/958088830160732165"
-                                    target="_blank"
-                                    class="source-link">
-                                    直播预约：夏日庆会と双满月回
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('贺图')">贺图</span>
-                            <span class="tag" onclick="filterByTag('MISAKA')">MISAKA</span>
-                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="洗脑，梗图">
-                    <img src="img/gallery/web/a7c12ddd564d675df40f533cda2f48e812136555.webp" alt="🦌しかのこのこの🎶🐯ここしたんたん🎶" class="art-image" data-origin="img/gallery/origin/a7c12ddd564d675df40f533cda2f48e812136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">🦌しかのこのこの🎶🐯ここしたんたん</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <p>创作日期：2024.07.11</p>
-                            <p>简介：🦌しかのこのこの🎶🐯ここしたんたん🎶</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/952890000130703368"
-                                    target="_blank"
-                                    class="source-link">
-                                    🦌しかのこのこの🎶🐯ここしたんたん🎶
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('洗脑')">洗脑</span>
-                            <span class="tag" onclick="filterByTag('梗图')">梗图</span>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="贺图">
-                    <img src="img/gallery/web/ceea529e787ab1663ce569086dbbe86512136555.webp" alt="1000粉贺图" class="art-image" data-origin="img/gallery/origin/ceea529e787ab1663ce569086dbbe86512136555.png">
-                    <div class="art-info">
-                        <h3 class="art-title">1000粉贺图</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/16018113"
-                                    target="_blank"
-                                    class="source-link">
-                                    Nico小狐狸
-                                </a>
-                            </p>
-                            <p>创作日期：2024.06.14</p>
-                            <p>简介：千粉啦</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/942785165934985222"
-                                    target="_blank"
-                                    class="source-link">
-                                    呜呜呜是狐狸哥哥给sina画的贺图
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('贺图')">贺图</span>
-                        </div>
-                    </div>
-                </div>
-
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="表情包, 哭哭御坂, Q版">
-                    <img src="img/gallery/web/2660c8bc520c7257ad2b6706b330e23e12136555.webp" alt="Q版哭哭" class="art-image" data-origin="img/gallery/origin/2660c8bc520c7257ad2b6706b330e23e12136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">Q版哭哭</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <p>创作日期：2024.06.13</p>
-                            <p>简介：哭哭</p>
-                            <p>出处：
-                               <a href="https://www.bilibili.com/opus/942416524562399237"
-                                 target="_blank"
-                                 class="source-link">
-                                 这两天要回学校处理毕业的事情～
-                                <i class="fas fa-external-link-alt"></i>
-                              </a>     
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
-                            <span class="tag" onclick="filterByTag('Q版')">Q版</span>
-                            <span class="tag" onclick="filterByTag('哭哭御坂')">哭哭御坂</span>
-                        </div>
-                    </div>
-                </div>
-
-                
-                <!-- 分割 -->
-                <div class="art-card" data-tags="直播封面">
-                    <img src="img/gallery/web/cff6182bce7be259ed0459cf5b1bee8f12136555.webp" alt="直播常用封面2" class="art-image" data-origin="img/gallery/origin/cff6182bce7be259ed0459cf5b1bee8f12136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">直播常用封面2</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <p>创作日期：未知</p>
-                            <p>简介：直播常用封面2</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/939271435991384073"
-                                    target="_blank"
-                                    class="source-link">
-                                    VUP出道！！！
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('直播封面')">直播封面</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="直播封面">
-                    <img src="img/gallery/web/a910d782290e4e8f32eae88b9040f30112136555.webp" alt="直播常用封面1" class="art-image" data-origin="img/gallery/origin/a910d782290e4e8f32eae88b9040f30112136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">直播常用封面1</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <p>创作日期：未知</p>
-                            <p>简介：直播常用封面1</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/937876331851415558"
-                                    target="_blank"
-                                    class="source-link">
-                                    先提前发个自我介绍吧
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('直播封面')">直播封面</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 分割 -->
-                <div class="art-card" data-tags="哭哭御坂, 表情包">
-                    <img src="img/gallery/web/25f0c608cdd7302b9c85adffa1337c1612136555.webp" alt="哭哭御坂" class="art-image" data-origin="img/gallery/origin/25f0c608cdd7302b9c85adffa1337c1612136555.jpg">
-                    <div class="art-info">
-                        <h3 class="art-title">哭哭御坂</h3>
-                        <div class="art-details">
-                            <p>作者：
-                                <a href="https://space.bilibili.com/12136555"
-                                    target="_blank"
-                                    class="source-link">
-                                    御坂
-                                </a>
-                            </p>
-                            <p>创作日期：未知</p>
-                            <p>简介：哭哭御坂</p>
-                            <p>出处：
-                                <a href="https://www.bilibili.com/opus/937876331851415558"
-                                    target="_blank"
-                                    class="source-link">
-                                    先提前发个自我介绍吧
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </p>
-                        </div>
-                        <div class="tags">
-                            <span class="tag" onclick="filterByTag('哭哭御坂')">哭哭御坂</span>
-                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- 更多画作... -->
-            </div>
-        </div>
-
-        <div class="pagination-container">
-            <div class="page-info">共<span id="total-count">0</span>幅画，当前第<span id="current-page">1</span>页/共<span id="total-pages">1</span>页</div>
-            <div class="page-buttons" id="page-buttons"></div>
-            <div class="jump-to">
-                跳转到第<input type="number" id="jump-page" min="1">页
-                <button onclick="jumpToPage()">跳转</button>
-            </div>
-         </div>
-        <!-- 页脚 -->
-        <div style="text-align: center; padding: 30px; color: #666;">
-            <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
-            <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
-        </div>
+  <div class="container">
+    <div class="banner">
+      <h1>⚡御坂19039の温馨小站⚡</h1>
+      <p>欢迎来到御坂19039的应援基地！(≧∇≦)ﾉ</p>
     </div>
 
-    <!-- 灯箱 -->
-    <div class="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <img src="" alt="放大的图片">
-        <button class="toggle-original-btn">查看原图</button>
-        <div class="loading">正在加载原图...</div>
+    <div class="profile-card">
+      <img src="img/face.jpg" alt="御坂19039" class="avatar">
+      <div>
+        <h2 style="color: #e91e63; margin-top: 0;">✨ 主播介绍 ✨</h2>
+        <p>🎤 B站ID：御坂19039</p>
+        <p>🎈出道日期：2024年5月27日</p>
+        <p>🌟 直播类型：聊天互动 | 游戏实况 | 才艺展示</p>
+        <p>💖 直播时间：不定期直播哦~时间变动会发动态嘟</p>
+        <p>📌 个人标签：元气满满 | 超电磁炮 | 治愈系</p>
+        <div style="margin-top: 20px;">
+          <a href="https://space.bilibili.com/12136555/" target="_blank" class="bilibili-btn">个人主页</a>
+          <a href="https://live.bilibili.com/8414339/" target="_blank" class="bilibili-btn">直播间</a>
+        </div>
+      </div>
+      <div class="times">
+        <div id="countdown">生日回倒计时：加载中...</div>
+        <!-- 新增元素，用于显示已出道时间 -->
+        <div id="debut-time">已出道：加载中...</div>
+        <!-- 新增元素，用于显示距离一万粉丝的差值 -->
+        <div id="fans-difference">距离一万粉丝还差：加载中...</div>
+      </div>
     </div>
 
-    <script>
-        // 灯箱相关变量
-        let currentImageLoader = null;  // 当前正在加载的图片对象
-        let currentToggleHandler = null; // 当前的切换处理函数
-        let isLightboxOpen = false;  // 标记灯箱是否处于打开状态
-        let currentOriginalLink = null; // 新增变量
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>粉丝数量</h3>
+        <div class="stat-number loading" id="fans-count"></div>
+        <p>持续增长中...</p>
+      </div>
+      <div class="stat-card">
+        <h3>直播间人气</h3>
+        <div class="stat-number loading" id="live-popularity"></div>
+        <p id="live-status">当前直播状态</p>
+      </div>
+      <!-- 新增舰长统计卡片 -->
+      <div class="stat-card" id="captain-count">
+        <h3>舰长数量</h3>
+        <div class="stat-number loading" id="captain-number"></div>
+        <p>感谢舰长们的支持！</p>
+      </div>
+    </div>
 
-        // 获取页面元素
-        const lightbox = document.querySelector('.lightbox'); // 灯箱容器
-        const lightboxImage = lightbox.querySelector('img'); // 灯箱内的图片元素
-        const lightboxClose = lightbox.querySelector('.lightbox-close'); // 关闭按钮
-        const toggleOriginalBtn = document.querySelector('.toggle-original-btn'); // 原图切换按钮
-        const loadingIndicator = document.querySelector('.loading'); // 加载指示器
+    <h1>舰长列表</h1>
+    <div id="captain-list"></div>
 
-        // 初始化图片点击事件
-        document.querySelectorAll('.art-image').forEach(img => {
-            img.addEventListener('click', () => {
-                const thumbnail = img.src; // 获取缩略图路径
-                const original = img.dataset.origin; // 获取原图路径
-                openLightbox(thumbnail, original); // 打开灯箱
-            });
-        });
+    <!-- 直播特色 -->
+    <div class="live-card">
+      <h3>🌟 直播特色 🌟</h3>
+      <div class="dynamic-item">
+        <ul>
+          <li>💬 实时互动：弹幕及时回复，点歌点梗都可以！</li>
+          <li>🎮 多元内容：从热门游戏到经典怀旧全涵盖</li>
+          <li>🎉 定期活动：生日会、纪念回、节庆特别企划</li>
+          <li>🎁 粉丝福利：定期抽奖、定制周边</li>
+        </ul>
+      </div>
+    </div>
 
-        /**
-         * 打开灯箱并显示图片
-         * @param {string} thumbnail 缩略图路径
-         * @param {string} original 原图路径
-         */
-        function openLightbox(thumbnail, original) {
-            resetLightboxState(); // 重置灯箱状态
-            isLightboxOpen = true; // 标记灯箱已打开
-            currentOriginalLink = original; // 保存原图链接
+    <!-- 最新动态 -->
+    <div class="live-card">
+      <h3>📢 最新动态</h3>
+      <div id="dynamics-container" class="dynamic-list">
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 01月30日</div>
+          <div class="dynamic-time">投稿视频</div>
+          <div class="dynamic-content">新年快乐呀～</div>
+          <div class="dynamic-content"><a class="source-link" href="https:www.bilibili.com/video/BV1EYFVeZEMJ/" target="_blank">咱们农村娃儿过年是这样的</a></div>
+        </div>
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 01月28日</div>
+          <div class="dynamic-time">文字动态</div>
+          <div class="dynamic-content">春节到，鸿运照，烦恼的事儿往边靠，祝你出门遇贵人，在家听喜报！年年有此时，岁岁有今朝！愿你和你的家人幸福快乐！万事如意！每天都要开开心心的哦！</div>
+        </div>
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 2024年12月23日</div>
+          <div class="dynamic-time">文字动态</div>
+          <div class="dynamic-content">不要笑挑战的搞笑视频征集啦～可以直接在这条动态下分享bv号，也可以直接分享视频给我～届时会开启只要笑就吃柠檬挑战！欢迎大家多多分享！搞笑视频尽量在10-15秒左右，不宜过长哦～</div>
+        </div>
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 2024年12月21日</div>
+          <div class="dynamic-time">投稿视频</div>
+          <div class="dynamic-content">呜呜呜呜我以前没玩过恐怖游戏不敢玩第一次玩轻喷好嘛QAQ</div>
+          <div class="dynamic-content"><a class="source-link" href="https:www.bilibili.com/video/BV14BkUY8EK4/" target="_blank">小小梦魇，拿下！（乱叫版）</a></div>
+        </div>
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 2024年12月17日</div>
+          <div class="dynamic-time">文字动态</div>
+          <div class="dynamic-content">因为26号就考专业期末了所以这两周跟大家请个假抱个佛脚哦😭考期末的大家也要加油哦！！！😭29号见～</div>
+        </div>
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 2024年12月13日</div>
+          <div class="dynamic-time">文字动态</div>
+          <div class="dynamic-content">勿忘国耻！吾辈自强！时代在进步，但我们永远不能忘记这段历史！</div>
+        </div>
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 2024年12月05日</div>
+          <div class="dynamic-time">文字动态</div>
+          <div class="dynamic-content">谁家好人没有收到期末报曲目的通知现在找处找人问啊😭整个大三专升本就我一个是民乐的，为了收集信息现在在教学楼两头跑喵，真的不知道什么时候考试啊😭我要哭了</div>
+        </div>
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 2024年11月05日</div>
+          <div class="dynamic-time">文字动态</div>
+          <div class="dynamic-content">那啥，跑步之前记得先把鞋带系好再跑，或者想体验一下与大地亲吻QAQ</div>
+        </div>
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 2024年11月01日</div>
+          <div class="dynamic-time">文字动态</div>
+          <div class="dynamic-content">内个（颤抖）不给糖就捣蛋QAQ（颤抖）呃呃呃呃呃呃QAQ
+  其实也不是不敢玩恐怖游戏吧也不是怕就是电脑没内存了不太好玩，啊对就是容易卡，对对对QAQ
 
-            lightboxImage.src = thumbnail; // 显示缩略图
-            lightbox.style.display = 'flex'; // 显示灯箱
-            toggleOriginalBtn.textContent = '查看原图'; // 设置按钮文本
+    万圣恐怖夜！
+               《小小梦魇》启动！
+                    （我尽力了QAQ）
 
-            // 创建切换处理函数并绑定事件
-            currentToggleHandler = createToggleHandler(thumbnail, original);
-            toggleOriginalBtn.addEventListener('click', currentToggleHandler);
+              11.2日零时！来看sina害怕！</div>
+        </div>
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 2024年10月31日</div>
+          <div class="dynamic-time">文字动态</div>
+          <div class="dynamic-content">呃呃呃吹笙吹红温了然后给自己手来了一口😭不是这乐器怎么越拿越重哇😭</div>
+        </div>
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 2024年10月26日</div>
+          <div class="dynamic-time">文字动态</div>
+          <div class="dynamic-content">直播间可以使用表情包啦！目前的所有表情都是免费使用（在直播间内）
+  今天打算早点啵啵，玩mc好呢？还是星露谷好呢～？</div>
+        </div>
+        <div class="dynamic-item">
+          <div class="dynamic-time">📅 2024年10月25日</div>
+          <div class="dynamic-time">文字动态</div>
+          <div class="dynamic-content">丸辣，我忘记画舰礼了😭</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 页脚 -->
+    <div style="text-align: center; padding: 30px; color: #666;">
+      <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
+      <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
+    </div>
+
+  </div>
+
+  <script>
+     // 配置信息
+    const CONFIG = {
+        UID: 12136555,
+        ROOM_ID: 8414339,
+        CORS_PROXY: 'https://api.allorigins.win/get?url=', // 备用代理
+        REFRESH_INTERVAL: 300000, // 5分钟刷新
+        PAGE_SIZE: 10
+    };
+    // 新增全局变量，用于存储舰长数量
+    let globalCaptainCount;
+    // 新增全局变量，用于存储直播间人气数据
+    let globalLivePopularity;
+    // 新增全局变量，用于存储粉丝数量
+    let globalFollowerCount;
+
+    // 元素引用
+    const elements = {
+        fans: document.getElementById('fans-count'),
+        popularity: document.getElementById('live-popularity'),
+        liveStatus: document.getElementById('live-status'),
+        fansDifference: document.getElementById('fans-difference'),
+        debutTime: document.getElementById('debut-time'),
+        captain: document.getElementById('captain-number'),
+        fansCard: document.querySelector('.stat-card:nth-child(1)'), // 粉丝数量卡片
+        captainCard: document.querySelector('.stat-card:nth-child(3)'), // 舰长数量卡片
+        popularityCard: document.querySelector('.stat-card:nth-child(2)') // 直播间人气卡片
+    };
+
+    // 通用请求方法
+    async function fetchData(url) {
+      try {
+        const response = await fetch(`${CONFIG.CORS_PROXY}${encodeURIComponent(url)}`);
+        if (!response.ok) throw new Error('网络请求失败');
+
+        const data = await response.json();
+        return JSON.parse(data.contents);
+      } catch (error) {
+        console.error('数据获取失败:', error);
+        return null;
+      }
+    }
+
+    // 更新统计数据
+    function updateStat(element, value, suffix = '') {
+      element.classList.remove('loading');
+      if (value === null) {
+        element.textContent = '数据暂不可用';
+        element.style.color = '#999';
+      } else {
+        let displayValue;
+        if (value >= 10000) {
+          displayValue = `${(value / 10000).toFixed(1)}万${suffix}`;
+        } else {
+          displayValue = `${value}${suffix}`;
+        }
+        element.textContent = displayValue;
+        element.style.color = '#e91e63';
+      }
+    }
+
+    // 加载所有数据
+    async function loadAllData() {
+        // 粉丝数据
+        const fansData = await fetchData(
+            `https://api.bilibili.com/x/relation/stat?vmid=${CONFIG.UID}`
+        );
+        const followerCount = fansData?.data?.follower;
+        // 将获取到的粉丝数量保存到全局变量中
+        globalFollowerCount = followerCount;
+        updateStat(elements.fans, followerCount);
+
+        // 计算距离粉丝的差值
+        if (followerCount!== null) {
+            const difference = 2000 - followerCount;
+            if (difference > 0) {
+                elements.fansDifference.textContent = `距离2000粉丝仅差：${difference} 位粉丝`;
+            } else {
+                elements.fansDifference.textContent = '已达到2000粉丝！';
+            }
+        } else {
+            elements.fansDifference.textContent = '数据暂不可用';
         }
 
-        /**
-        * 创建一个用于切换显示缩略图和原图的处理函数
-        */
-        function createToggleHandler(thumbnail, original) {
-            // 标记当前是否显示的是原图，初始值为 false 表示当前显示的是缩略图
-            let isOriginal = false; 
-            // 标记当前是否正在加载图片，初始值为 false 表示没有正在加载
-            let isLoading = false; 
+        // 直播间数据
+        const liveData = await fetchData(
+            `https://api.live.bilibili.com/room/v1/Room/get_info?room_id=${CONFIG.ROOM_ID}`
+        );
+        const online = liveData?.data?.online;
+        // 将获取到的直播间人气数据保存到全局变量中
+        globalLivePopularity = online;
+        updateStat(elements.popularity, online);
+        elements.liveStatus.textContent = liveData?.data?.live_status === 1
+          ? '🔴 正在直播中'
+          : '⚪️ 当前未开播';
 
-            // 返回一个事件处理函数，用于处理点击“查看原图”或“查看缩略图”按钮的事件
-            return function() {
-                // 如果正在加载图片或者灯箱处于关闭状态，则不执行后续操作，直接返回
-                if (isLoading || !isLightboxOpen) return; 
+        // 舰长数据
+        const captainData = await fetchData(
+            `https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=${CONFIG.ROOM_ID}&page=1&ruid=${CONFIG.UID}&page_size=${CONFIG.PAGE_SIZE}`
+        );
+        const captainCount = captainData?.data?.info?.num || null;
+        // 将获取到的舰长数量保存到全局变量中
+        globalCaptainCount = captainCount;
+        updateStat(elements.captain, captainCount);
+    }
 
-                // 如果当前显示的是原图
-                if (isOriginal) {
-                    // 调用 startFlipAnimation 函数启动图片翻转动画，动画完成后执行回调函数
-                    startFlipAnimation(() => {
-                        // 将灯箱中显示的图片路径设置为缩略图路径
-                        lightboxImage.src = thumbnail; 
-                        // 将按钮的文本设置为“查看原图”
-                        toggleOriginalBtn.textContent = '查看原图'; 
-                        // 标记当前显示的不是原图
-                        isOriginal = false; 
-                    });
-                } else {
-                    // 如果当前显示的是缩略图，标记正在加载图片
-                    isLoading = true; 
-                    // 调用 startFlipAnimation 函数启动图片翻转动画，动画完成后执行回调函数
-                    startFlipAnimation(() => {
-                        // 显示加载指示器，提示用户正在加载原图
-                        loadingIndicator.style.display = 'flex'; 
+    // 新增倒计时功能
+    function updateCountdown() {
+      const now = new Date();
+      // 可以修改下面这一行来改变目标日期，这里设置为每年的5月27日
+      let targetYear = now.getFullYear();
+      const targetDate = new Date(targetYear, 4, 27); // 注意：月份是从0开始计数，4代表5月
+      if (now > targetDate) {
+        targetYear++;
+        targetDate.setFullYear(targetYear);
+      }
+      const timeDiff = targetDate - now;
 
-                        // 创建一个新的 Image 对象，用于加载原图
-                        currentImageLoader = new Image(); 
-                        // 将 Image 对象的 src 属性设置为原图的路径，开始加载原图
-                        currentImageLoader.src = original; 
-                        // 调用 finishImageLoad 函数完成图片加载后的处理，显示原图
-                        finishImageLoad(original); 
+      if (timeDiff > 0) {
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+        const countdownElement = document.getElementById('countdown');
+        // 修改显示格式为 “生日回倒计时: 58天:3小时:50分:25秒”
+        countdownElement.textContent = `生日回倒计时: ${days}天:${hours}小时:${minutes}分:${seconds}秒`;
+      } else {
+        const countdownElement = document.getElementById('countdown');
+        countdownElement.textContent = '生日回已到！';
+      }
+    }
 
-                        // 为 Image 对象的 onload 事件绑定回调函数，当图片加载成功时执行
-                        currentImageLoader.onload = () => {
-                            // 如果灯箱处于打开状态
-                            if (isLightboxOpen) {
-                                  loadingIndicator.style.display = 'none'; // 隐藏加载提示
-                                // 标记当前显示的是原图
-                                isOriginal = true; 
-                            }
-                            // 标记加载完成
-                            isLoading = false; 
-                        };
+    // 计算出道时间
+    function calculateDebutTime() {
+      const debutDate = new Date(2024, 4, 27); // 出道日期，注意月份从0开始
+      const now = new Date();
+      const timeDiff = now - debutDate;
 
-                        // 为 Image 对象的 onerror 事件绑定回调函数，当图片加载失败时执行
-                        currentImageLoader.onerror = () => {
-                            // 如果灯箱处于打开状态
-                            if (isLightboxOpen) {
-                                // 调用 handleLoadError 函数处理图片加载失败的情况
-                                handleLoadError(); 
-                            }
-                            // 标记加载完成
-                            isLoading = false; 
-                        };
-                    });
-                }
+      const totalSeconds = Math.floor(timeDiff / 1000);
+      const seconds = totalSeconds % 60;
+      const totalMinutes = Math.floor(totalSeconds / 60);
+      const minutes = totalMinutes % 60;
+      const totalHours = Math.floor(totalMinutes / 60);
+      const hours = totalHours % 24;
+      const totalDays = Math.floor(totalHours / 24);
+      const years = Math.floor(totalDays / 365);
+      const remainingDays = totalDays % 365;
+
+      let displayText = '';
+      if (years >= 1) {
+        displayText = `${years}年${remainingDays}天:${hours}小时:${minutes}分:${seconds}秒`;
+      } else {
+        displayText = `${remainingDays}天:${hours}小时:${minutes}分:${seconds}秒`;
+      }
+
+      elements.debutTime.textContent = `已出道：${displayText}`;
+    }
+
+    // 去除 HTML 标签的函数
+    function stripHtmlTags(str) {
+      return str.replace(/<[^>]*>/g, '');
+    }
+
+    // 渲染舰长列表
+    function renderCaptainList(captains) {
+      const captainList = document.getElementById('captain-list');
+      captainList.innerHTML = '';
+      if (captains && captains.length > 0) {
+        captains.forEach((captain, index) => {
+          const card = document.createElement('div');
+          card.classList.add('captain-card');
+          if (index === 0) {
+            card.classList.add('rank1'); // 排名1的舰长添加rank1类
+          } else if (index === 1) {
+            card.classList.add('rank2'); // 排名2的舰长添加rank2类
+          } else if (index === 2) {
+            card.classList.add('rank3'); // 排名3的舰长添加rank3类
+          }
+
+          const avatar = document.createElement('img');
+          avatar.classList.add('captain-avatar');
+
+          let displayName = captain.username || '未知舰长';
+          displayName = stripHtmlTags(displayName);
+          avatar.alt = displayName;
+
+          const originalSrc = captain.face;
+          // 提取文件名并将扩展名替换为.jpg
+          let fileName = originalSrc.split('/').pop().replace(/\.\w+$/, '.jpg');
+          const localSrc = `img/face/${fileName}`;
+          const defaultSrc = 'img/face/Fans.jpg';
+
+          // 尝试加载本地头像
+          function tryLoadAvatar(src) {
+            avatar.src = src;
+            avatar.onerror = function () {
+              if (src === localSrc) {
+                // 本地头像加载失败，尝试默认头像
+                tryLoadAvatar(defaultSrc);
+              } else {
+                // 默认头像也加载失败，不显示头像
+                avatar.style.display = 'none';
+              }
             };
-        }
+          }
 
-        /**
-         * 启动图片翻转动画
-         * @param {function} callback 动画完成后的回调函数
-         */
-        function startFlipAnimation(callback) {
-            lightboxImage.style.transform = 'rotateY(180deg)'; // 开始翻转
-            setTimeout(() => {
-                callback(); // 执行回调
-                lightboxImage.style.transform = 'rotateY(0deg)'; // 恢复正常状态
-            }, 300); // 动画时长300ms
-        }
+          tryLoadAvatar(localSrc);
 
-        /**
-         * 完成图片加载处理
-         * @param {string} src 加载成功的图片路径
-         */
-        function finishImageLoad(src) {
-            lightboxImage.src = src; // 显示原图
-            toggleOriginalBtn.textContent = '查看缩略图'; // 设置按钮文本
-        }
+          const name = document.createElement('p');
+          name.textContent = displayName;
 
-        /**
-         * 处理图片加载失败
-         */
-        function handleLoadError() {
-            loadingIndicator.style.display = 'none'; // 隐藏加载提示
-            lightboxImage.style.transform = 'rotateY(0deg)'; // 恢复正常状态
-            alert('原图加载失败，请稍后再试 (＞﹏＜)'); // 显示错误提示
-        }
+          // 添加点击事件监听器
+          card.addEventListener('click', () => {
+            const uid = captain.uid;
+            window.open(`https://space.bilibili.com/${uid}`, '_blank');
+          });
 
-        /**
-         * 重置灯箱状态
-         */
-        function resetLightboxState() {
-            // 取消正在进行的图片加载
-            if (currentImageLoader) {
-                currentImageLoader.src = '';
-                currentImageLoader = null;
-            }
-
-            // 移除旧的事件监听器
-            if (currentToggleHandler) {
-                toggleOriginalBtn.removeEventListener('click', currentToggleHandler);
-            }
-
-            // 重置视觉状态
-            lightboxImage.style.transform = 'rotateY(0deg)';
-            loadingIndicator.style.display = 'none';
-        }
-
-        // 关闭灯箱事件
-        lightboxClose.addEventListener('click', closeLightbox);
-
-        // 点击灯箱背景关闭灯箱
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) { // 仅当点击灯箱背景时关闭
-                closeLightbox();
-            }
+          card.appendChild(avatar);
+          card.appendChild(name);
+          captainList.appendChild(card);
         });
+      } else {
+        const message = document.createElement('p');
+        message.textContent = '暂无舰长信息';
+        captainList.appendChild(message);
+      }
+    }
 
-        // 关闭灯箱函数
-        function closeLightbox() {
-            isLightboxOpen = false; // 标记灯箱关闭
-            lightbox.style.display = 'none'; // 隐藏灯箱
-            resetLightboxState(); // 重置状态
+    // 加载舰长数据
+        async function loadCaptainData() {
+            const url = `https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=${CONFIG.ROOM_ID}&page=1&ruid=${CONFIG.UID}&page_size=${CONFIG.PAGE_SIZE}`;
+            const captainData = await fetchData(url);
+            console.log('处理后的舰长数据:', captainData); // 打印处理后的舰长数据
+            if (captainData) {
+                // 合并 data.list 和 data.top3 中的舰长数据
+                const allCaptains = [
+                   ...(captainData.data.top3 || []),
+                   ...(captainData.data.list || [])
+                ];
+                renderCaptainList(allCaptains);
+            }
         }
 
-        // 支持ESC键关闭灯箱
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') { // 检测到ESC键
-                closeLightbox();
-            }
-        });
+    // 初始化倒计时
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
 
-        
-    </script>
+    // 初始化已出道时间显示
+    calculateDebutTime();
+    setInterval(calculateDebutTime, 1000);
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+        loadAllData();
+        setInterval(loadAllData, CONFIG.REFRESH_INTERVAL);
+        loadCaptainData();
+
+    // 粉丝数量卡片点击事件
+elements.fansCard.addEventListener('click', () => {
+    // 使用全局变量获取目标数量
+    const targetCount = globalFollowerCount;
+    const totalDuration = 1000; // 动画总时长，单位为毫秒，这里设置为1秒
+    const startTime = Date.now();
+    let currentCount = 0;
+
+    const intervalId = setInterval(() => {
+        const elapsedTime = Date.now() - startTime;
+        const progress = Math.min(elapsedTime / totalDuration, 1); // 确保进度不超过1
+        currentCount = Math.floor(targetCount * progress); // 根据进度计算当前数量
+
+        let displayValue;
+        if (targetCount >= 10000) {
+            if (currentCount >= 10000) {
+                displayValue = `${(currentCount / 10000).toFixed(1)}万`;
+            } else {
+                displayValue = currentCount;
+            }
+        } else {
+            displayValue = currentCount;
+        }
+
+        elements.fans.textContent = displayValue;
+
+        if (elapsedTime >= totalDuration) {
+            clearInterval(intervalId);
+            if (targetCount >= 10000) {
+                elements.fans.textContent = `${(targetCount / 10000).toFixed(1)}万`;
+            } else {
+                elements.fans.textContent = targetCount;
+            }
+        }
+    }, 10);
+});
+
+    // 舰长数量卡片点击事件
+    elements.captainCard.addEventListener('click', () => {
+        const targetCount = parseInt(elements.captain.textContent);
+        const totalDuration = 1000; // 动画总时长，单位为毫秒，这里设置为1秒
+        const startTime = Date.now();
+        let currentCount = 0;
+
+        const intervalId = setInterval(() => {
+            const elapsedTime = Date.now() - startTime;
+            const progress = Math.min(elapsedTime / totalDuration, 1); // 确保进度不超过1
+            currentCount = Math.floor(targetCount * progress); // 根据进度计算当前数量
+            elements.captain.textContent = currentCount;
+
+            if (elapsedTime >= totalDuration) {
+                clearInterval(intervalId);
+                elements.captain.textContent = targetCount;
+            }
+        }, 10);
+    });
+
+    // 直播间人气卡片点击事件
+    elements.popularityCard.addEventListener('click', () => {
+        // 使用全局变量获取目标数量
+        const targetCount = globalLivePopularity;
+        if (isNaN(targetCount)) {
+            console.error('globalLivePopularity 不是有效的数字');
+            return;
+        }
+        const totalDuration = 1000; // 动画总时长，单位为毫秒，这里设置为1秒
+        const startTime = Date.now();
+        let currentCount = 0;
+
+        const intervalId = setInterval(() => {
+            const elapsedTime = Date.now() - startTime;
+            const progress = Math.min(elapsedTime / totalDuration, 1); // 确保进度不超过1
+            currentCount = Math.floor(targetCount * progress); // 根据进度计算当前数量
+
+            let displayValue;
+            if (targetCount >= 10000) {
+                if (currentCount >= 10000) {
+                    displayValue = `${(currentCount / 10000).toFixed(1)}万`;
+                } else {
+                    displayValue = currentCount;
+                }
+            } else {
+                displayValue = currentCount;
+            }
+
+            elements.popularity.textContent = displayValue;
+
+            if (elapsedTime >= totalDuration) {
+                clearInterval(intervalId);
+                if (targetCount >= 10000) {
+                    elements.popularity.textContent = `${(targetCount / 10000).toFixed(1)}万`;
+                } else {
+                    elements.popularity.textContent = targetCount;
+                }
+            }
+        }, 10);
+    });
+});
+
+    // 错误处理
+    window.addEventListener('error', (event) => {
+      console.error('全局错误:', event.error);
+      [elements.fans, elements.popularity, elements.captain].forEach(el => {
+        el.textContent = '数据获取失败';
+        el.style.color = '#ff0000';
+      });
+    });
+  </script>
+    <script src="js/fireworks.js"></script>
+    <script src="js/menu.js"></script>
 </body>
 
 </html>
