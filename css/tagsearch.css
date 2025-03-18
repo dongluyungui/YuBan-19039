@@ -3,7 +3,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  position: relative;
+  position: relative; 
+ height: 30px; /* 设置固定高度为 50 像素 */
 }
 
 .search-box {
@@ -117,12 +118,14 @@
 @media (max-width: 768px) {
   /* 搜索容器适配 */
   .search-container {
+    /* space-between使工具按钮在容器内分散对齐，均匀分布空间，如果希望按钮有不同的对齐方式，可以改为 center（居中对齐）、flex-start（左对齐）等 */
+    justify-content: space-between; 
     /* 将元素的显示方式设置为弹性布局（Flexbox），以实现灵活的子元素排列 */
     display: flex;
     /* column使弹性容器内的子元素垂直排列，在移动端更节省空间和便于操作 row：水平排列，从左到右。row-reverse：水平排列，从右到左。column：垂直排列，从上到下。column-reverse：垂直排列，从下到上。*/
     flex-direction: row; 
     /* 设置弹性容器内子元素之间的间距为 8 像素，增强元素之间的分隔感 */
-    gap: 8px; 
+    gap: 0px; 
     /* 设置该容器的宽度为其父元素宽度的 100%，以适应移动端屏幕宽度 */
     width: 100%; 
   }

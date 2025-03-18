@@ -163,11 +163,11 @@ height: 30px; /* 设置固定高度为 50 像素 */
 
   .header-content {
     flex-wrap: wrap; /* 允许元素换行 */
-    gap: 10px;
+    gap: 10px; /* 元素间距 */
   }
 
   .nav-link {
-    padding: 8px 12px; /* 调整内边距 */
+    padding: 8px 8px; /* 调整内边距 */
     font-size: 14px; /* 适当缩小字体 */
     min-width: 60px; /* 保证最小点击区域 */
     text-align: center; /* 文字居中 */
@@ -181,6 +181,7 @@ height: 30px; /* 设置固定高度为 50 像素 */
     width: 100%;
     /* space-between使工具按钮在容器内分散对齐，均匀分布空间，如果希望按钮有不同的对齐方式，可以改为 center（居中对齐）、flex-start（左对齐）等 */
     justify-content: space-between; 
+    display: none; /* 隐藏元素 */
   }
 
   /* 哔哩哔哩风格按钮适配 */

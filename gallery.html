@@ -133,17 +133,16 @@
                 <a href="index.html" class="nav-link">首页</a>
                 <a href="About.html" class="nav-link">关于</a>
                 <a href="time.html" class="nav-link active">时间轴</a>
+                <a href="https://www.tovery.net/guestbook.asp?user=yuban19039&page=1" class="nav-link active"target="_blank" rel="noopener noreferrer">留言版</a>
                 <a href="Sound.html" class="nav-link active">语音按钮</a>
                 <a href="LiveHistory.html" class="nav-link">往期回放</a>
                 <a href="tools/galleryRecords.html" class="tools-link" target="_blank">添加作品</a>
             </div>
-            <div class="util-buttons">
-                <div class="search-container">
-                    <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
-                    <button class="tag-search-btn toggle-tags-btn">标签筛选</button>
-                    <div class="tags-list" id="tags-list"></div>
-                    <button class="clear-search-btn">清除筛选</button>
-                </div>
+            <div class="search-container">
+                <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
+                <button class="tag-search-btn toggle-tags-btn">标签筛选</button>
+                <div class="tags-list" id="tags-list"></div>
+                <button class="clear-search-btn">清除筛选</button>
             </div>
         </div>
     </header>
@@ -152,12 +151,12 @@
         <div class="banner">
             <h1>🎨 御坂画廊收藏集</h1>
             <p>收藏每一份用心的作品 (๑>ᴗ<๑)</p>
-            <p>点击图片加载原图</p>
+            <p>点击图片查看原图</p>
         </div>
 
         <div class="gallery-container">
             <div class="gallery-grid">
-                <!-- 分割 -->
+               
                 <div class="art-card" data-tags="未完待续">
                     <img src="img/gallery/web/To Be Continued.webp"  alt="未完待续"class="art-image" data-origin="img/gallery/origin/To Be Continued.jpg">
                     <div class="art-info">
@@ -185,7 +184,35 @@
                         </div>
                     </div>
                 </div>
-
+                
+                <!-- 分割 -->
+                <div class="art-card" data-tags="表情包">
+                    <img src="img/gallery/web/232593204e45c0ef8339414a888691b112136555.webp" alt="新表情包" class="art-image" data-origin="img/gallery/origin/232593204e45c0ef8339414a888691b112136555.jpg">
+                    <div class="art-info">
+                        <h3 class="art-title">新表情包</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：2025.03.12</p>
+                            <p>简介：下头御坂</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/1043350596779769892"
+                                    target="_blank"
+                                    class="source-link">
+                                    今天就是植树节了，有没有姐姐妹妹愿意栽在我的手里，没有的话我等会来问。
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('表情包')">表情包</span>
+                        </div>
+                    </div>
+                </div>
                 <!-- 分割 -->
                 <div class="art-card" data-tags="万圣节，MISAKA，SINA">
                     <img src="img/gallery/web/8416f54200235473598c5310a8c8043312136555.webp" alt="   万圣恐怖夜！" class="art-image" data-origin="img/gallery/origin/8416f54200235473598c5310a8c8043312136555.jpg">

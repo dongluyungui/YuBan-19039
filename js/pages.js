@@ -20,7 +20,7 @@ function initPagination() {
         </div>
     */
     // 获取所有需要分页的元素，支持添加多个类名，用逗号分隔
-    const artCards = document.querySelectorAll('.art-card, .live-record, .date-log,.yet-another-class,.yet-another-class,.yet-another-class');
+    const artCards = document.querySelectorAll('.art-card, .live-record, .date-log,.dynamic-item,.yet-another-class,.yet-another-class');
     // 总项数
     const totalItems = artCards.length;
     // 总页数，通过总项数除以每页显示的项数并向上取整得到

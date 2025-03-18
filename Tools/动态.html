@@ -3,6 +3,7 @@
 
 <head>
     <title>B站动态解析</title>
+    <link rel="stylesheet" href="../css/styles.css">
     <meta charset="UTF-8">
     <style>
         body {
@@ -17,15 +18,18 @@
             margin-bottom: 10px;
         }
 
-        #result {
-            white-space: pre-wrap;
+        #output {
+            width: 100%;
+            height: 300px;
+            margin-top: 10px;
             padding: 10px;
             border: 1px solid #ccc;
+            white-space: pre-wrap;
+            font-family: monospace;
         }
 
-        #copy-button,
-        #open-button {
-            margin-top: 10px;
+        button {
+            margin: 5px 0;
         }
     </style>
 </head>
@@ -33,14 +37,14 @@
 <body>
     <textarea id="input" placeholder="请粘贴JSON数据"></textarea>
     <button onclick="processData()">解析数据</button>
-    <button id="copy-button" onclick="copyOutput()">复制全部输出</button>
+    <button id="copy-button" onclick="copyOutput()">复制代码</button>
     <button id="open-button" onclick="openUrl()">打开链接</button>
-    <div id="result"></div>
+    <textarea id="output" readonly placeholder="生成的HTML代码将显示在此处"></textarea>
 
     <script>
         function processData() {
             const input = document.getElementById('input').value;
-            const resultContainer = document.getElementById('result');
+            const outputArea = document.getElementById('output');
 
             try {
                 const data = JSON.parse(input);
@@ -54,10 +58,11 @@
                         动态内容: '',
                         类型: '',
                         视频链接: '',
-                        视频标题: ''
+                        视频标题: '',
+                        id_str: item.id_str
                     };
 
-                    // 处理动态内容
+                    // 处理文字动态
                     if (modules.module_dynamic.desc) {
                         result.动态内容 = modules.module_dynamic.desc.text;
                         result.类型 = '文字动态';
@@ -81,10 +86,18 @@
                 // 格式化输出为 HTML 代码字符串
                 let output = '<div id="dynamics-container" class="dynamic-list">';
                 results.forEach((item) => {
-                    let dynamicContent = `<div class="dynamic-content">${item.动态内容}</div>`;
-                    if (item.视频链接) {
-                        dynamicContent += `<div class="dynamic-content"><a href="${item.视频链接}" target="_blank">${item.视频标题}</a></div>`;
+                    let dynamicContent = '';
+                    if (item.类型 === '文字动态' && item.id_str) {
+                        dynamicContent += `<div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/${item.id_str}" target="_blank">${item.动态内容}</a></div>`;
+                    } else {
+                        dynamicContent += `<div class="dynamic-content">${item.动态内容}</div>`;
                     }
+
+                    // 添加视频链接
+                    if (item.视频链接) {
+                        dynamicContent += `<div class="dynamic-content"><a class="source-link" href="${item.视频链接}" target="_blank">${item.视频标题}</a></div>`;
+                    }
+
                     output += `
     <div class="dynamic-item">
       <div class="dynamic-time">📅 ${item.发布时间}</div>
@@ -94,26 +107,21 @@
                 });
                 output += '</div>';
 
-                resultContainer.textContent = output;
+                outputArea.value = output;
             } catch (error) {
-                resultContainer.textContent = '解析错误，请检查JSON格式是否正确';
+                outputArea.value = '解析错误，请检查JSON格式是否正确';
             }
         }
 
         function copyOutput() {
-            const resultContainer = document.getElementById('result');
-            const output = resultContainer.textContent;
-            navigator.clipboard.writeText(output).then(() => {
-                // 可根据需求添加其他操作，这里不做弹窗提示
-            }).catch(() => {
-                // 可根据需求添加其他操作，这里不做弹窗提示
-            });
+            const outputArea = document.getElementById('output');
+            outputArea.select();
+            document.execCommand('copy');
         }
-
         function openUrl() {
             window.open('https://api.bilibili.com/x/polymer/web-dynamic/v1/feed/space?host_mid=12136555', '_blank');
         }
     </script>
 </body>
 
-</html>
+</html>    
