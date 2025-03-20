@@ -73,7 +73,7 @@
                         const archive = modules.module_dynamic.major.archive;
                         result.动态内容 = archive.desc;
                         result.类型 = archive.badge.text;
-                        result.视频链接 = `https:${archive.jump_url.replace('//', '')}`;
+                        result.视频链接 = `${archive.jump_url.replace('//', '')}`;
                         result.视频标题 = archive.title;
                     }
 
@@ -95,13 +95,13 @@
 
                     // 添加视频链接
                     if (item.视频链接) {
-                        dynamicContent += `<div class="dynamic-content"><a class="source-link" href="${item.视频链接}" target="_blank">${item.视频标题}</a></div>`;
+                        dynamicContent += `<div class="dynamic-content"><a class="source-link" href="https://${item.视频链接}" target="_blank">${item.视频标题}</a></div>`;
                     }
 
                     output += `
     <div class="dynamic-item">
       <div class="dynamic-time">📅 ${item.发布时间}</div>
-      <div class="dynamic-time">${item.类型}</div>
+      <div class="dynamic-style">${item.类型}</div>
       ${dynamicContent}
     </div>`;
                 });

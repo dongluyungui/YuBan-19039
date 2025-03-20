@@ -15,6 +15,9 @@ function triggerSearch() {
         const hasMatch = tags.some(t => t.toLowerCase().includes(searchValue));
         record.style.display = hasMatch? '' : 'none';
     });
+
+    // 筛选后重新初始化分页
+    initPagination();
 }
 
 // 获取可搜索的元素，根据不同页面可能有不同的类名
