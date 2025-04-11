@@ -1,0 +1,513 @@
+<!-- comment.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <script src="js/pages.js"></script>  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/pages.css">
+    <script src="js/pages.js"></script>
+    <title>留言板</title>
+    <style>
+        :root {
+            --primary: #00a1d6;
+            --secondary: #f8f9fa;
+            --danger: #dc3545;
+            --gray: #6c757d;
+        }
+
+
+        .content {
+            font-family: 'Microsoft YaHei', sans-serif;
+            margin: 0 auto;
+            max-width: 800px;
+            padding: 20px;
+            margin-top: 20px;  /* 设置距离顶部 像素 */
+        }
+
+        .reply-message,
+        .message-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .reply-card {
+            margin-left: 40px;
+            border-left: 3px solid var(--primary);
+            background: var(--secondary);
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
+        .message-author {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .message-time {
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+
+        .message-content {
+            color: #333;
+            margin: 10px 0;
+            max-width: 800px;
+            padding: 20px;
+            white-space: pre-wrap;
+        }
+
+        .action-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+       .btn-text {
+            padding: 0;
+            font-size: 0.9em;
+            background: transparent; /* 透明背景，去除按钮底色 */
+            border: none; /* 无边界，去除按钮边框 */
+            color: var(--gray); /* 文字颜色与普通文本一致 */
+            border-radius: 0; /* 取消圆角 */
+            cursor: pointer; /* 保留指针样式，提示可点击 */
+            text-decoration: none; /* 无下划线，若想模仿链接文本可改为 underline */
+            display: inline-block; /* 保持按钮可点击的块级特性，同时不破坏布局 */
+        }
+
+        .btn-text-delete {
+            padding: 0;
+            font-size: 0.9em;
+            background: transparent; /* 透明背景，去除按钮底色 */
+            border: none; /* 无边界，去除按钮边框 */
+            color: var(--gray); /* 文字颜色与普通文本一致 */
+            border-radius: 0; /* 取消圆角 */
+            cursor: pointer; /* 保留指针样式，提示可点击 */
+            text-decoration: none; /* 无下划线，若想模仿链接文本可改为 underline */
+            display: inline-block; /* 保持按钮可点击的块级特性，同时不破坏布局 */
+            margin-left: auto; 
+        }
+
+        .btn-text:hover {
+            color: var(--primary); /* 鼠标悬停时改变颜色，模拟文本交互反馈 */
+            text-decoration: none; /* 若设置了下划线，可在此调整悬停下划线状态 */
+        }
+
+        .btn-text-delete:hover {
+            color: red; /* 鼠标悬停时改变颜色，模拟文本交互反馈 */
+            text-decoration: none; /* 若设置了下划线，可在此调整悬停下划线状态 */
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .password-field {
+            position: relative;
+            margin-top: 10px;
+        }
+        .reply-card .message-time {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        .reply-card .action-buttons {
+            justify-content: flex-end;
+        }
+
+        .mention {
+            color: var(--primary);
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .reply-form {
+            transition: all 0.3s ease;
+            max-height: 500px;
+            overflow: hidden;
+            margin-top: 15px;
+            background: rgba(0, 161, 214, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .reply-form[style*="display: none"] {
+            max-height: 0;
+            padding: 0;
+            margin: 0;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+      <header class="header">
+        <div class="header-content">
+          <div>
+            <a href="index.html" class="nav-link">首页</a>
+            <a href="About.html" class="nav-link">关于</a>
+            <a href="gallery.html" class="nav-link active">画廊</a>
+            <a href="time.html" class="nav-link active">时间轴</a>
+            <a href="Sound.html" class="nav-link active">语音按钮</a>
+            <a href="LiveHistory.html" class="nav-link">往期回放</a>
+          </div>
+      </header>
+
+   <div  class="content">
+    <h1 style="text-align: center; color: var(--primary); margin-bottom: 30px;">留言板</h1>
+
+    <form id="mainForm">
+        <div class="form-group">
+            <input type="text" id="name" placeholder="您的昵称，和密码绑定，请记住您的昵称和密码" required>
+        </div>
+        <div class="form-group password-field">
+            <input type="password" id="password" placeholder="设置密码，可用于删除评论，请勿输入简单密码和您常用密码，忘记密码请联系我" required>
+        </div>
+        <div class="form-group">
+            <textarea id="content" rows="4" placeholder="留言内容，请输入和谐内容" required></textarea>
+        </div>
+        <div class="action-buttons">
+            <button type="submit" class="btn btn-primary">提交留言</button>
+        </div>
+    </form>
+
+    <div id="messagesContainer"></div>
+
+    <div class="pagination-container">
+        <div class="page-info">共<span id="total-count">0</span>条记录，当前在<span id="current-page">1</span>页/共<span id="total-pages">1</span>页</div>
+        <div class="page-buttons" id="page-buttons"></div>
+        <div class="jump-to">
+            跳转至<input type="number" id="jump-page" min="1">页
+            <button onclick="jumpToPage()">跳转</button>
+        </div>
+    </div>
+
+    <!-- 删除弹窗 -->
+    <div class="modal-backdrop" id="backdrop"></div>
+    <div class="modal" id="deleteModal">
+        <h3>删除确认</h3>
+        <input type="password" id="deletePassword" placeholder="输入删除密码">
+        <div class="action-buttons" style="margin-top:15px">
+            <button class="btn btn-danger" onclick="handleDelete()">确认删除</button>
+            <button class="btn" onclick="closeModal()">取消</button>
+        </div>
+    </div>
+  </div>
+    <script>
+    const API_URL = 'https://workers.dongluyungui.ip-ddns.com/';
+    let currentDeleteId = null;
+
+    // 表单提交
+    document.getElementById('mainForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const data = {
+            name: document.getElementById('name').value,
+            content: document.getElementById('content').value,
+            password: document.getElementById('password').value
+        };
+
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            e.target.reset();
+            loadMessages();
+        } catch (error) {
+            alert('提交失败，请重试');
+        }
+    });
+
+    // 加载留言
+    async function loadMessages() {
+        try {
+            const response = await fetch(API_URL);
+            const messages = await response.json();
+            const grouped = buildCommentTree(messages);
+            renderMessages(grouped);
+
+            // 初始化分页功能
+            initPagination();
+        } catch (error) {
+            console.error('加载失败:', error);
+        }
+    }
+
+    // 构建评论树
+    // 修改后的buildCommentTree函数
+    function buildCommentTree(messages) {
+        const map = {};
+        // 创建所有评论的映射
+        messages.forEach(msg => {
+            msg.replies = [];
+            map[msg.id] = msg;
+        });
+
+        // 建立父子关系
+        messages.forEach(msg => {
+            if (msg.parentId && map[msg.parentId]) {
+                map[msg.parentId].replies.push(msg);
+            }
+        });
+
+        // 过滤出根评论并排序
+        const roots = messages.filter(msg => !msg.parentId)
+                             .sort((a,b) => b.timestamp - a.timestamp);
+
+        // 对每个根评论的子评论排序（旧的在上面）
+        roots.forEach(root => {
+            root.replies.sort((a,b) => a.timestamp - b.timestamp);
+        });
+
+        return roots;
+    }
+
+    // 渲染留言
+    function renderMessages(messages) {
+        const container = document.getElementById('messagesContainer');
+        container.innerHTML = messages.map(msg => buildComment(msg)).join('');
+    }
+
+    // 构建单个评论
+    // 修改后的buildComment函数
+    function buildComment(msg, isReply = false, parentName = "") {
+        return `
+            <div class="${isReply ? 'reply-card reply-message' : 'message-card'}" data-id="${msg.id}" data-parent="${msg.parentId || ''}">
+                <div class="message-header">
+                    <span class="message-author">${escapeHtml(msg.name)}</span>
+                </div>
+                <p class="message-content">${msg.content.includes('@') ? `<span class="mention">${msg.content.split(' ')[0]}</span>${msg.content.split(' ').slice(1).join(' ')}` : msg.content}</p>
+                <div class="action-buttons">
+                    <span class="message-time">${new Date(msg.timestamp).toLocaleString()}</span>
+                    <button class="btn-text" onclick="showReplyForm(${msg.id})">回复</button>
+                    <button class="btn-text-delete" onclick="showDeleteModal(${msg.id})">删除</button>
+                </div>
+                ${msg.replies?.length ? 
+                    msg.replies
+                        .sort((a,b) => a.timestamp - b.timestamp) // 旧的在上面
+                        .map(r => buildComment(r, true, msg.name)).join('') 
+                    : ''}
+            </div>
+        `;
+    }
+
+    // 显示回复表单
+    // 修改后的showReplyForm函数
+    let currentFormParentId = null; // 新增全局变量跟踪当前打开的表单
+
+    function showReplyForm(parentId) {
+        const messageCard = document.querySelector(`[data-id="${parentId}"]`);
+
+        // 如果点击的是当前已打开的表单
+        if (currentFormParentId === parentId) {
+            const existingForm = messageCard.querySelector('.reply-form');
+            if (existingForm) {
+                existingForm.remove();
+                currentFormParentId = null;
+            }
+            return;
+        }
+
+        // 关闭所有其他表单
+        document.querySelectorAll('.reply-form').forEach(form => form.remove());
+        currentFormParentId = parentId;
+
+        // 创建新表单
+        const formHtml = `
+            <div class="reply-form" style="margin-top:15px; display:block;">
+                <div class="form-group">
+                    <input type="text" placeholder="您的昵称" required>
+                </div>
+                <div class="form-group password-field">
+                    <input type="password" placeholder="您的密码" required>
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="回复内容" rows="2" required></textarea>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn" onclick="submitReply(${parentId}, this)">提交回复</button>
+                    <button class="btn" onclick="this.closest('.reply-form').remove(); currentFormParentId=null">取消</button>
+                </div>
+            </div>
+        `;
+        messageCard.insertAdjacentHTML('beforeend', formHtml);
+
+        // 自动滚动到表单位置（可选）
+        messageCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    // 点击页面空白处关闭表单
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.reply-form') && 
+            !e.target.closest('.btn-text') && 
+            !e.target.closest('.btn-text-delete')) {
+            document.querySelectorAll('.reply-form').forEach(form => form.remove());
+            currentFormParentId = null;
+        }
+    });
+
+    // 提交回复
+    async function submitReply(parentId, btn) {
+        const form = btn.closest('.reply-form');
+        const parentElement = document.querySelector(`[data-id="${parentId}"]`);
+        const parentName = parentElement.querySelector('.message-author').textContent;
+        const actualParentId = parentElement.dataset.parent || parentId;
+
+        // 获取被回复评论的用户名
+        const targetName = parentElement.querySelector('.message-author').textContent;
+
+        const data = {
+            name: form.querySelector('input[type="text"]').value,
+            content: `@${targetName} ${form.querySelector('textarea').value}`,
+            password: form.querySelector('input[type="password"]').value,
+            parentId: actualParentId // 始终使用最顶层的parentId
+        };
+
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            form.remove();
+            loadMessages();
+        } catch (error) {
+            alert('回复失败');
+        }
+    }
+
+    // 删除处理
+    function showDeleteModal(id) {
+        currentDeleteId = id;
+        document.getElementById('backdrop').style.display = 'block';
+        document.getElementById('deleteModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('backdrop').style.display = 'none';
+        document.getElementById('deleteModal').style.display = 'none';
+        currentDeleteId = null;
+    }
+
+    async function handleDelete() {
+        const password = document.getElementById('deletePassword').value;
+        if (!password) return;
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: currentDeleteId, password })
+            });
+
+            if (response.ok) {
+                closeModal();
+                loadMessages();
+            } else {
+                alert('删除失败：密码错误');
+            }
+        } catch (error) {
+            alert('删除请求失败');
+        }
+    }
+    document.getElementById('mainForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = {
+        name: document.getElementById('name').value,
+        content: document.getElementById('content').value,
+        password: document.getElementById('password').value
+    };
+
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await response.json(); // 解析响应
+        if (!response.ok) {
+            alert(result.error || '提交失败'); // 显示具体错误信息
+            return;
+        }
+        e.target.reset();
+        loadMessages();
+    } catch (error) {
+        alert('提交失败，请重试');
+    }
+});
+    // 安全处理
+    function escapeHtml(text) {
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    // 初始化加载
+    loadMessages();
+</script>
+</body>
+</html>
