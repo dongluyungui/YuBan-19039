@@ -6,12 +6,42 @@
     <title>Live2D 看板娘（示例页面）</title>
     <style>
         #waifu {
-            left: 120px !important;
-            bottom: 400px !important;
+            left: 20px !important;
+            bottom: 20px !important;
+            position: fixed; /* 固定定位 */
+            cursor: grab; /* 鼠标样式 */
+        }
+        #waifu:active {
+            cursor: grabbing; /* 鼠标按下时的样式 */
         }
     </style>
 </head>
 <body>
-<script src="./autoload.js"></script>
+    <div id="waifu"></div>
+    <script src="./autoload.js"></script>
+    <script>
+        const waifu = document.getElementById('waifu');
+        let isDragging = false;
+        let offsetX, offsetY;
+
+        waifu.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            offsetX = e.clientX - parseInt(getComputedStyle(waifu).left);
+            offsetY = e.clientY - parseInt(getComputedStyle(waifu).bottom);
+            waifu.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                waifu.style.left = (e.clientX - offsetX) + 'px';
+                waifu.style.bottom = (window.innerHeight - e.clientY - offsetY) + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            waifu.style.cursor = 'grab';
+        });
+    </script>
 </body>
 </html>
