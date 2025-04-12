@@ -1,8 +1,6 @@
 {
   "models": [
-    "assets/model",
     "Potion-Maker/Pio",
-    "Potion-Maker/Tia",
     ["ShizukuTalk/shizuku-48", "ShizukuTalk/shizuku-pajama"],
     [
       "HyperdimensionNeptunia/neptune_classic",
@@ -29,9 +27,7 @@
     "KantaiCollection/murakumo"
   ],
   "messages": [
-    "啥也不说了 ~",
     "来自 Potion Maker 的 Pio 酱 ~",
-    "来自 Potion Maker 的 Tia 酱 ~",
     "Shizuku Talk ！这里是 Shizuku ~",
     "Nep! Nep! 超次元游戏：海王星 系列",
     "艦隊これくしょん / 叢雲(むらくも)"
