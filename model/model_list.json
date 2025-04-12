@@ -1,5 +1,6 @@
 {
   "models": [
+    "Dina",
     "Potion-Maker/Pio",
     [
       "HyperdimensionNeptunia/neptune_classic",
@@ -26,6 +27,7 @@
     "KantaiCollection/murakumo"
   ],
   "messages": [
+    "哈哈 ~",
     "来自 Potion Maker 的 Pio 酱 ~",
     "Nep! Nep! 超次元游戏：海王星 系列",
     "艦隊これくしょん / 叢雲(むらくも)"
