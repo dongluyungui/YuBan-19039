@@ -47,6 +47,7 @@ body {
   /* 设置弹性布局中项目的垂直排列方式为居中对齐 */
   align-items: center;
 }
+ /* 移动端隐藏元素 */
 .tools-link,
 .nav-link {
   color: var(--primary-color);
@@ -119,6 +120,11 @@ height: 30px; /* 设置固定高度为 50 像素 */
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
 
+.live-record:hover {
+  transform: translateY(-5px); /* 上浮效果 */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 阴影加深效果 */
+  /*cursor: pointer;  鼠标悬停时指针变为手型 */
+}
 /* 表单样式 */
 .form-group {
   margin-bottom: 15px;
@@ -172,6 +178,7 @@ height: 30px; /* 设置固定高度为 50 像素 */
     min-width: 60px; /* 保证最小点击区域 */
     text-align: center; /* 文字居中 */
   }
+  /* 移动端隐藏元素 */
   .tools-link{
     display: none; /* 隐藏元素 */
   }

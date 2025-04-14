@@ -1,104 +1,171 @@
-// ³õÊ¼»¯·ÖÒ³¹¦ÄÜ
+// åˆå§‹åŒ–åˆ†é¡µåŠŸèƒ½
 function initPagination() {
-    // µ±Ç°Ò³Âë£¬³õÊ¼ÖµÎª 1
+    // å½“å‰é¡µç ï¼Œåˆå§‹å€¼ä¸º 1
     let currentPage = 1;
-    // Ã¿Ò³ÏÔÊ¾µÄÏîÄ¿Êı
+    const paginationContainer = document.querySelector('.pagination-container');
+    // æ˜¾ç¤ºçš„é¡µç æŒ‰é’®æ•°é‡
+    const visiblePages = 5;
+    // æ¯é¡µæ˜¾ç¤ºçš„é¡¹ç›®æ•°
     const itemsPerPage = 6;
-    // ĞŞ¸ÄÕâ¸öµØ·½
-    /*ºÍjs
-    ÒıÓÃµÄcss
+    // ä¿®æ”¹è¿™ä¸ªåœ°æ–¹
+    /*å’Œjs
+    å¼•ç”¨çš„css
         <link rel="stylesheet" href="css/pages.css">
         <script src="js/pages.js"></script>
     */
     /*
-    ·Åµ½ĞèÒªÏÔÊ¾Ò³ÊıµÄµØ·½
+    æ”¾åˆ°éœ€è¦æ˜¾ç¤ºé¡µæ•°çš„åœ°æ–¹
         <div class="pagination-container">
-            <div class="page-info">¹²<span id="total-count">0</span>·ù»­£¬µ±Ç°µÚ<span id="current-page">1</span>Ò³/¹²<span id="total-pages">1</span>Ò³</div>
+            <div class="page-info">å…±<span id="total-count">0</span>å¹…ç”»ï¼Œå½“å‰ç¬¬<span id="current-page">1</span>é¡µ/å…±<span id="total-pages">1</span>é¡µ</div>
             <div class="page-buttons" id="page-buttons"></div>
             <div class="jump-to">
-                Ìø×ªµ½µÚ<input type="number" id="jump-page" min="1">Ò³
-                <button onclick="jumpToPage()">Ìø×ª</button>
+                è·³è½¬åˆ°ç¬¬<input type="number" id="jump-page" min="1">é¡µ
+                <button onclick="jumpToPage()">è·³è½¬</button>
             </div>
         </div>
     */
-    // »ñÈ¡ËùÓĞĞèÒª·ÖÒ³µÄÔªËØ£¬Ö»Ñ¡ÔñÏÔÊ¾µÄÔªËØ
+    // è·å–æ‰€æœ‰éœ€è¦åˆ†é¡µçš„å…ƒç´ ï¼Œåªé€‰æ‹©æ˜¾ç¤ºçš„å…ƒç´ 
     const artCards = Array.from(document.querySelectorAll('.art-card, .live-record, .date-log,.dynamic-item,.message-card,.yet-another-class')).filter(card => getComputedStyle(card).display!== 'none');
-    // ×ÜÏîÄ¿Êı
+    // æ€»é¡¹ç›®æ•°
     const totalItems = artCards.length;
-    // ×ÜÒ³ÊıÍ¨¹ı×ÜÏîÄ¿Êı³ıÒÔÃ¿Ò³ÏÔÊ¾µÄÏîÄ¿Êı²¢ÏòÉÏÈ¡ÕûµÃµ½
+    // æ€»é¡µæ•°é€šè¿‡æ€»é¡¹ç›®æ•°é™¤ä»¥æ¯é¡µæ˜¾ç¤ºçš„é¡¹ç›®æ•°å¹¶å‘ä¸Šå–æ•´å¾—åˆ°
     const totalPages = Math.ceil(totalItems / itemsPerPage);
-
-    // ±êÖ¾±äÁ¿£¬ÓÃÓÚÇø·ÖÒ³Ãæ³õÊ¼»¯ºÍÓÃ»§²Ù×÷
+    // è‹¥æ€»é¡µæ•°å°‘äº 2 é¡µï¼Œéšè—åˆ†é¡µå®¹å™¨
+    if (totalPages < 2) {
+        paginationContainer.style.display = 'none';
+        return;
+    }
+    // æ ‡å¿—å˜é‡ï¼Œç”¨äºåŒºåˆ†é¡µé¢åˆå§‹åŒ–å’Œç”¨æˆ·æ“ä½œ
     let isInitialLoad = true;
 
-    // ¸üĞÂ·ÖÒ³ĞÅÏ¢
+ 
+    // æ›´æ–°åˆ†é¡µä¿¡æ¯
     function updatePagination() {
-        // ¸üĞÂ×ÜÏîÄ¿ÊıÏÔÊ¾
+        // æ›´æ–°æ€»é¡¹ç›®æ•°æ˜¾ç¤º
         document.getElementById('total-count').textContent = totalItems;
-        // ¸üĞÂµ±Ç°Ò³ÂëÏÔÊ¾
+        // æ›´æ–°å½“å‰é¡µç æ˜¾ç¤º
         document.getElementById('current-page').textContent = currentPage;
-        // ¸üĞÂ×ÜÒ³ÊıÏÔÊ¾
+        // æ›´æ–°æ€»é¡µæ•°æ˜¾ç¤º
         document.getElementById('total-pages').textContent = totalPages;
     }
 
-    // Éú³ÉÒ³Âë°´Å¥
+    
+    // ç”Ÿæˆé¡µç æŒ‰é’®
     function generatePageButtons() {
-        // »ñÈ¡Ò³Âë°´Å¥ÈİÆ÷
+        // è·å–é¡µç æŒ‰é’®å®¹å™¨
         const buttonsContainer = document.getElementById('page-buttons');
-        // Çå¿ÕÈİÆ÷ÄÚµÄËùÓĞ×Ó½Úµã
+        // æ¸…ç©ºå®¹å™¨å†…çš„æ‰€æœ‰å­èŠ‚ç‚¹
         buttonsContainer.innerHTML = '';
 
-        // Ñ­»·Éú³ÉÃ¿¸öÒ³Âë°´Å¥
-        for (let i = 1; i <= totalPages; i++) {
-            // ´´½¨Ò»¸ö°´Å¥ÔªËØ
+        // æ·»åŠ ç¬¬ä¸€é¡µæŒ‰é’®
+        const firstButton = document.createElement('button');
+        firstButton.textContent = 'ç¬¬ä¸€é¡µ';
+        firstButton.onclick = () => {
+            isInitialLoad = false;
+            changePage(1);
+        };
+        buttonsContainer.appendChild(firstButton);
+
+        // æ·»åŠ ä¸Šä¸€é¡µæŒ‰é’®
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'ä¸Šä¸€é¡µ';
+        prevButton.onclick = () => {
+            isInitialLoad = false;
+            changePage(currentPage - 1);
+        };
+        buttonsContainer.appendChild(prevButton);
+
+        // è®¡ç®—èµ·å§‹é¡µç å’Œç»“æŸé¡µç 
+        let startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2));
+        let endPage = startPage + visiblePages - 1;
+        if (endPage > totalPages) {
+            endPage = totalPages;
+            startPage = Math.max(1, endPage - visiblePages + 1);
+        }
+
+        // æ˜¾ç¤ºçœç•¥å·
+        if (startPage > 1) {
+            const ellipsis = document.createElement('span');
+            ellipsis.textContent = '...';
+            buttonsContainer.appendChild(ellipsis);
+        }
+
+        // å¾ªç¯ç”Ÿæˆæ¯ä¸ªé¡µç æŒ‰é’®
+        for (let i = startPage; i <= endPage; i++) {
+            // åˆ›å»ºä¸€ä¸ªæŒ‰é’®å…ƒç´ 
             const button = document.createElement('button');
-            // ÉèÖÃ°´Å¥µÄÎÄ±¾ÄÚÈİÎªµ±Ç°Ò³Âë
+            // è®¾ç½®æŒ‰é’®çš„æ–‡æœ¬å†…å®¹ä¸ºå½“å‰é¡µç 
             button.textContent = i;
-            // Îª°´Å¥Ìí¼Óµã»÷ÊÂ¼ş¼àÌıÆ÷£¬µã»÷Ê±µ÷ÓÃ changePage º¯ÊıÇĞ»»Ò³Ãæ
+            // ä¸ºæŒ‰é’®æ·»åŠ ç‚¹å‡»äº‹ä»¶ç›‘å¬å™¨ï¼Œç‚¹å‡»æ—¶è°ƒç”¨ changePage å‡½æ•°åˆ‡æ¢é¡µé¢
             button.onclick = () => {
                 isInitialLoad = false;
                 changePage(i);
             };
-            // Èç¹ûµ±Ç°°´Å¥¶ÔÓ¦µÄÒ³ÂëÊÇµ±Ç°Ò³Âë£¬Ìí¼Ó 'active' Àà
+            // å¦‚æœå½“å‰æŒ‰é’®å¯¹åº”çš„é¡µç æ˜¯å½“å‰é¡µç ï¼Œæ·»åŠ  'active' ç±»
             if (i === currentPage) button.classList.add('active');
-            // ½«°´Å¥Ìí¼Óµ½ÈİÆ÷ÖĞ
+            // å°†æŒ‰é’®æ·»åŠ åˆ°å®¹å™¨ä¸­
             buttonsContainer.appendChild(button);
         }
+
+        // æ˜¾ç¤ºçœç•¥å·
+        if (endPage < totalPages) {
+            const ellipsis = document.createElement('span');
+            ellipsis.textContent = '...';
+            buttonsContainer.appendChild(ellipsis);
+        }
+
+        // æ·»åŠ ä¸‹ä¸€é¡µæŒ‰é’®
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'ä¸‹ä¸€é¡µ';
+        nextButton.onclick = () => {
+            isInitialLoad = false;
+            changePage(currentPage + 1);
+        };
+        buttonsContainer.appendChild(nextButton);
+
+        // æ·»åŠ æœ€åä¸€é¡µæŒ‰é’®
+        const lastButton = document.createElement('button');
+        lastButton.textContent = 'æœ€åä¸€é¡µ';
+        lastButton.onclick = () => {
+            isInitialLoad = false;
+            changePage(totalPages);
+        };
+        buttonsContainer.appendChild(lastButton);
     }
 
-    // ÇĞ»»Ò³Ãæ
+    // åˆ‡æ¢é¡µé¢
     function changePage(pageNumber) {
-        // È·±£Ò³ÂëÔÚÓĞĞ§·¶Î§ÄÚ£¨1 µ½×ÜÒ³ÊıÖ®¼ä£©
+        // ç¡®ä¿é¡µç åœ¨æœ‰æ•ˆèŒƒå›´å†…ï¼ˆ1 åˆ°æ€»é¡µæ•°ä¹‹é—´ï¼‰
         currentPage = Math.max(1, Math.min(pageNumber, totalPages));
-        // ¸üĞÂ·ÖÒ³ĞÅÏ¢
+        // æ›´æ–°åˆ†é¡µä¿¡æ¯
         updatePagination();
-        // ÖØĞÂÉú³ÉÒ³Âë°´Å¥
+        // é‡æ–°ç”Ÿæˆé¡µç æŒ‰é’®
         generatePageButtons();
 
-        // ´¦Àí·ÖÒ³ÏîÄ¿£¬¸ù¾İµ±Ç°Ò³Âë¾ö¶¨ÊÇ·ñÏÔÊ¾
+        // å¤„ç†åˆ†é¡µé¡¹ç›®ï¼Œæ ¹æ®å½“å‰é¡µç å†³å®šæ˜¯å¦æ˜¾ç¤º
         artCards.forEach((card, index) => {
-            // ¼ÆËãµ±Ç°Ò³ÃæµÄÆğÊ¼Ë÷Òı
+            // è®¡ç®—å½“å‰é¡µé¢çš„èµ·å§‹ç´¢å¼•
             const start = (currentPage - 1) * itemsPerPage;
-            // ¼ÆËãµ±Ç°Ò³ÃæµÄ½áÊøË÷Òı
+            // è®¡ç®—å½“å‰é¡µé¢çš„ç»“æŸç´¢å¼•
             const end = start + itemsPerPage;
-            // Èç¹ûµ±Ç°ÏîÄ¿µÄË÷ÒıÔÚµ±Ç°Ò³ÃæµÄ·¶Î§ÄÚ£¬ÔòÏÔÊ¾¸ÃÏîÄ¿£¬·ñÔòÒş²Ø
+            // å¦‚æœå½“å‰é¡¹ç›®çš„ç´¢å¼•åœ¨å½“å‰é¡µé¢çš„èŒƒå›´å†…ï¼Œåˆ™æ˜¾ç¤ºè¯¥é¡¹ç›®ï¼Œå¦åˆ™éšè—
             card.style.display = index >= start && index < end? 'block' : 'none';
         });
 
-        // Ö»ÓĞÔÚ²»ÊÇÒ³Ãæ³õÊ¼»¯Ê±²Å¹ö¶¯µ½µÚÒ»ÌõÄÚÈİ
+        // åªæœ‰åœ¨ä¸æ˜¯é¡µé¢åˆå§‹åŒ–æ—¶æ‰æ»šåŠ¨åˆ°ç¬¬ä¸€æ¡å†…å®¹
         if (!isInitialLoad) {
-            // »ñÈ¡µ±Ç°Ò³ÂëµÄµÚÒ»ÌõÄÚÈİ
+            // è·å–å½“å‰é¡µç çš„ç¬¬ä¸€æ¡å†…å®¹
             const startIndex = (currentPage - 1) * itemsPerPage;
             if (artCards[startIndex]) {
-                // »ñÈ¡Ò³Ã¼µÄ¸ß¶È
+                // è·å–é¡µçœ‰çš„é«˜åº¦
                 const header = document.querySelector('.header');
                 const headerHeight = header? header.offsetHeight : 0;
-                // ¶¨Òå¶îÍâµÄÌø×ª¾àÀë
+                // å®šä¹‰é¢å¤–çš„è·³è½¬è·ç¦»
                 const extraOffset = 40;
-                // ¼ÆËã¹ö¶¯µÄÆ«ÒÆÁ¿
+                // è®¡ç®—æ»šåŠ¨çš„åç§»é‡
                 const offset = -(headerHeight + extraOffset);
 
-                // ¹ö¶¯µ½¸ÃÔªËØ²¢¿¼ÂÇÆ«ÒÆÁ¿
+                // æ»šåŠ¨åˆ°è¯¥å…ƒç´ å¹¶è€ƒè™‘åç§»é‡
                 const rect = artCards[startIndex].getBoundingClientRect();
                 const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
                 window.scrollTo({
@@ -109,34 +176,44 @@ function initPagination() {
         }
     }
 
-    // Ìø×ªµ½Ö¸¶¨Ò³Ãæ
+    // è·³è½¬åˆ°æŒ‡å®šé¡µé¢
     function jumpToPage() {
-        // »ñÈ¡ÊäÈëµÄÌø×ªÒ³Âë
         const input = document.getElementById('jump-page');
-        // ½«ÊäÈëµÄÒ³Âë×ª»»ÎªÊı×Ö
         const page = parseInt(input.value);
-        // ¼ì²éÊäÈëµÄÒ³ÂëÊÇ·ñÎªÓĞĞ§Êı×Ö£¬ÇÒÔÚ 1 µ½×ÜÒ³ÊıÖ®¼ä
+        
+        // æ¸…é™¤æ—§æç¤º
+        const errorMessage = document.getElementById('jump-error');
+        if (errorMessage) errorMessage.remove();
+
         if (!isNaN(page) && page >= 1 && page <= totalPages) {
             isInitialLoad = false;
-            // µ÷ÓÃ changePage º¯ÊıÌø×ªµ½Ö¸¶¨Ò³Ãæ
             changePage(page);
-            // Çå¿ÕÊäÈë¿òÄÚÈİ
             input.value = '';
         } else {
-            // Èç¹ûÊäÈëÎŞĞ§£¬ÏÔÊ¾ÌáÊ¾ĞÅÏ¢
-            alert('ÇëÊäÈëÓĞĞ§Ò³Âë£¡');
+            // åˆ›å»ºè‡ªå®šä¹‰æç¤ºå…ƒç´ 
+            const errorDiv = document.createElement('div');
+            errorDiv.id = 'jump-error';
+            errorDiv.className = 'error-message';
+            errorDiv.textContent = 'è¯·è¾“å…¥ 1 åˆ° ' + totalPages + ' ä¹‹é—´çš„æœ‰æ•ˆé¡µç ï¼';
+            
+            // å°†æç¤ºæ·»åŠ åˆ°è·³è½¬æŒ‰é’®å³ä¾§
+            const jumpButton = document.querySelector('.jump-to button');
+            jumpButton.parentNode.insertBefore(errorDiv, jumpButton.nextSibling);
+
+            // 3ç§’åè‡ªåŠ¨éšè—æç¤º
+            setTimeout(() => errorDiv.remove(), 3000);
         }
     }
 
-    // ³õÊ¼»¯·ÖÒ³
-    // ¸üĞÂ·ÖÒ³ĞÅÏ¢£¬Éú³ÉÒ³Âë°´Å¥£¬ÇĞ»»µ½µ±Ç°Ò³Ãæ
+    // åˆå§‹åŒ–åˆ†é¡µ
+    // æ›´æ–°åˆ†é¡µä¿¡æ¯ï¼Œç”Ÿæˆé¡µç æŒ‰é’®ï¼Œåˆ‡æ¢åˆ°å½“å‰é¡µé¢
     updatePagination();
     generatePageButtons();
     changePage(currentPage);
 
-    // ½« jumpToPage º¯Êı±©Â¶µ½È«¾Ö×÷ÓÃÓò£¬ÒÔ±ãÔÚ HTML ÖĞ¿ÉÒÔµ÷ÓÃ
+    // å°† jumpToPage å‡½æ•°æš´éœ²åˆ°å…¨å±€ä½œç”¨åŸŸï¼Œä»¥ä¾¿åœ¨ HTML ä¸­å¯ä»¥è°ƒç”¨
     window.jumpToPage = jumpToPage;
 }
 
-// Ò³Ãæ¼ÓÔØÍê³Éºó³õÊ¼»¯·ÖÒ³
+// é¡µé¢åŠ è½½å®Œæˆååˆå§‹åŒ–åˆ†é¡µ
 window.addEventListener('load', initPagination);

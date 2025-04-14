@@ -111,6 +111,9 @@
 
 .tag:hover {
   background-color: var(--hover-color);
+  transform: translateY(-5%); /* 上浮效果 */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 阴影加深效果 */
+  cursor: pointer; /* 鼠标悬停时指针变为手型 */
 }
 
 /* 移动端适配核心设置 - 搜索部分 */

@@ -15,6 +15,21 @@
     cursor: pointer;
     transition: background 0.3s;
 }
+/*错误信息提示 */
+.error-message {
+    color: #dc2626;
+    font-size: 0.9em;
+    margin-left: 8px;
+    display: inline-block;
+    animation: fadeInOut 3s ease;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
 
 .page-buttons button:hover {
     background: #c2185b;

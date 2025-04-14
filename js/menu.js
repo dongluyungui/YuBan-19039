@@ -44,6 +44,15 @@ for (let i = 0; i < menuItems.length; i++) {
                 // 打开指定网页
                 window.open('https://www.example.com', '_blank');
                 break;
+            case '更新动态':
+                window.open('Tools/dynamics.html', '_blank');
+                break;
+            case '生成记录':
+                window.open('Tools/LiveRecords.html', '_blank');
+                break;
+            case '添加作品':
+                window.open('Tools/galleryRecords.html', '_blank');
+                break;    
             case '复制文本':
                 // 复制文本到剪贴板
                 const textToCopy = '这是要复制的文本';
