@@ -31,7 +31,7 @@
             transform: translateY(0);
         }
 
-        /* 内容卡片 */
+        /* 内容卡片（新增过渡属性） */
         .timeline-card {
             width: 90%;
             padding: 1.5rem;
@@ -40,20 +40,27 @@
             box-shadow: var(--shadow);
             position: relative;
             margin-left: 10%;
-            margin-top: 40px; /* 增加卡片与节点的间距 */
+            margin-top: 40px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* 新增过渡 */
+        }
+
+        /* 卡片悬停动画（新增） */
+        .timeline-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(233, 30, 99, 0.2);
         }
 
         /* 时间轴节点 */
         .timeline-node {
             position: absolute;
             left: 5%;
-            top: 0; /* 修改为从顶部开始定位 */
+            top: 0;
             width: 30px;
             height: 30px;
             background: white;
             border: 4px solid var(--primary-color);
             border-radius: 50%;
-            transform: translateX(-50%) translateY(20px); /* 增加垂直偏移 */
+            transform: translateX(-50%) translateY(20px);
             display: grid;
             place-items: center;
             transition: all 0.3s ease;
@@ -64,21 +71,23 @@
             color: var(--primary-color);
             font-size: 0.9rem;
         }
-
+  
         /* 不同类型节点 */
-        .event-video.timeline-node {
-            border-color: var(--accent-color);
+        .event-video .timeline-node {
+          /*  border-color: var(--accent-color);*/
+            border: 4px solid var(--primary-color);
         }
 
-        .event-video.timeline-node i {
+        .event-video .timeline-node i {
             color: var(--accent-color);
         }
 
-        .event-hitokoto.timeline-node {
-            border-color: var(--secondary-color);
+        .event-hitokoto .timeline-node {
+            border: 4px solid var(--primary-color);
+          /*  border-color: var(--secondary-color);*/
         }
 
-        .event-hitokoto.timeline-node i {
+        .event-hitokoto .timeline-node i {
             color: var(--secondary-color);
         }
 
@@ -92,7 +101,6 @@
             border: 10px solid transparent;
             left: -20px;
             border-right-color: white;
-            border-left-color: transparent;
         }
 
         /* 日期标签 */
@@ -105,6 +113,13 @@
             gap: 0.5rem;
         }
 
+        .timeline-node:hover,
+        .timeline-item:hover .timeline-node { 
+            transform: translateY(15px) scale(1.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }    
+
         /* 内容样式 */
         .timeline-content {
             margin: 1rem 0;
@@ -113,7 +128,7 @@
 
         /* 响应式设计 */
         @media (max-width: 768px) {
-            .timeline-item.timeline-card {
+            .timeline-item .timeline-card {
                 width: calc(100% - 70px);
                 margin-left: 70px !important;
             }
@@ -128,28 +143,8 @@
                 margin-top: 30px;
             }
 
-            .timeline-card::after {
-                left: -20px !important;
-                border-right-color: white !important;
-                border-left-color: transparent !important;
-            }
-
-            /* 修改响应式设计中竖线的位置 */
             .timeline-container::before {
                 left: 30px;
-            }
-        }
-
-        /* 入场动画 */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
             }
         }
 
@@ -157,30 +152,19 @@
         .timeline-container::before {
             content: '';
             position: absolute;
-            left: 5%; /* 保证和节点的水平位置一致 */
+            left: 7.75%; /* 与节点的水平位置一致（节点left: 5%） */
             top: 0;
             height: 100%;
             width: 4px;
             background: #eee;
-            transform: translateX(-50%); /* 保证和节点的水平位置一致 */
-        }
-
-        /* 线条过渡动画 */
-        .timeline-line {
-            transition:
-                height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateX(-50%); /* 居中对齐，与节点中心对齐 */
         }
     </style>
 </head>
 
 <body>
     <div id="fireworks-container"></div>
-        <!-- 右键菜单 -->
-        <ul id="context-menu">
-       
-            <li>彩蛋</li>
-        </ul>
+    <ul id="context-menu"><li>彩蛋</li></ul>
     <header class="header">
         <div class="header-content">
             <div>
@@ -195,379 +179,311 @@
     </header>
 
     <div class="timeline-container">
+        <h1 class="text-center" style="color: var(--primary-color);">御坂19039の来时路</h1>
 
         <div class="timeline-item event-hitokoto visible">
-             <div class="timeline-node">
-                 <i class="fas fa-video"></i>
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
+            <div class="timeline-node">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
                     <span id="date-dash"></span> @ 最新消息
                 </div>
                 <h3>今天</h3>
                 <div class="timeline-meta">
-                    <!--绑定-->
                     <a target="_blank" class="source-link" id="firework-trigger">
                         您浏览了这个网站
                     </a>
-                 </div>
-             </div>
+                </div>
+            </div>
         </div>
 
         <div class="timeline-item event-hitokoto visible">
-             <div class="timeline-node">
-                 <i class="fas fa-video"></i>
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
+            <div class="timeline-node">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
                     2024-12-16 @ 动态投稿
                 </div>
                 <h3>不要笑挑战视频征集啦！！</h3>
                 <div class="timeline-meta">
-                     <a> 动态：  </a>
-                     <a href="https://www.bilibili.com/opus/1013995255536549892"
-                         target="_blank"
-                         class="source-link">
-                         不要笑挑战视频征集啦！
-                     </a>
-                 </div>
-             </div>
+                    <a> 动态：  </a>
+                    <a href="https://www.bilibili.com/opus/1013995255536549892" target="_blank" class="source-link">
+                        不要笑挑战视频征集啦！
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="timeline-item event-hitokoto visible">
-             <div class="timeline-node">
-                 <i class="fas fa-video"></i>
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
+            <div class="timeline-node">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
                     2024-11-01 @ 动态投稿
                 </div>
                 <h3>万圣恐怖夜！！</h3>
                 <div class="timeline-meta">
-                     <a> 动态：  </a>
-                     <a href="https://www.bilibili.com/opus/994850262719922183"
-                         target="_blank"
-                         class="source-link">
-                         万圣恐怖夜！
-                     </a>
-                 </div>
-             </div>
+                    <a> 动态：  </a>
+                    <a href="https://www.bilibili.com/opus/994850262719922183" target="_blank" class="source-link">
+                        万圣恐怖夜！
+                    </a>
+                </div>
+            </div>
         </div>
 
-        
         <div class="timeline-item event-hitokoto visible">
-             <div class="timeline-node">
-                 <i class="fas fa-video"></i>
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
+            <div class="timeline-node">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
                     2024-10-26 @ 动态投稿
                 </div>
                 <h3>直播间升级</h3>
                 <div class="timeline-meta">
-                     <a> 动态：  </a>
-                     <a href="https://www.bilibili.com/opus/992627844783800329"
-                         target="_blank"
-                         class="source-link">
-                         直播间可以使用表情包啦！！
-                     </a>
-                 </div>
-             </div>
+                    <a> 动态：  </a>
+                    <a href="https://www.bilibili.com/opus/992627844783800329" target="_blank" class="source-link">
+                        直播间可以使用表情包啦！！
+                    </a>
+                </div>
+            </div>
         </div>
 
-        
         <div class="timeline-item event-hitokoto visible">
-             <div class="timeline-node">
-                 <i class="fas fa-video"></i>
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
+            <div class="timeline-node">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
                     2024-09-20 @ 动态投稿
                 </div>
                 <h3>重要通知</h3>
                 <div class="timeline-meta">
-                     <a> 动态：  </a>
-                     <a href="https://www.bilibili.com/opus/979172030079303687"
-                         target="_blank"
-                         class="source-link">
-                          从10月1日起之后，新上舰的舰长不再赠送画的头像啦，头像在以后以天选形式抽奖赠送！（因为我真的画不完了😭呜呜呜）
-                          在这之后将会准备： 
-                          ⭐白天直播新形态:【烖晞】（Misaka形态）
-                          ⭐SINA动作优化，表情增加
-                          ⭐直播间ui优化
-                     </a>
-                 </div>
-             </div>
+                    <a> 动态：  </a>
+                    <a href="https://www.bilibili.com/opus/979172030079303687" target="_blank" class="source-link">
+                        从10月1日起之后，新上舰的舰长不再赠送画的头像啦，头像在以后以天选形式抽奖赠送！（因为我真的画不完了😭呜呜呜）
+                        在这之后将会准备： 
+                        ⭐白天直播新形态:【烖晞】（Misaka形态）
+                        ⭐SINA动作优化，表情增加
+                        ⭐直播间ui优化
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="timeline-item event-hitokoto visible">
-             <div class="timeline-node">
-                 <i class="fas fa-video"></i>
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
+            <div class="timeline-node">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
                     2024-09-06 @ 动态投稿
                 </div>
                 <h3>百日聊天回！</h3>
                 <div class="timeline-meta">
-                     <a> 动态：  </a>
-                     <a href="https://www.bilibili.com/opus/973982335205638151"
-                         target="_blank"
-                         class="source-link">
-                         没想到吧！真的有一百天了(*´I`*)！
-                     </a>
-                 </div>
-             </div>
+                    <a> 动态：  </a>
+                    <a href="https://www.bilibili.com/opus/973982335205638151" target="_blank" class="source-link">
+                        没想到吧！真的有一百天了(*´I`*)！
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="timeline-item event-hitokoto visible">
-             <div class="timeline-node">
-                 <i class="fas fa-video"></i>
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
+            <div class="timeline-node">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
                     2024-08-29 @ 动态投稿
                 </div>
                 <h3>  三满游戏回！</h3>
                 <div class="timeline-meta">
-                     <a> 动态：  </a>
-                     <a href="https://www.bilibili.com/opus/971068826945847300"
-                         target="_blank"
-                         class="source-link">
-                           「To The Moon」
-                     </a>
-                 </div>
-             </div>
+                    <a> 动态：  </a>
+                    <a href="https://www.bilibili.com/opus/971068826945847300" target="_blank" class="source-link">
+                        「To The Moon」
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="timeline-item event-hitokoto visible">
-             <div class="timeline-node">
-                 <i class="fas fa-video"></i>
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
+            <div class="timeline-node">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
                     2024-07-25 @ 动态和视频
                 </div>
                 <h3>夏日庆会と双满月回</h3>
                 <div class="timeline-meta">
-                     <a> 动态：  </a>
-                     <a href="https://www.bilibili.com/opus/958088830160732165"
-                         target="_blank"
-                         class="source-link">
-                         7月30日期待与大家的见面哦哦哦噢噢噢哦哦哦！
-                     </a>
-                     <p> 视频：  </a>
-                      <a href="https://www.bilibili.com/video/BV1Kf421i79x"
-                         target="_blank"
-                         class="source-link">
-                         【直播回放】夏日观影？双满庆会！ 2024年07月29日23点场
-                     </a>
+                    <a> 动态：  </a>
+                    <a href="https://www.bilibili.com/opus/958088830160732165" target="_blank" class="source-link">
+                        7月30日期待与大家的见面哦哦哦噢噢噢哦哦哦！
+                    </a>
+                    <p></p>
+                    <a> 视频：  </a>
+                    <a href="https://www.bilibili.com/video/BV1Kf421i79x" target="_blank" class="source-link">
+                        【直播回放】夏日观影？双满庆会！ 2024年07月29日23点场
+                    </a>
                 </div>
-             </div>
+            </div>
         </div>
 
         <div class="timeline-item event-hitokoto visible">
-             <div class="timeline-node">
-                 <i class="fas fa-video"></i>
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
+            <div class="timeline-node">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
                     2024-07-04 @ 动态投稿
                 </div>
                 <h3>直播间升级！ </h3>
                 <div class="timeline-meta">
-                     <a> 动态：  </a>
-                     <a href="https://www.bilibili.com/opus/950323409068228629"
-                         target="_blank"
-                         class="source-link">
-                         直播间升级！全新界面哦～期待跟大家见面！
-                     </a>
-                 </div>
-             </div>
+                    <a> 动态：  </a>
+                    <a href="https://www.bilibili.com/opus/950323409068228629" target="_blank" class="source-link">
+                        直播间升级！全新界面哦～期待跟大家见面！
+                    </a>
+                </div>
+            </div>
         </div>
 
         <div class="timeline-item event-hitokoto visible">
-             <div class="timeline-node">
-                 <i class="fas fa-video"></i>
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
+            <div class="timeline-node">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
                     2024-06-06 @ 动态投稿
                 </div>
                 <h3>1000粉丝里程碑</h3>
                 <div class="timeline-meta">
-                     <a> 动态：  </a>
-                     <a href="https://www.bilibili.com/opus/958088830160732165"
-                         target="_blank"
-                         class="source-link">
-                         感谢大家，一路以来的支持和陪伴，没有大家的帮助，我拿不到这样的荣誉呢～
-                     </a>
-             </div>
-         </div>
+                    <a> 动态：  </a>
+                    <a href="https://www.bilibili.com/opus/958088830160732165" target="_blank" class="source-link">
+                        感谢大家，一路以来的支持和陪伴，没有大家的帮助，我拿不到这样的荣誉呢～
+                    </a>
+                </div>
+            </div>
+        </div>
 
-         <div class="timeline-item event-video visible">
-             <div class="timeline-node">
-                 <i class="fas fa-video"></i>
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
-                     2024-06-05 @ 动态和视频
-                 </div>
-                 <h3>「满月读评论回~」</h3>
-                 <div class="timeline-meta">
-                     <a> 动态：  </a>
-                     <a href="https://www.bilibili.com/opus/939271435991384073"
-                         target="_blank"
-                         class="source-link">
-                         首先我在这里对大家表示衷心的感谢！能让大家喜欢，我诚惶诚恐，非常荣幸～我已经千粉了，而且马上就要满月了！！所以说想做一次「读评论环节」！大家会来看我吗～？
-                     </a>
-                     <a> 视频：  </a>
-                     <a href="https://www.bilibili.com/BV1Ef421i78W"
-                         target="_blank"
-                         class="source-link">
-                         【SINA】满月读评论回~
-                     </a>
-                 </div>
-             </div>
-         </div>
+        <div class="timeline-item event-video visible">
+            <div class="timeline-node">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
+                    2024-06-05 @ 动态和视频
+                </div>
+                <h3>「满月读评论回~」</h3>
+                <div class="timeline-meta">
+                    <a> 动态：  </a>
+                    <a href="https://www.bilibili.com/opus/939271435991384073" target="_blank" class="source-link">
+                        首先我在这里对大家表示衷心的感谢！能让大家喜欢，我诚惶诚恐，非常荣幸～我已经千粉了，而且马上就要满月了！！所以说想做一次「读评论环节」！大家会来看我吗～？
+                    </a>
+                    <a> 视频：  </a>
+                    <a href="https://www.bilibili.com/BV1Ef421i78W" target="_blank" class="source-link">
+                        【SINA】满月读评论回~
+                    </a>
+                </div>
+            </div>
+        </div>
 
+        <div class="timeline-item event-video visible">
+            <div class="timeline-node">
+                <img src="img/ico/video.png" alt="表情！" width="20" height="20">
+            </div>
+            <div class="timeline-card">
+                <div class="timeline-date">
+                    <i class="fas fa-clock"></i>
+                    2024-06-01 @ 动态投稿
+                </div>
+                <h3>自我介绍</h3>
+                <div class="timeline-meta">
+                    <a> 动态：  </a>
+                    <a href="https://www.bilibili.com/opus/937876331851415558" target="_blank" class="source-link">
+                        不以视频形式呈现介绍是因为正在准备御坂妹形态～ど、御坂一脸自信地回答。
+                    </a>
+                </div>
+            </div>
+        </div>
 
-         <div class="timeline-item event-video visible">
-             <div class="timeline-node">
-             <img src="img/ico/video.png" alt="表情！" width="20" height="20">
-             </div>
-             <div class="timeline-card">
-                 <div class="timeline-date">
-                     <i class="fas fa-clock"></i>
-                     2024-06-01 @ 动态投稿
-                 </div>
-                 <h3>自我介绍</h3>
-                 <div class="timeline-meta">
-                     <a> 动态：  </a>
-                     <a href="https://www.bilibili.com/opus/937876331851415558"
-                         target="_blank"
-                         class="source-link">
-                         不以视频形式呈现介绍是因为正在准备御坂妹形态～ど、御坂一脸自信地回答。
-                     </a>
-                 </div>
-             </div>
-         </div>
-
-        <!-- 动态生成的灰色线条 -->
         <div id="new-timeline-line"></div>
     </div>
-    
-        <!-- 页脚 -->
+
     <div style="text-align: center; padding: 30px; color: #666;">
-      <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
-      <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
+        <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
+        <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
     </div>
 
     <script>
-        // 滚动动画
-        const observer = new IntersectionObserver((entries) => {
+        // 滚动动画优化：使用更高效的观察选项
+        const observer = new IntersectionObserver(entries => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
+                if (entry.isIntersecting && !entry.target.classList.contains('visible')) {
                     entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // 避免重复触发
                 }
             });
-        }, { threshold: 0.1 });
+        }, { threshold: 0.2 });
 
-        document.querySelectorAll('.timeline-item').forEach((item) => {
-            observer.observe(item);
-        });
+        document.querySelectorAll('.timeline-item').forEach(item => observer.observe(item));
 
-        // 悬停动画
-        document.querySelectorAll('.timeline-node').forEach(node => {
-            node.addEventListener('mouseenter', () => {
-                node.style.transform = 'translateX(-50%) translateY(20px) scale(1.2)';
-                node.style.boxShadow = '0 0 15px rgba(233, 30, 99, 0.4)';
-            });
-            node.addEventListener('mouseleave', () => {
-                node.style.transform = 'translateX(-50%) translateY(20px) scale(1)';
-                node.style.boxShadow = 'none';
-            });
-        });
-
-        // 动态绘制所有节点间的连接线
+        // 连接线绘制优化：使用更简洁的计算逻辑
         function createTimelineConnections() {
-            const timelineItems = document.querySelectorAll('.timeline-item');
-            const lineContainer = document.createElement('div');
-            lineContainer.className = 'timeline-connections';
+            const items = document.querySelectorAll('.timeline-item');
+            const container = document.querySelector('.timeline-container');
+            const lines = document.createElement('div');
+            lines.className = 'timeline-connections';
 
-            // 遍历所有时间轴条目
-            timelineItems.forEach((item, index) => {
-                if (index < timelineItems.length - 1) {
-                    const currentNode = item.querySelector('.timeline-node');
-                    const nextNode = timelineItems[index + 1].querySelector('.timeline-node');
+            items.forEach((item, i) => {
+                if (i < items.length - 1) {
+                    const currNode = item.querySelector('.timeline-node');
+                    const nextNode = items[i+1].querySelector('.timeline-node');
+                    if (!currNode || !nextNode) return;
 
-                    if (currentNode && nextNode) {
-                        const line = document.createElement('div');
-                        line.className = 'timeline-line';
-
-                        // 修改线条位置计算部分
-                        const startY = currentNode.offsetTop + currentNode.offsetHeight;
-                        const endY = nextNode.offsetTop;
-                        const lineHeight = endY - startY;
-                        const lineLeft = currentNode.offsetLeft + currentNode.offsetWidth / 2;
-
-                        // 设置线条样式
-                        line.style.position = 'absolute';
-                        line.style.left = `${lineLeft}px`;
-                        line.style.top = `${startY}px`;
-                        line.style.width = '4px';
-                        line.style.height = `${lineHeight}px`;
-
-                        // 在创建线条时添加渐变效果
-                        line.style.background = `linear-gradient(
-                            to bottom, 
-                            ${getComputedStyle(currentNode).borderColor} 10%,
-                            #eee 50%,
-                            ${getComputedStyle(nextNode).borderColor} 90%
-                        )`;
-
-                        lineContainer.appendChild(line);
-                    }
+                    const line = document.createElement('div');
+                    line.className = 'timeline-line';
+                    line.style.position = 'absolute';
+                    line.style.left = `${currNode.offsetLeft + 15}px`;
+                    line.style.width = '4px';
+                    line.style.backgroundColor = '#eee';
+                    line.style.top = `${currNode.offsetTop + 30}px`; // 线条顶部从当前节点底部开始（节点高度30px）
+                    line.style.height = `${nextNode.offsetTop - currNode.offsetTop - 30}px`; // 两节点顶部间距减去节点高度
+                    lines.appendChild(line);
                 }
             });
 
-            // 添加到容器
-            const container = document.querySelector('.timeline-container');
-            container.insertBefore(lineContainer, container.firstChild);
+            container.prepend(lines);
         }
 
-        // 初始化并响应窗口变化
-        function initTimeline() {
-            const container = document.querySelector('.timeline-container');
+        // 初始化优化：使用更可靠的DOM加载监听
+        document.addEventListener('DOMContentLoaded', () => {
+            window.requestAnimationFrame(createTimelineConnections);
+        });
 
-            // 先移除旧线条
-            const existingLines = document.querySelector('.timeline-connections');
-            if (existingLines) existingLines.remove();
-
-            // 创建新线条
-            requestAnimationFrame(() => {
-                createTimelineConnections();
-            });
-        }
-
-        // 执行初始化
-        document.addEventListener('DOMContentLoaded', initTimeline);
-        window.addEventListener('resize', initTimeline);
+        window.addEventListener('resize', () => {
+            const existing = document.querySelector('.timeline-connections');
+            existing && existing.remove();
+            window.requestAnimationFrame(createTimelineConnections);
+        });
     </script>
     <script src="js/date.js"></script>
     <script src="js/fireworks.js"></script>
     <script src="js/menu.js"></script>
 </body>
 
-</html>
+</html>    
