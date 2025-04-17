@@ -741,80 +741,84 @@
     <div style="text-align: center; padding: 30px; color: #666;">
         <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
         <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
+        <p id="running-time">加载中...</p>
     </div>
 
-<script>
-    let currentButton = null;
-    const audio = document.getElementById('audioPlayer');
+    <script>
+        let currentButton = null;
+        const audio = document.getElementById('audioPlayer');
 
-    // 全局监听音频时间更新事件
-    audio.addEventListener('timeupdate', function() {
-        if (currentButton && !audio.paused) {
-            const progress = (audio.currentTime / audio.duration) * 100;
-            currentButton.querySelector('.progress-bar').style.width = progress + '%';
-        }
-    });
-
-    // 全局监听音频结束事件
-    audio.addEventListener('ended', function() {
-        if (currentButton) {
-            currentButton.querySelector('.progress-bar').style.width = '0%';
-            currentButton = null;
-        }
-    });
-
-    function playSound(soundFile, button) {
-        // 检查当前点击的按钮是否正在播放音频
-        if (currentButton === button && !audio.paused) {
-            // 暂停音频并重置进度条
-            audio.pause();
-            audio.currentTime = 0;
-            button.querySelector('.progress-bar').style.width = '0%';
-            currentButton = null;
-        } else {
-            // 重置上一个按钮的进度条宽度
-            if (currentButton) {
-                currentButton.querySelector('.progress-bar').style.width = '0%';
-            }
-
-            // 暂停当前音频并重置时间以触发进度条重置
-            audio.pause();
-            audio.currentTime = 0;
-
-            // 设置新音频源并播放
-            audio.src = 'Sounds/' + soundFile;
-            audio.play();
-
-            // 更新当前活动按钮
-            currentButton = button;
-        }
-
-        // 添加点击动画效果
-        button.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            button.style.transform = '';
-        }, 200);
-    }
-
-    // 预加载所有音频文件（保持原样）
-    window.addEventListener('load', () => {
-        const buttons = document.querySelectorAll('.sound-btn');
-        const loadedFiles = new Set();
-
-        buttons.forEach(button => {
-            const onclickContent = button.getAttribute('onclick');
-            const match = onclickContent.match(/playSound\('(.*?)'\)/);
-            if (match && match[1]) {
-                const filename = 'Sounds/' + match[1];
-                if (!loadedFiles.has(filename)) {
-                    new Audio(filename);
-                    loadedFiles.add(filename);
-                }
+        // 全局监听音频时间更新事件
+        audio.addEventListener('timeupdate', function() {
+            if (currentButton && !audio.paused) {
+                const progress = (audio.currentTime / audio.duration) * 100;
+                currentButton.querySelector('.progress-bar').style.width = progress + '%';
             }
         });
-    });
-</script>
-<script src="js/fireworks.js"></script>
+
+        // 全局监听音频结束事件
+        audio.addEventListener('ended', function() {
+            if (currentButton) {
+                currentButton.querySelector('.progress-bar').style.width = '0%';
+                currentButton = null;
+            }
+        });
+
+        function playSound(soundFile, button) {
+            // 检查当前点击的按钮是否正在播放音频
+            if (currentButton === button && !audio.paused) {
+                // 暂停音频并重置进度条
+                audio.pause();
+                audio.currentTime = 0;
+                button.querySelector('.progress-bar').style.width = '0%';
+                currentButton = null;
+            } else {
+                // 重置上一个按钮的进度条宽度
+                if (currentButton) {
+                    currentButton.querySelector('.progress-bar').style.width = '0%';
+                }
+
+                // 暂停当前音频并重置时间以触发进度条重置
+                audio.pause();
+                audio.currentTime = 0;
+
+                // 设置新音频源并播放
+                audio.src = 'Sounds/' + soundFile;
+                audio.play();
+
+                // 更新当前活动按钮
+                currentButton = button;
+            }
+
+            // 添加点击动画效果
+            button.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                button.style.transform = '';
+            }, 200);
+        }
+
+        // 预加载所有音频文件（保持原样）
+        window.addEventListener('load', () => {
+            const buttons = document.querySelectorAll('.sound-btn');
+            const loadedFiles = new Set();
+
+            buttons.forEach(button => {
+                const onclickContent = button.getAttribute('onclick');
+                const match = onclickContent.match(/playSound\('(.*?)'\)/);
+                if (match && match[1]) {
+                    const filename = 'Sounds/' + match[1];
+                    if (!loadedFiles.has(filename)) {
+                        new Audio(filename);
+                        loadedFiles.add(filename);
+                    }
+                }
+            });
+        });
+    </script>
+    <script src="js/time.js"></script>
+    <script src="js/star.js"></script>
+    <script src="js/click.js"></script>
+    <script src="js/fireworks.js"></script>
     <script src="js/menu.js"></script>
 </body>
 

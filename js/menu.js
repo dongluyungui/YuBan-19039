@@ -44,6 +44,9 @@ for (let i = 0; i < menuItems.length; i++) {
                 // 打开指定网页
                 window.open('https://www.example.com', '_blank');
                 break;
+            case '当前时间':
+                window.open('Tools/NowTime.html', '_blank');
+                break;    
             case '更新动态':
                 window.open('Tools/dynamics.html', '_blank');
                 break;

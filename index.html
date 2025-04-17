@@ -23,7 +23,7 @@
       margin-bottom: 15px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
-
+    .index-item:hover,
     .dynamic-item:hover {
       transform: translateY(-5px); /* 上浮效果 */
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 阴影加深效果 */
@@ -153,8 +153,15 @@
       height: 80px;
       border-radius: 50%;
       margin-bottom: 10px;
+      transition: transform 0.5s ease-out; /* 添加过渡效果，使旋转更平滑 */
+    }
+    /*图片旋转效果 */
+    /* 修改为鼠标悬停在.captain-card上时，.captain-avatar旋转 */
+    .captain-card:hover .captain-avatar {
+      transform: rotateZ(360deg);
     }
 
+ 
     .captain-card:hover {
       transform: translateY(-5px); /* 上浮效果 */
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 阴影加深效果 */
@@ -2402,6 +2409,7 @@
     <div style="text-align: center; padding: 30px; color: #666;">
       <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
       <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
+      <p id="running-time">加载中...</p>
     </div>
 
   </div>
@@ -2771,6 +2779,9 @@ elements.fansCard.addEventListener('click', () => {
       });
     });
   </script>
+  <script src="js/time.js"></script>
+  <script src="js/star.js"></script>
+  <script src="js/click.js"></script>
   <script src="js/fireworks.js"></script>
   <script src="js/menu.js"></script>
 </body>
