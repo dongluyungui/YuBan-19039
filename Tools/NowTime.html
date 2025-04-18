@@ -5,14 +5,136 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>当前日期显示</title>
+    <link rel="stylesheet" href="../css/styles.css">
     <!-- 引用外部 JavaScript 文件 -->
     <script src="../js/time.js"></script>
 </head>
 
 <body>
-    <h1>当前日期显示</h1>
-    <p>日期格式（YYYY.MM.DD）: <span id="date-dot"></span></p>
-    <p>日期格式（YYYY-MM-DD）: <span id="date-dash"></span></p>
+    <div style="text-align: center; padding: 30px; color: #666;">
+        <h1>当前日期显示</h1>
+        <p>日期格式（YYYY.MM.DD）: <span id="date-dot"></span></p>
+        <p>日期格式（YYYY-MM-DD）: <span id="date-dash"></span></p>
+        <!-- 上面是引用外部time.js文件 -->
+
+
+        <div id="output">
+            <!-- 显示当前年份和是今年的第几天 -->
+            <p>今天是 <span id="day-of-year">0</span> 年的第 <span id="day-number">0</span> 天</p>
+            <!-- 显示今年已过的百分比 -->
+            <p>今年已过 <span id="year-percentage">0</span>%</p>
+            <!-- 显示今天已过的百分比 -->
+            <p>今天已过 <span id="day-percentage">0</span>%</p>
+            <!-- 提示语 -->
+            <p>活在当下，珍惜眼下</p>
+        </div>
+    </div>
+    <script>
+        // 初始化当前是今年的第几天
+        let currentDayNumber = 0;
+        // 初始化今年已过的百分比
+        let currentYearPercentage = 0;
+        // 初始化今天已过的百分比
+        let currentDayPercentage = 0;
+        // 初始化当前年份
+        let currentYear = 0;
+
+        // 获取显示当前是今年第几天的 DOM 元素
+        const dayNumberElement = document.getElementById('day-number');
+        // 获取显示今年已过百分比的 DOM 元素
+        const yearPercentageElement = document.getElementById('year-percentage');
+        // 获取显示今天已过百分比的 DOM 元素
+        const dayPercentageElement = document.getElementById('day-percentage');
+        // 获取显示当前年份的 DOM 元素
+        const yearElement = document.getElementById('day-of-year');
+
+        function updateDateInfo() {
+            // 获取当前日期
+            const now = new Date();
+            // 获取今年的第一天
+            const startOfYear = new Date(now.getFullYear(), 0, 1);
+            // 计算今天是今年的第几天
+            const dayOfYear = Math.floor((now - startOfYear) / (1000 * 60 * 60 * 24)) + 1;
+            // 判断今年是否为闰年
+            const isLeapYear = (now.getFullYear() % 4 === 0 && now.getFullYear() % 100!== 0) || (now.getFullYear() % 400 === 0);
+            // 获取今年的总天数
+            const totalDaysInYear = isLeapYear? 366 : 365;
+            // 计算今年已过的百分比
+            const yearPercentage = ((dayOfYear / totalDaysInYear) * 100).toFixed(6);
+            // 获取今天的开始时间
+            const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            // 计算今天已过的毫秒数
+            const millisecondsPassedToday = now - startOfDay;
+            // 计算今天已过的百分比
+            const dayPercentage = ((millisecondsPassedToday / (1000 * 60 * 60 * 24)) * 100).toFixed(6);
+            // 获取当前年份
+            const year = now.getFullYear();
+
+            // 调用动画函数更新今年的第几天
+            animateValue(currentDayNumber, dayOfYear, 'day-number');
+            // 调用动画函数更新今年已过的百分比
+            animateValue(currentYearPercentage, parseFloat(yearPercentage), 'year-percentage');
+            // 调用动画函数更新今天已过的百分比
+            animateValue(currentDayPercentage, parseFloat(dayPercentage), 'day-percentage');
+            // 更新年份显示
+            yearElement.textContent = year;
+
+            // 更新当前是今年的第几天
+            currentDayNumber = dayOfYear;
+            // 更新今年已过的百分比
+            currentYearPercentage = parseFloat(yearPercentage);
+            // 更新今天已过的百分比
+            currentDayPercentage = parseFloat(dayPercentage);
+            // 更新当前年份
+            currentYear = year;
+        }
+
+        /**
+         * 实现数值平滑过渡的动画函数
+         * @param {number} start - 动画开始的数值
+         * @param {number} end - 动画结束的数值
+         * @param {string} elementId - 需要更新数值的元素的 id
+         */
+        function animateValue(start, end, elementId) {
+            // 动画的总时长，单位为毫秒
+            const duration = 1000;
+            // 记录动画开始的时间
+            const startTime = performance.now();
+
+            function step(timestamp) {
+                // 计算从动画开始到当前时间经过的时长
+                const elapsed = timestamp - startTime;
+                // 计算动画的进度，范围是 0 到 1
+                const progress = Math.min(elapsed / duration, 1);
+                // 根据进度计算当前要显示的数值
+                const value = start + (end - start) * progress;
+
+                // 获取需要更新数值的 DOM 元素
+                const element = document.getElementById(elementId);
+                if (elementId === 'day-number') {
+                    // 如果是显示今年第几天的元素，将数值四舍五入取整
+                    element.textContent = Math.round(value);
+                } else {
+                    // 其他情况，将数值保留 6 位小数
+                    element.textContent = value.toFixed(6);
+                }
+
+                // 如果动画还未完成，继续请求下一帧动画
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                }
+            }
+
+            // 开始动画
+            requestAnimationFrame(step);
+        }
+
+        // 页面加载时首次调用更新函数
+        updateDateInfo();
+
+        // 每秒调用一次更新函数，实现实时更新
+        setInterval(updateDateInfo, 1000);
+    </script>
 </body>
 
 </html>

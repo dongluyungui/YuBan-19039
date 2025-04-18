@@ -158,6 +158,21 @@ height: 30px; /* 设置固定高度为 50 像素 */
   color: var(--primary-color);
   transform: translateX(3px);
 }
+/* 文本中文本链接 */
+.text-link {
+  color: var(--secondary-color);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.text-link:hover {
+  color: var(--primary-color);
+  transform: translateY(-3px);
+}
 
 /* 移动端适配核心设置 - 页头部分 */
 @media (max-width: 768px) {
