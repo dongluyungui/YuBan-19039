@@ -1,0 +1,40 @@
+.summary-details {
+    display: none;
+    /* 默认隐藏子文本 */
+    padding: 15px;
+    border: 1px solid #ddd;
+    background: #f9f9f9;
+    margin-top: 10px;
+    position: relative;
+    /* 用于定位 */
+}
+
+/* 子文本内的层级样式优化 */
+.ai-summary-section {
+    margin: 15px 0;
+    padding-left: 20px;
+    border-left: 2px solid #ffd700;
+}
+
+.ai-summary-section-title {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.bullet {
+    margin: 5px 0;
+    line-height: 1.6;
+    cursor: pointer;
+}
+
+.bullet:hover {
+  color: var(--primary-color);
+  transform: translateX(3px);
+}
+
+.timestamp {
+    color: #999;
+    font-size: 0.9em;
+    margin-right: 10px;
+}

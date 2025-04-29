@@ -59,7 +59,7 @@ function initPagination() {
 
         // 添加第一页按钮
         const firstButton = document.createElement('button');
-        firstButton.textContent = '第一页';
+        firstButton.textContent = '首页';
         firstButton.onclick = () => {
             isInitialLoad = false;
             changePage(1);
@@ -125,7 +125,7 @@ function initPagination() {
 
         // 添加最后一页按钮
         const lastButton = document.createElement('button');
-        lastButton.textContent = '最后一页';
+        lastButton.textContent = '尾页';
         lastButton.onclick = () => {
             isInitialLoad = false;
             changePage(totalPages);
