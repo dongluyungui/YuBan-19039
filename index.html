@@ -102,25 +102,12 @@
       font-weight: bold;
       margin: 10px 0;
     }
-
-    #countdown {
+     /* 倒计时统一样式 */
+    .countdowns {
       text-align: right;
       /* 文字右对齐 */
       font-size: 20px;
-      margin-top: 20px;
-    }
-
-    /* 新增样式，用于显示距离一万粉丝的差值 */
-    #fans-difference {
-      text-align: right;
-      font-size: 20px;
-      margin-top: 10px;
-    }
-
-    #debut-time {
-      text-align: right;
-      font-size: 20px;
-      margin-top: 10px;
+      margin-top: 20px
     }
 
     /* 新增舰长统计卡片样式 */
@@ -218,18 +205,10 @@
              margin-left: auto;
              margin-right: auto;
         }
-        #countdown {
+        /* 倒计时统一样式 */
+        .countdowns {
           text-align: center;
           font-size: 15px;
-        }
-        #fans-difference {
-          text-align: center;
-          font-size: 15px;
-        }
-
-        #debut-time {
-         text-align: center;
-         font-size: 15px;
         }
     }
   </style>
@@ -273,7 +252,8 @@
       <div>
         <h2 style="color: #e91e63; margin-top: 0;">✨ 主播介绍 ✨</h2>
         <p>🎤 B站ID：御坂19039</p>
-        <p>🎈出道日期：2024年5月27日</p>
+        <p>🎉生日：5月01日</p>
+        <p>🎈出道日期：2024年5月31日</p>
         <p>🌟 直播类型：聊天互动 | 游戏实况 | 才艺展示</p>
         <p>💖 直播时间：不定期直播哦~时间变动会发动态嘟</p>
         <p>📌 个人标签：你已经上贼船了，你逃不脱了桀桀桀！</p>
@@ -283,11 +263,12 @@
         </div>
       </div>
       <div class="times">
-        <div id="countdown">生日回倒计时：加载中...</div>
+        <div id="countdown" class="countdowns">生日倒计时：加载中...</div>
+        <div id="anniversary-countdown" class="countdowns">周年倒计时：加载中...</div>
         <!-- 新增元素，用于显示已出道时间 -->
-        <div id="debut-time">已出道：加载中...</div>
+        <div id="debut-time" class="countdowns">已出道：加载中...</div>
         <!-- 新增元素，用于显示距离一万粉丝的差值 -->
-        <div id="fans-difference">距离一万粉丝还差：加载中...</div>
+        <div id="fans-difference" class="countdowns">距离一万粉丝还差：加载中...</div>
       </div>
     </div>
 
@@ -2525,33 +2506,65 @@
 
     // 新增倒计时功能
     function updateCountdown() {
-      const now = new Date();
-      // 可以修改下面这一行来改变目标日期，这里设置为每年的5月27日
-      let targetYear = now.getFullYear();
-      const targetDate = new Date(targetYear, 4, 27); // 注意：月份是从0开始计数，4代表5月
-      if (now > targetDate) {
-        targetYear++;
-        targetDate.setFullYear(targetYear);
-      }
-      const timeDiff = targetDate - now;
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        // 出道年份
+        const debutYear = 2024;
 
-      if (timeDiff > 0) {
-        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+        // 可以修改下面这一行来改变目标日期，这里设置为每年的5月1日
+        let targetYear = currentYear;
+        const targetDate = new Date(targetYear, 4, 1); // 注意：月份是从0开始计数，4代表5月
+        if (now > targetDate) {
+            targetYear++;
+            targetDate.setFullYear(targetYear);
+        }
+        const timeDiff = targetDate - now;
+
+        const isBirthday = now.getMonth() === 4 && now.getDate() === 1;
         const countdownElement = document.getElementById('countdown');
-        // 修改显示格式为 “生日回倒计时: 58天:3小时:50分:25秒”
-        countdownElement.textContent = `生日回倒计时: ${days}天:${hours}小时:${minutes}分:${seconds}秒`;
-      } else {
-        const countdownElement = document.getElementById('countdown');
-        countdownElement.textContent = '生日回已到！';
-      }
+
+        if (isBirthday) {
+            countdownElement.textContent = '🎉今天是主播的生日🎉';
+        } else if (timeDiff > 0) {
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+            // 修改显示格式为 “生日回倒计时: 58天:3小时:50分:25秒”
+            countdownElement.textContent = `生日回倒计时: ${days}天:${hours}小时:${minutes}分:${seconds}秒`;
+        } else {
+            countdownElement.textContent = '生日回已到！';
+        }
+
+        // 新增周年倒计时功能，日期是5月31日
+        let anniversaryYear = currentYear;
+        const anniversaryDate = new Date(anniversaryYear, 4, 31);
+        if (now > anniversaryDate) {
+            anniversaryYear++;
+            anniversaryDate.setFullYear(anniversaryYear);
+        }
+        const anniversaryTimeDiff = anniversaryDate - now;
+
+        const isAnniversary = now.getMonth() === 4 && now.getDate() === 31;
+        const anniversaryCountdownElement = document.getElementById('anniversary-countdown');
+
+        if (isAnniversary) {
+            const yearsPassed = currentYear - debutYear;
+            anniversaryCountdownElement.textContent = `今天是第${yearsPassed + 1}周年`;
+        } else if (anniversaryTimeDiff > 0) {
+            const anniversaryDays = Math.floor(anniversaryTimeDiff / (1000 * 60 * 60 * 24));
+            const anniversaryHours = Math.floor((anniversaryTimeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const anniversaryMinutes = Math.floor((anniversaryTimeDiff % (1000 * 60 * 60)) / (1000 * 60));
+            const anniversarySeconds = Math.floor((anniversaryTimeDiff % (1000 * 60)) / 1000);
+            anniversaryCountdownElement.textContent = `周年倒计时: ${anniversaryDays}天:${anniversaryHours}小时:${anniversaryMinutes}分:${anniversarySeconds}秒`;
+        } else {
+            anniversaryCountdownElement.textContent = '周年已到！';
+        }
     }
 
     // 计算出道时间
     function calculateDebutTime() {
-      const debutDate = new Date(2024, 4, 27); // 出道日期，注意月份从0开始
+      const debutDate = new Date(2024, 4, 31); // 出道日期，注意月份从0开始，5月31日
       const now = new Date();
       const timeDiff = now - debutDate;
 
