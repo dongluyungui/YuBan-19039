@@ -50,8 +50,15 @@ document.addEventListener('DOMContentLoaded', function () {
             if (videoLinkElement) {
                 const videoLink = videoLinkElement.href;
                 const timestamp = this.querySelector('.timestamp-inner').textContent;
-                const [minutes, seconds] = timestamp.split(':');
-                const timeParam = `?t=${minutes}m${seconds}s`;
+                const parts = timestamp.split(':');
+                let timeParam;
+                if (parts.length === 2) {
+                    const [minutes, seconds] = parts;
+                    timeParam = `?t=${minutes}m${seconds}s`;
+                } else if (parts.length === 3) {
+                    const [hours, minutes, seconds] = parts;
+                    timeParam = `?t=${hours}h${minutes}m${seconds}s`;
+                }
                 const newLink = videoLink + timeParam;
                 window.open(newLink, '_blank'); // 打开带有时间戳的视频链接
             }
@@ -74,4 +81,3 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 });
-    
