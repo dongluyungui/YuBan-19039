@@ -9,6 +9,8 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/menu.css">
   <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/captain.css">
+  <link rel="stylesheet" href="css/head.css">
   <script src="js/pages.js"></script>  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <style>
     /* 新增动态样式 */
@@ -104,74 +106,21 @@
     }
      /* 倒计时统一样式 */
     .countdowns {
+      background: rgba(156, 39, 176, 0.08);
       text-align: right;
       /* 文字右对齐 */
-      font-size: 20px;
-      margin-top: 20px
+      padding: 12px 15px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .countdowns:hover {
+      background: rgba(156, 39, 176, 0.15);
+      transform: translateX(-5px);
     }
 
-    /* 新增舰长统计卡片样式 */
-    #captain-count {
-      background-color: white;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    #captain-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .captain-card {
-      background-color: white;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      transition: all 0.3s ease; /* 添加过渡效果 */
-    }
-
-    .captain-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin-bottom: 10px;
-      transition: transform 0.5s ease-out; /* 添加过渡效果，使旋转更平滑 */
-    }
-    /*图片旋转效果 */
-    /* 修改为鼠标悬停在.captain-card上时，.captain-avatar旋转 */
-    .captain-card:hover .captain-avatar {
-      transform: rotateZ(360deg);
-    }
-
- 
-    .captain-card:hover {
-      transform: translateY(-5px); /* 上浮效果 */
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 阴影加深效果 */
-      cursor: pointer; /* 鼠标悬停时指针变为手型 */
-    }
-    .captain-card.rank1 {
-      border: 3px solid #e91e63; /* 较粗的边框 */
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4); /* 更深的阴影 */
-      background-color: #fde6e9; /* 背景色 */
-    }
-
-    .captain-card.rank2 {
-      border: 2px solid #9c27b0; /* 中等粗细的边框 */
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* 中等深度的阴影 */
-      background-color: #f3e5f5; /* 背景色 */
-    }
-
-    .captain-card.rank3 {
-      border: 1px solid #03a9f4; /* 较细的边框 */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 较浅的阴影 */
-      background-color: #e3f2fd; /* 背景色 */
-    }
     /*数据页面 */
     .stat-card {
     background-color: white;
@@ -247,21 +196,46 @@
       <p>欢迎来到御坂19039的应援基地！(≧∇≦)ﾉ</p>
     </div>
 
+    <!-- 资料卡片 -->
     <div class="profile-card">
-      <img src="img/face.jpg" alt="御坂19039" class="avatar">
-      <div>
-        <h2 style="color: #e91e63; margin-top: 0;">✨ 主播介绍 ✨</h2>
-        <p>🎤 B站ID：御坂19039</p>
-        <p>🎉生日：5月01日</p>
-        <p>🎈出道日期：2024年5月31日</p>
-        <p>🌟 直播类型：聊天互动 | 游戏实况 | 才艺展示</p>
-        <p>💖 直播时间：不定期直播哦~时间变动会发动态嘟</p>
-        <p>📌 个人标签：你已经上贼船了，你逃不脱了桀桀桀！</p>
-        <div style="margin-top: 20px;">
-          <a href="https://space.bilibili.com/12136555/" target="_blank" class="bilibili-btn">个人主页</a>
-          <a href="https://live.bilibili.com/8414339/" target="_blank" class="bilibili-btn">直播间</a>
+      <!-- 头像选择区域 -->
+      <div class="avatar-selector">
+        <div class="avatar-container active">
+          <img src="img/face.jpg" alt="御坂19039" class="main-avatar">
+          <div class="avatar-label">御坂19039</div>
+        </div>
+        <div class="avatar-container">
+          <img src="img/face.jpg" alt="SINA" class="main-avatar">
+          <div class="avatar-label">SINA</div>
+        </div>
+        <div class="avatar-container">
+          <img src="img/face.jpg" alt="烖晞" class="main-avatar">
+          <div class="avatar-label">烖晞</div>
         </div>
       </div>
+      
+      <!-- 角色信息显示区域 -->
+      <div class="character-info">
+        <h2>✨ 主播介绍 ✨</h2>
+        <div id="character-details">
+          <p >B站ID：御坂19039</p>
+          <p>生日：5月01日</p>
+          <p>出道日期：2024年5月31日</p>
+          <p>直播类型：聊天互动 | 游戏实况 | 才艺展示</p>
+          <p>直播时间：不定期直播哦~时间变动会发动态嘟</p>
+          <p>个人标签：你已经上贼船了，你逃不脱了桀桀桀！</p>
+          <div style="margin-top: 20px; display: flex; gap: 15px; flex-wrap: wrap;">
+            <a href="https://space.bilibili.com/12136555/" target="_blank" class="bilibili-btn">
+              个人主页
+            </a>
+            <a href="https://live.bilibili.com/8414339/" target="_blank" class="bilibili-btn">
+              直播间
+            </a>
+          </div>
+        </div>
+      </div>
+
+
       <div class="times">
         <div id="countdown" class="countdowns">生日倒计时：加载中...</div>
         <div id="anniversary-countdown" class="countdowns">周年倒计时：加载中...</div>
@@ -318,6 +292,79 @@
     <!-- 下面 -->
     <!-- 下面 -->
     <div id="dynamics-container" class="dynamic-list">
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 06月08日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1076102522760855571" target="_blank">等等我剪出来！因为视频太大了剪的有点慢，大家可以先看看云鬼的录播哦！</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 05月31日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1072877826937454647" target="_blank">这次的周年庆感谢大家的热情参与！不知道烖晞的出现有没有让大家耳目一新的感觉呢？接下来的直播将会由烖晞与sina共同分播(„• ֊ •„)੭
+
+⭐烖晞在全天时间都会不定时出现，主要分区为游戏
+
+⭐sina在周末晚上凌晨会不定时出现，主要分区为日常杂谈
+
+⭐后续计划:烖晞bug修复；sina更多表情；新一套衣装饰，烖晞/sina输入法皮肤研发，动态壁纸研发；更多二创视频
+
+（z：你真是为了省钱什么都能自己干嘛？）
+（中:包的，亲爱的😋）</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 05月20日</div>
+      <div class="dynamic-style">投稿视频</div>
+      <div class="dynamic-content">谢谢用户2.0老师我真的很喜欢她你们快去看她她真的好可爱QAQ｡ﾟ(ﾟ´人`ﾟ)ﾟ｡</div><div class="dynamic-content"><a class="source-link" href="https://www.bilibili.com/video/BV1SAJ8zhEPT/" target="_blank">做错了事情，怎样才能逃避责任</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 05月20日</div>
+      <div class="dynamic-style">投稿视频</div>
+      <div class="dynamic-content">-</div><div class="dynamic-content"><a class="source-link" href="https://www.bilibili.com/video/BV17xJ8z2Eyi/" target="_blank">520活动，仅限今天！</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 05月13日</div>
+      <div class="dynamic-style">投稿视频</div>
+      <div class="dynamic-content">-</div><div class="dynamic-content"><a class="source-link" href="https://www.bilibili.com/video/BV1E77fzoETX/" target="_blank">好好活着，爱你们</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 05月06日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1063841984532185109" target="_blank">#bilibili个性装扮# 我正在使用“超电磁炮勋章”专属评论背景，你也来试试~</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 05月01日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1061694496619626500" target="_blank">请在一周内私信我想要的头像哦！</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 04月28日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1060835863932436505" target="_blank">诶～5月1号凌晨有人过生日诶！会来看我嘛？会来看我嘛～可以看我一辈子嘛～～？
+  感谢本次报名上海报的小伙伴！没参加到的小伙伴可以等下次哦！！！</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 04月20日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1057807456726417414" target="_blank">呜呜呜呜呜呜我的眼镜😭我戴了6年的眼镜😭眼镜桑你不要走好吗😭我没了你我怎么办啊你忍心看着我变成小龙虾嘛😭眼镜桑你不要走啊😭</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 04月19日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1057508037363761161" target="_blank">呼，差点就昏古七了呱～
+　　       　∧,,　
+　　　　ヾ ｀. ､`フ
+　　　(,｀'´ヽ､､ﾂﾞ
+　 (ヽｖ'　　　`''ﾞつ
+　　,ゝ　 ⌒`ｙ'''´
+　 （ (´＾ヽこつ
+　　 ) )
+　　(ノ</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 04月18日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1057040856607883266" target="_blank">10点开门，我10点20到的，已经要等到下午了，还没有徽章袋子你们不准买联动，我先买😭</a></div>
+    </div>
       <div class="dynamic-item">
         <div class="dynamic-time">📅 04月08日</div>
         <div class="dynamic-style">文字动态</div>
@@ -2404,6 +2451,7 @@
         UID: 12136555,
         ROOM_ID: 8414339,
         CORS_PROXY: 'https://api.allorigins.win/get?url=', // 备用代理
+        IMG_PROXY: 'https://images.weserv.nl/?url=',
         REFRESH_INTERVAL: 300000, // 5分钟刷新
         PAGE_SIZE: 10
     };
@@ -2588,91 +2636,6 @@
       elements.debutTime.textContent = `已出道：${displayText}`;
     }
 
-    // 去除 HTML 标签的函数
-    function stripHtmlTags(str) {
-      return str.replace(/<[^>]*>/g, '');
-    }
-
-    // 渲染舰长列表
-    function renderCaptainList(captains) {
-      const captainList = document.getElementById('captain-list');
-      captainList.innerHTML = '';
-      if (captains && captains.length > 0) {
-        captains.forEach((captain, index) => {
-          const card = document.createElement('div');
-          card.classList.add('captain-card');
-          if (index === 0) {
-            card.classList.add('rank1'); // 排名1的舰长添加rank1类
-          } else if (index === 1) {
-            card.classList.add('rank2'); // 排名2的舰长添加rank2类
-          } else if (index === 2) {
-            card.classList.add('rank3'); // 排名3的舰长添加rank3类
-          }
-
-          const avatar = document.createElement('img');
-          avatar.classList.add('captain-avatar');
-
-          let displayName = captain.username || '未知舰长';
-          displayName = stripHtmlTags(displayName);
-          avatar.alt = displayName;
-
-          const originalSrc = captain.face;
-          // 提取文件名并将扩展名替换为.jpg
-          let fileName = originalSrc.split('/').pop().replace(/\.\w+$/, '.jpg');
-          const localSrc = `img/face/${fileName}`;
-          const defaultSrc = 'img/face/Fans.jpg';
-
-          // 尝试加载本地头像
-          function tryLoadAvatar(src) {
-            avatar.src = src;
-            avatar.onerror = function () {
-              if (src === localSrc) {
-                // 本地头像加载失败，尝试默认头像
-                tryLoadAvatar(defaultSrc);
-              } else {
-                // 默认头像也加载失败，不显示头像
-                avatar.style.display = 'none';
-              }
-            };
-          }
-
-          tryLoadAvatar(localSrc);
-
-          const name = document.createElement('p');
-          name.textContent = displayName;
-
-          // 添加点击事件监听器
-          card.addEventListener('click', () => {
-            const uid = captain.uid;
-            window.open(`https://space.bilibili.com/${uid}`, '_blank');
-          });
-
-          card.appendChild(avatar);
-          card.appendChild(name);
-          captainList.appendChild(card);
-        });
-      } else {
-        const message = document.createElement('p');
-        message.textContent = '暂无舰长信息';
-        captainList.appendChild(message);
-      }
-    }
-
-    // 加载舰长数据
-        async function loadCaptainData() {
-            const url = `https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=${CONFIG.ROOM_ID}&page=1&ruid=${CONFIG.UID}&page_size=${CONFIG.PAGE_SIZE}`;
-            const captainData = await fetchData(url);
-            //console.log('处理后的舰长数据:', captainData); // 打印处理后的舰长数据
-            if (captainData) {
-                // 合并 data.list 和 data.top3 中的舰长数据
-                const allCaptains = [
-                   ...(captainData.data.top3 || []),
-                   ...(captainData.data.list || [])
-                ];
-                renderCaptainList(allCaptains);
-            }
-        }
-
     // 初始化倒计时
     updateCountdown();
     setInterval(updateCountdown, 1000);
@@ -2684,9 +2647,8 @@
     // 初始化
     document.addEventListener('DOMContentLoaded', () => {
         loadAllData();
-        setInterval(loadAllData, CONFIG.REFRESH_INTERVAL);
-        loadCaptainData();
-
+        setInterval(loadAllData, CONFIG.REFRESH_INTERVAL);    // 将CONFIG对象传递给函数
+    loadAndRenderCaptainData(CONFIG.ROOM_ID, CONFIG.UID, document.getElementById('captain-list'), CONFIG);
     // 粉丝数量卡片点击事件
 elements.fansCard.addEventListener('click', () => {
     // 使用全局变量获取目标数量
@@ -2795,6 +2757,8 @@ elements.fansCard.addEventListener('click', () => {
       });
     });
   </script>
+  <script src="js/head.js"></script>
+  <script src="js/captain.js"></script>
   <script src="js/greeting.js"></script>
   <script src="js/time.js"></script>
   <script src="js/star.js"></script>

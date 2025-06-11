@@ -1,0 +1,111 @@
+/* 舰长卡片样式 */
+.captain-section {
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 30px;
+}
+
+.captain-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: #89dceb;
+}
+
+.captain-section h2 i {
+    font-size: 2rem;
+}
+
+
+
+#captain-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.captain-card {
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+    background-color: white;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.captain-card:hover {
+    transform: translateY(-5px); /* 上浮效果 */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 阴影加深效果 */
+    cursor: pointer; /* 鼠标悬停时指针变为手型 */
+}
+    /*图片旋转效果 */
+    /* 修改为鼠标悬停在.captain-card上时，.captain-avatar旋转 */
+    .captain-card:hover .captain-avatar {
+      transform: rotateZ(360deg);
+    }
+
+.captain-rank {
+    width: 30px;
+    height: 30px;
+    background: #ffd166;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: -10px auto 10px;
+    color: #1a1a2e;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.rank1 {
+    background: linear-gradient(135deg, #ffd700, #ff9800);
+}
+
+.rank2 {
+    background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+}
+
+.rank3 {
+    background: linear-gradient(135deg, #cd7f32, #a56a3d);
+}
+
+.captain-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #89dceb;
+    margin: 0 auto 15px;
+    display: block;
+    transition: transform 0.5s ease-out;
+}
+
+.captain-avatar:hover {
+    transform: scale(1.05);
+}
+
+.captain-name {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #f5c2e7;
+}
+
+.captain-level {
+    font-size: 0.9rem;
+    color: #a6e3a1;
+    background: rgba(166, 227, 161, 0.1);
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+}

@@ -1,0 +1,106 @@
+/* 头像选择器样式 - 重点优化区域 */
+.avatar-selector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-right: 20px;
+    gap: 0; /* 移除所有间隙 */
+}
+
+.avatar-container {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    margin: -15px 0; /* 负边距使元素重叠 */
+    z-index: 1;
+    position: relative;
+}
+
+.avatar-container.active {
+    transform: scale(1.1);
+    z-index: 3;
+    margin: 0; /* 选中项取消负边距 */
+}
+
+.avatar-container:not(.active) {
+    transform: scale(0.65); /* 减小缩放比例 */
+    opacity: 0.8;
+}
+
+.avatar-container:hover:not(.active) {
+    transform: scale(0.8); /* 悬停时稍微放大 */
+    opacity: 1;
+    z-index: 2;
+}
+
+.avatar-container:first-child {
+    margin-top: 0;
+}
+
+.avatar-container:last-child {
+    margin-bottom: 0;
+}
+
+.main-avatar {
+    width: 120px; /* 减小尺寸 */
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid var(--secondary-color);
+    transition: all 0.3s ease;
+    object-fit: cover;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.avatar-label {
+    margin-top: 8px;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    background: rgba(233, 30, 99, 0.1);
+    padding: 3px 10px;
+    border-radius: 15px;
+}
+
+.character-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.character-info h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.8rem;
+}
+
+.character-info h2 i {
+    font-size: 1.4rem;
+}
+
+#character-details p {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(0,0,0,0.1);
+}
+    /* 动画效果 */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.floating {
+    animation: float 4s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+        .avatar-selector {
+            flex-direction: row;/* 头像 */
+        }
+    }
