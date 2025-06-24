@@ -193,6 +193,29 @@
       window.open('https://biligank.com', '_blank');
    }
 
+    // 提取B站视频链接的核心部分（只保留到BV号）
+    function extractBilibiliVideoLink(link) {
+      if (!link) return '';
+      
+      // 匹配B站视频链接格式，提取BV号部分
+      const bvRegex = /(https?:\/\/)?(www\.)?bilibili\.com\/video\/(BV[0-9A-Za-z]+)/;
+      const match = link.match(bvRegex);
+      
+      if (match && match[3]) {
+        return `https://www.bilibili.com/video/${match[3]}`;
+      }
+      
+      // 处理av号格式（可选）
+      const avRegex = /(https?:\/\/)?(www\.)?bilibili\.com\/video\/av(\d+)/;
+      const avMatch = link.match(avRegex);
+      
+      if (avMatch && avMatch[3]) {
+        return `https://www.bilibili.com/video/av${avMatch[3]}`;
+      }
+      
+      // 如果无法匹配，返回原始链接
+      return link;
+    }
 
     // 生成代码功能
     function generateCode() {
@@ -201,6 +224,9 @@
                        .map(span => span.textContent);
 
         const tagSpans = tags.map(t => `            <span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('\n');
+        
+        // 处理视频链接，只保留到BV号部分
+        const processedLink = extractBilibiliVideoLink(getValue('link'));
 
         const code = `
     <div class="live-record" data-tags="${tags.join(',')}">
@@ -209,7 +235,7 @@
         <p><strong>直播日期：</strong>${formatDate(getValue('date'))}</p>
         <p><strong>直播时间：</strong>${getValue('startTime')} - ${getValue('endTime')}</p>
         <p><strong>直播简介：</strong>${getValue('description')}</p>
-        <p><strong>视频链接：</strong><a class="source-link" href="${getValue('link')}" target="_blank">点击观看</a></p>
+        <p><strong>视频链接：</strong><a class="source-link" href="${processedLink}" target="_blank">点击观看</a></p>
         <div class="tags">
 ${tagSpans}
         </div>
