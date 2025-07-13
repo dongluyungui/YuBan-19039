@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>光标测试网站</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+  <style>
+    /* 基础样式复用原网站风格 */
+    .form-panel {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      color: #666;
+    }
+
+    /* 光标测试区域核心样式 */
+    .cursor-test-area {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .cursor-box {
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .cursor-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .cursor-demo {
+      height: 80px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      background-size: 80px 80px;  /* 调整图片大小（根据实际图片尺寸设置） */
+      background-repeat: no-repeat;  /* 禁止重复显示 */
+      background-position: center;  /* 图片居中显示 */
+    }
+
+    .cursor-name {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .cursor-desc {
+      margin-top: 5px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* 标准光标样式定义 */
+    .default { 
+      cursor: url('./cursor/zaixi/default.cur'), 
+              url('./cursor/zaixi/default.png') 0 0, 
+              default; 
+    }
+    .none { 
+      cursor: url('./cursor/zaixi/none.cur'), 
+              url('./cursor/zaixi/none.png') 0 0, 
+              none; 
+    }
+    .context-menu { 
+      cursor: url('./cursor/zaixi/default.cur'), 
+              url('./cursor/zaixi/default.png') 0 0, 
+              context-menu; 
+    }
+    .help { 
+      cursor: url('./cursor/zaixi/help.cur'), 
+              url('./cursor/zaixi/help.png') 0 0, 
+              help; 
+    }
+    .pointer { 
+      cursor: url('./cursor/zaixi/pointer.cur'), 
+              url('./cursor/zaixi/pointer.png') 0 0, 
+              pointer; 
+    }
+    .progress { 
+      cursor: url('./cursor/zaixi/progress.cur'), 
+              url('./cursor/zaixi/progress.png') 0 0, 
+              progress; 
+    }
+    .wait { 
+      cursor: url('./cursor/zaixi/wait.cur'), 
+              url('./cursor/zaixi/wait.png') 0 0, 
+              wait; 
+    }
+    .cell { 
+      cursor: url('./cursor/zaixi/cell.cur'), 
+              url('./cursor/zaixi/cell.png') 0 0, 
+              cell; 
+    }
+    .crosshair { 
+      cursor: url('./cursor/zaixi/crosshair.cur'), 
+              url('./cursor/zaixi/crosshair.png') 0 0, 
+              crosshair; 
+    }
+    .text { 
+      cursor: url('./cursor/zaixi/text.cur'), 
+              url('./cursor/zaixi/text.png') 64 64, 
+              text; 
+    }
+    .vertical-text { 
+      cursor: url('./cursor/zaixi/vertical-text.cur'), 
+              url('./cursor/zaixi/vertical-text.png') 0 0, 
+              vertical-text; 
+    }
+    .alias { 
+      cursor: url('./cursor/zaixi/alias.cur'), 
+              url('./cursor/zaixi/alias.png') 0 0, 
+              alias; 
+    }
+    .copy { 
+      cursor: url('./cursor/zaixi/copy.cur'), 
+              url('./cursor/zaixi/copy.png') 0 0, 
+              copy; 
+    }
+    .move { 
+      cursor: url('./cursor/zaixi/move.cur'), 
+              url('./cursor/zaixi/move.png') 64 64, 
+              move; 
+    }
+    .no-drop { 
+      cursor: url('./cursor/zaixi/disabled.cur'), 
+              url('./cursor/zaixi/disabled.png') 64 64, 
+              no-drop;  
+    }
+    .not-allowed { 
+      cursor: url('./cursor/zaixi/disabled.cur'), 
+              url('./cursor/zaixi/disabled.png') 64 64, 
+              not-allowed; 
+    }
+    .grab { 
+      cursor: url('./cursor/zaixi/grab.cur'), 
+              url('./cursor/zaixi/grab.png') 0 0, 
+              grab; 
+    }
+    .grabbing { 
+      cursor: url('./cursor/zaixi/grabbing.cur'), 
+              url('./cursor/zaixi/grabbing.png') 0 0, 
+              grabbing; 
+    }
+    .all-scroll { 
+      cursor: url('./cursor/zaixi/move.cur'), 
+              url('./cursor/zaixi/move.png') 64 64, 
+              all-scroll; 
+    }
+    .col-resize { 
+      cursor: url('./cursor/zaixi/col-resize.cur'), 
+              url('./cursor/zaixi/col-resize.png') 0 0, 
+              col-resize; 
+    }
+    .row-resize { 
+      cursor: url('./cursor/zaixi/row-resize.cur'), 
+              url('./cursor/zaixi/row-resize.png') 0 0, 
+              row-resize; 
+    }
+    .n-resize {  
+      cursor: url('./cursor/zaixi/ns-resize.cur'), 
+              url('./cursor/zaixi/ns-resize.png') 64 64, 
+              ns-resize; 
+    }
+    .e-resize { 
+      cursor: url('./cursor/zaixi/ew-resize.cur'), 
+              url('./cursor/zaixi/ew-resize.png') 64 64, 
+              e-resize; 
+    }
+    .s-resize {  
+      cursor: url('./cursor/zaixi/ns-resize.cur'), 
+              url('./cursor/zaixi/ns-resize.png') 64 64, 
+              ns-resize; 
+    }
+    .w-resize { 
+      cursor: url('./cursor/zaixi/ew-resize.cur'), 
+              url('./cursor/zaixi/ew-resize.png') 64 64, 
+              w-resize; 
+    }
+    .ne-resize { 
+      cursor: url('./cursor/zaixi/nesw-resize.cur'), 
+              url('./cursor/zaixi/nesw-resize.png') 64 64, 
+              ne-resize; 
+    }
+    .nw-resize { 
+      cursor: url('./cursor/zaixi/nwse-resize.cur'), 
+              url('./cursor/zaixi/nwse-resize.png') 64 64, 
+              nw-resize; 
+    }
+    .se-resize { 
+      cursor: url('./cursor/zaixi/nwse-resize.cur'), 
+              url('./cursor/zaixi/nwse-resize.png') 64 64, 
+              se-resize; 
+    }
+    .sw-resize { 
+      cursor: url('./cursor/zaixi/nesw-resize.cur'), 
+              url('./cursor/zaixi/nesw-resize.png') 64 64, 
+              sw-resize; 
+    }
+    .ew-resize { 
+      cursor: url('./cursor/zaixi/ew-resize.cur'), 
+              url('./cursor/zaixi/ew-resize.png') 64 64, 
+              ew-resize; 
+    }
+    .ns-resize {  
+      cursor: url('./cursor/zaixi/ns-resize.cur'), 
+              url('./cursor/zaixi/ns-resize.png') 0 64, 
+              ns-resize; 
+    }
+    .nesw-resize { 
+      cursor: url('./cursor/zaixi/nesw-resize.cur'), 
+              url('./cursor/zaixi/nesw-resize.png') 64 64, 
+              nesw-resize; 
+    }
+    .nwse-resize { 
+      cursor: url('./cursor/zaixi/nwse-resize.cur'), 
+              url('./cursor/zaixi/nwse-resize.png') 64 64, 
+              nwse-resize; 
+    }
+    .zoom-in { 
+      cursor: url('./cursor/zaixi/zoom-in.cur'), 
+              url('./cursor/zaixi/zoom-in.png') 0 0, 
+              zoom-in; 
+    }
+    .zoom-out { 
+      cursor: url('./cursor/zaixi/zoom-out.cur'), 
+              url('./cursor/zaixi/zoom-out.png') 0 0, 
+              zoom-out; 
+    }
+    
+    /* 新增默认模式切换器样式 */
+    .default-mode-toggle {
+      display: flex;
+      align-items: center;
+      margin-left: 15px;
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .toggle-label {
+      margin-right: 8px;
+      font-size: 14px;
+      color: #555;
+      font-weight: 500;
+    }
+    
+    .toggle-switch {
+      width: 70px;
+      height: 30px;
+      background-color: #e0e0e0;
+      border-radius: 15px;
+      position: relative;
+      transition: background-color 0.3s;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .toggle-switch.on {
+      background-color: #4CAF50;
+    }
+    
+    .switch-slider {
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      background-color: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    
+    .toggle-switch.on .switch-slider {
+      transform: translateX(40px);
+    }
+    
+    .switch-text {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 12px;
+      color: white;
+      font-weight: bold;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    
+    .text-off {
+      left: 38px;
+      opacity: 1;
+    }
+    
+    .text-on {
+      left: 10px;
+      opacity: 0;
+    }
+    
+    .toggle-switch.on .text-off {
+      opacity: 0;
+    }
+    
+    .toggle-switch.on .text-on {
+      opacity: 1;
+    }
+    
+    /* 默认模式下的光标覆盖 - 只针对自定义光标 */
+    .default-mode .cursor-box.default { cursor: default !important; }
+    .default-mode .cursor-box.none { cursor: none !important; }
+    .default-mode .cursor-box.context-menu { cursor: context-menu !important; }
+    .default-mode .cursor-box.help { cursor: help !important; }
+    .default-mode .cursor-box.pointer { cursor: pointer !important; }
+    .default-mode .cursor-box.progress { cursor: progress !important; }
+    .default-mode .cursor-box.wait { cursor: wait !important; }
+    .default-mode .cursor-box.cell { cursor: cell !important; }
+    .default-mode .cursor-box.crosshair { cursor: crosshair !important; }
+    .default-mode .cursor-box.text { cursor: text !important; }
+    .default-mode .cursor-box.vertical-text { cursor: vertical-text !important; }
+    .default-mode .cursor-box.alias { cursor: alias !important; }
+    .default-mode .cursor-box.copy { cursor: copy !important; }
+    .default-mode .cursor-box.move { cursor: move !important; }
+    .default-mode .cursor-box.no-drop { cursor: no-drop !important; }
+    .default-mode .cursor-box.not-allowed { cursor: not-allowed !important; }
+    .default-mode .cursor-box.grab { cursor: grab !important; }
+    .default-mode .cursor-box.grabbing { cursor: grabbing !important; }
+    .default-mode .cursor-box.all-scroll { cursor: all-scroll !important; }
+    .default-mode .cursor-box.col-resize { cursor: col-resize !important; }
+    .default-mode .cursor-box.row-resize { cursor: row-resize !important; }
+    .default-mode .cursor-box.n-resize { cursor: n-resize !important; }
+    .default-mode .cursor-box.e-resize { cursor: e-resize !important; }
+    .default-mode .cursor-box.s-resize { cursor: s-resize !important; }
+    .default-mode .cursor-box.w-resize { cursor: w-resize !important; }
+    .default-mode .cursor-box.ne-resize { cursor: ne-resize !important; }
+    .default-mode .cursor-box.nw-resize { cursor: nw-resize !important; }
+    .default-mode .cursor-box.se-resize { cursor: se-resize !important; }
+    .default-mode .cursor-box.sw-resize { cursor: sw-resize !important; }
+    .default-mode .cursor-box.ew-resize { cursor: ew-resize !important; }
+    .default-mode .cursor-box.ns-resize { cursor: ns-resize !important; }
+    .default-mode .cursor-box.nesw-resize { cursor: nesw-resize !important; }
+    .default-mode .cursor-box.nwse-resize { cursor: nwse-resize !important; }
+    .default-mode .cursor-box.zoom-in { cursor: zoom-in !important; }
+    .default-mode .cursor-box.zoom-out { cursor: zoom-out !important; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div>
+        <a href="../index.html" class="nav-link">首页</a>
+        <a href="../About.html" class="nav-link">关于</a>
+        <a href="#" class="nav-link">测试工具</a>
+      </div>
+      <div class="util-buttons">
+        <!-- 添加默认模式切换器 -->
+        <div class="default-mode-toggle" id="defaultModeToggle">
+          <span class="toggle-label">体验模式</span>
+          <div class="toggle-switch" id="toggleSwitch">
+            <div class="switch-slider"></div>
+            <span class="switch-text text-off">默认</span>
+            <span class="switch-text text-on">开启</span>
+          </div>
+        </div>
+      </div>      
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>光标测试网站</h1>
+    
+    <div class="form-panel">
+      <div class="form-group">
+        <label>测试说明</label>
+        <p>您可以通过右上角的"体验模式"开关，将鼠标放到方块内来体验烖晞的光标。</p>
+      </div>
+    </div>
+
+    <div class="cursor-test-area">
+     <!-- 基础光标类型 -->
+      
+      <div class="cursor-box default">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/default.png');"></div>
+        <div class="cursor-name">default</div>
+        <div class="cursor-desc">默认箭头</div>
+      </div>
+      
+      <div class="cursor-box none">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/none.png');"></div>
+        <div class="cursor-name">none</div>
+        <div class="cursor-desc">隐藏光标</div>
+      </div>
+      
+      <div class="cursor-box context-menu">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/default.png');"></div>
+        <div class="cursor-name">context-menu</div>
+        <div class="cursor-desc">上下文菜单</div>
+      </div>
+      
+      <div class="cursor-box help">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/help.png');"></div>
+        <div class="cursor-name">help</div>
+        <div class="cursor-desc">帮助（带问号）</div>
+      </div>
+      
+      <div class="cursor-box pointer">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/pointer.png');"></div>
+        <div class="cursor-name">pointer</div>
+        <div class="cursor-desc">指针（手型）</div>
+      </div>
+      
+      <!-- 状态类光标 -->
+      <div class="cursor-box progress">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/progress.png');"></div>
+        <div class="cursor-name">progress</div>
+        <div class="cursor-desc">加载中（可交互）</div>
+      </div>
+      
+      <div class="cursor-box wait">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/wait.png');"></div>
+        <div class="cursor-name">wait</div>
+        <div class="cursor-desc">等待（不可交互）</div>
+      </div>
+      
+      <!-- 选择类光标 -->
+      <div class="cursor-box cell">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/cell.png');"></div>
+        <div class="cursor-name">cell</div>
+        <div class="cursor-desc">单元格选择</div>
+      </div>
+      
+      <div class="cursor-box crosshair">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/crosshair.png');"></div>
+        <div class="cursor-name">crosshair</div>
+        <div class="cursor-desc">十字线</div>
+      </div>
+      
+      <div class="cursor-box text">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/text.png');"></div>
+        <div class="cursor-name">text</div>
+        <div class="cursor-desc">文本选择</div>
+      </div>
+      
+      <div class="cursor-box vertical-text">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/vertical-text.png');"></div>
+        <div class="cursor-name">vertical-text</div>
+        <div class="cursor-desc">垂直文本选择</div>
+      </div>
+      
+      <!-- 操作类光标 -->
+      <div class="cursor-box alias">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/alias.png');"></div>
+        <div class="cursor-name">alias</div>
+        <div class="cursor-desc">别名（快捷方式）</div>
+      </div>
+      
+      <div class="cursor-box copy">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/copy.png');"></div>
+        <div class="cursor-name">copy</div>
+        <div class="cursor-desc">复制</div>
+      </div>
+      
+      <div class="cursor-box move">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/move.png');"></div>
+        <div class="cursor-name">move</div>
+        <div class="cursor-desc">移动</div>
+      </div>
+      
+      <div class="cursor-box no-drop">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/disabled.png');"></div>
+        <div class="cursor-name">no-drop</div>
+        <div class="cursor-desc">不可放置</div>
+      </div>
+      
+      <div class="cursor-box not-allowed">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/disabled.png');"></div>
+        <div class="cursor-name">not-allowed</div>
+        <div class="cursor-desc">禁止操作</div>
+      </div>
+      
+      <!-- 拖拽类光标 -->
+      <div class="cursor-box grab">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/grab.png');"></div>
+        <div class="cursor-name">grab</div>
+        <div class="cursor-desc">可抓取</div>
+      </div>
+      
+      <div class="cursor-box grabbing">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/grabbing.png');"></div>
+        <div class="cursor-name">grabbing</div>
+        <div class="cursor-desc">抓取中</div>
+      </div>
+      
+      <!-- 滚动与调整类光标 -->
+      <div class="cursor-box all-scroll">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/move.png');"></div>
+        <div class="cursor-name">all-scroll</div>
+        <div class="cursor-desc">全向滚动</div>
+      </div>
+      
+      <div class="cursor-box col-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/col-resize.png');"></div>
+        <div class="cursor-name">col-resize</div>
+        <div class="cursor-desc">列宽调整</div>
+      </div>
+      
+      <div class="cursor-box row-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/row-resize.png');"></div>
+        <div class="cursor-name">row-resize</div>
+        <div class="cursor-desc">行高调整</div>
+      </div>
+      
+      <!-- 方向调整类光标 -->
+      <div class="cursor-box n-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/ns-resize.png');"></div>
+        <div class="cursor-name">n-resize</div>
+        <div class="cursor-desc">向上调整</div>
+      </div>
+      
+      <div class="cursor-box e-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/ew-resize.png');"></div>
+        <div class="cursor-name">e-resize</div>
+        <div class="cursor-desc">向右调整</div>
+      </div>
+      
+      <div class="cursor-box s-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/ns-resize.png');"></div>
+        <div class="cursor-name">s-resize</div>
+        <div class="cursor-desc">向下调整</div>
+      </div>
+      
+      <div class="cursor-box w-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/ew-resize.png');"></div>
+        <div class="cursor-name">w-resize</div>
+        <div class="cursor-desc">向左调整</div>
+      </div>
+      
+      <div class="cursor-box ne-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/nesw-resize.png');"></div>
+        <div class="cursor-name">ne-resize</div>
+        <div class="cursor-desc">右上调整</div>
+      </div>
+      
+      <div class="cursor-box nw-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/nwse-resize.png');"></div>
+        <div class="cursor-name">nw-resize</div>
+        <div class="cursor-desc">左上调整</div>
+      </div>
+      
+      <div class="cursor-box se-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/nwse-resize.png');"></div>
+        <div class="cursor-name">se-resize</div>
+        <div class="cursor-desc">右下调整</div>
+      </div>
+      
+      <div class="cursor-box sw-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/nesw-resize.png');"></div>
+        <div class="cursor-name">sw-resize</div>
+        <div class="cursor-desc">左下调整</div>
+      </div>
+      
+      <div class="cursor-box ew-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/ew-resize.png');"></div>
+        <div class="cursor-name">ew-resize</div>
+        <div class="cursor-desc">水平调整</div>
+      </div>
+      
+      <div class="cursor-box ns-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/ns-resize.png');"></div>
+        <div class="cursor-name">ns-resize</div>
+        <div class="cursor-desc">垂直调整</div>
+      </div>
+      
+      <div class="cursor-box nesw-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/nesw-resize.png');"></div>
+        <div class="cursor-name">nesw-resize</div>
+        <div class="cursor-desc">对角线调整</div>
+      </div>
+      
+      <div class="cursor-box nwse-resize">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/nwse-resize.png');"></div>
+        <div class="cursor-name">nwse-resize</div>
+        <div class="cursor-desc">反对角线调整</div>
+      </div>
+      
+      <!-- 缩放类光标 -->
+      <div class="cursor-box zoom-in">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/zoom-in.png');"></div>
+        <div class="cursor-name">zoom-in</div>
+        <div class="cursor-desc">放大</div>
+      </div>
+      
+      <div class="cursor-box zoom-out">
+        <div class="cursor-demo" style="background-image: url('./cursor/zaixi/zoom-out.png');"></div>
+        <div class="cursor-name">zoom-out</div>
+        <div class="cursor-desc">缩小</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚 --> 
+  <div style="text-align: center; padding: 30px; color: #666;"> 
+    <p>© 2024 光标测试站 | 提供全面的光标样式测试</p> 
+    <p>本网站仅供测试使用，与任何官方无关</p> 
+  </div> 
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const toggleSwitch = document.getElementById('toggleSwitch');
+    const defaultModeToggle = document.getElementById('defaultModeToggle');
+    
+    // 从本地存储加载状态（优先使用存储的状态）
+    const storedMode = localStorage.getItem('defaultMode');
+    let isDefaultMode;
+    
+    // 如果本地存储有值，使用存储的值；否则设置默认值
+    if (storedMode !== null) {
+      isDefaultMode = storedMode === 'true';
+    } else {
+      // 无本地存储时的默认状态：开启默认模式（显示系统光标），开关关闭
+      isDefaultMode = true;
+    }
+    
+    // 根据最终确定的状态设置页面
+    if (isDefaultMode) {
+      document.body.classList.add('default-mode');
+      toggleSwitch.classList.remove('on'); // 默认模式对应开关关闭
+    } else {
+      document.body.classList.remove('default-mode');
+      toggleSwitch.classList.add('on'); // 体验模式对应开关开启
+    }
+    
+    // 切换点击事件
+    defaultModeToggle.addEventListener('click', function() {
+      const isOn = toggleSwitch.classList.contains('on');
+      
+      if (isOn) {
+        // 关闭体验模式 → 显示系统默认光标（添加类）
+        toggleSwitch.classList.remove('on');
+        document.body.classList.add('default-mode');
+        localStorage.setItem('defaultMode', 'true');
+      } else {
+        // 开启体验模式 → 显示自定义光标（移除类）
+        toggleSwitch.classList.add('on');
+        document.body.classList.remove('default-mode');
+        localStorage.setItem('defaultMode', 'false');
+      }
+    });
+  });
+  </script>
+</body>
+</html>
