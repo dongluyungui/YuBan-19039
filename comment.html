@@ -11,6 +11,8 @@
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="css/pages.css">
     <script src="js/pages.js"></script>
+    <link rel="stylesheet" href="./css/setting.css"/>
+    <script src = "./js/setting.js"></script>
     <title>留言板</title>
     <style>
         :root {
@@ -328,13 +330,18 @@
         </ul>
     <header class="header">
         <div class="header-content">
-            <div>
-                <a href="index.html" class="nav-link">首页</a>
-                <a href="About.html" class="nav-link">关于</a>
-                <a href="gallery.html" class="nav-link active">画廊</a>
-                <a href="time.html" class="nav-link active">时间轴</a>
-                <a href="Sound.html" class="nav-link active">语音按钮</a>
-                <a href="LiveHistory.html" class="nav-link">往期回放</a>
+            <div> 
+                <a href="index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="About.html" class="nav-link" data-i18n="about">关于</a>
+                <a href="gallery.html" class="nav-link active" data-i18n="gallery">画廊</a>
+                <a href="time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
+                <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+                <a href="LiveHistory.html" class="nav-link" data-i18n="previous_replays">往期回放</a>
+                <!-- 您的设置按钮（使用您自己的样式） -->
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <!-- 设置面板容器（默认隐藏，由JS控制显示） -->
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
             </div>
         </div>
     </header>

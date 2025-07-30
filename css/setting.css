@@ -1,0 +1,217 @@
+/* 设置面板基础样式 */
+.setting-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* 设置面板居中显示 */
+.setting-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 350px;
+    max-width: 90vw;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.setting-panel.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* 面板标题 */
+.setting-header {
+    padding: 18px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.setting-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* 面板内容区 */
+.setting-content {
+    padding: 18px;
+}
+
+/* 设置项分组 */
+.setting-group {
+    margin-bottom: 24px;
+}
+
+.setting-group:last-child {
+    margin-bottom: 0;
+}
+
+.setting-label {
+    display: block;
+    margin-bottom: 12px;
+    font-weight: 500;
+    color: #475569;
+    padding-left: 4px;
+}
+
+/* 选项通用样式 */
+.setting-option {
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.setting-option:hover {
+    background-color: #f1f5f9;
+}
+
+.setting-option.active {
+    background-color: #eef2ff;
+}
+
+/* 用文本符号替代图标 */
+.setting-option .check-mark {
+    color: #6366f1;
+    display: none;
+    font-weight: bold;
+}
+
+.setting-option.active .check-mark {
+    display: inline-block;
+}
+
+/* 面板底部 */
+.setting-footer {
+    padding: 16px 18px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.setting-close {
+    padding: 8px 16px;
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.setting-close:hover {
+    background-color: #5254f7;
+}
+
+/* 防止面板内文本被选中 */
+.setting-panel {
+    user-select: none;
+}
+
+/* 烖晞光标全局样式 - 只使用PNG图片 */
+.cursor-zaixi {
+    /* 默认箭头光标 */
+    cursor: url('../Tools/cursor/zaixi/default.png') 0 0, default;
+}
+
+/* 链接/按钮悬停时的光标（手型） */
+.cursor-zaixi a,
+.cursor-zaixi button,
+.cursor-zaixi .nav-link,
+.cursor-zaixi .source-link,
+.cursor-zaixi .bullet,
+.cursor-zaixi .setting-option,
+.cursor-zaixi .setting-close,
+.cursor-zaixi .clickable,
+.cursor-zaixi .stat-card,
+.cursor-zaixi .captain-card,
+.cursor-zaixi .avatar-container,
+.cursor-zaixi .tag,
+.cursor-zaixi .tag-search-btn,
+.cursor-zaixi .clear-search-btn,
+.cursor-zaixi [role="button"] {
+    cursor: url('../Tools/cursor/zaixi/pointer.png') 0 0, pointer;
+}
+
+/* 文本选择时的光标 */
+.cursor-zaixi input,
+.cursor-zaixi textarea,
+.cursor-zaixi .search-box,
+.cursor-zaixi [contenteditable="true"],
+.cursor-zaixi .editable,
+.cursor-zaixi .text-selectable {
+    cursor: url('../Tools/cursor/zaixi/text.png') 32 64, text;
+}
+
+/* 拖拽时的光标 */
+.cursor-zaixi [draggable="true"],
+.cursor-zaixi .draggable {
+    cursor: url('../Tools/cursor/zaixi/grab.png') 0 0, grab;
+}
+
+.cursor-zaixi [draggable="true"]:active,
+.cursor-zaixi .draggable:active {
+    cursor: url('../Tools/cursor/zaixi/grabbing.png') 0 0, grabbing;
+}
+
+/* 调整大小/移动时的光标 */
+.cursor-zaixi .resizable,
+.cursor-zaixi .resize-handle,
+.cursor-zaixi .moveable {
+    cursor: url('../Tools/cursor/zaixi/move.png') 16 16, move;
+}
+
+/* 等待/加载状态 */
+.cursor-zaixi .loading,
+.cursor-zaixi .waiting,
+.cursor-zaixi .progress-indicator {
+    cursor: url('../Tools/cursor/zaixi/wait.png') 16 16, wait;
+}
+
+/* 帮助状态 */
+.cursor-zaixi .help,
+.cursor-zaixi [title],
+.cursor-zaixi [data-tooltip] {
+    cursor: url('../Tools/cursor/zaixi/help.png') 0 0, help;
+}
+
+/* 禁止操作状态 */
+.cursor-zaixi .disabled,
+.cursor-zaixi :disabled,
+.cursor-zaixi .not-allowed {
+    cursor: url('../Tools/cursor/zaixi/disabled.png') 16 16, not-allowed;
+}
+
+/* 缩放状态 */
+.cursor-zaixi .zoom-in {
+    cursor: url('../Tools/cursor/zaixi/zoom-in.png') 0 0, zoom-in;
+}
+
+.cursor-zaixi .zoom-out {
+    cursor: url('../Tools/cursor/zaixi/zoom-out.png') 0 0, zoom-out;
+}
+
+@media (hover: none) {
+  .cursor-zaixi,
+  .cursor-zaixi * {
+    cursor: default !important;
+  }
+}

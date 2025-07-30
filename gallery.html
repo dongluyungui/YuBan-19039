@@ -9,11 +9,12 @@
     <link rel="stylesheet" href="css/tagsearch.css">
     <link rel="stylesheet" href="css/pages.css">
     <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="./css/setting.css"/>
+    <script src = "./js/setting.js"></script>
     <script src="js/star.js"></script>
     <script src="js/click.js"></script>
     <script src="js/pages.js"></script>
     <script src="js/tagsearch.js"></script>
-    <script src="js/date.js"></script>
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <style>
         /* 画廊专属样式 */
@@ -132,14 +133,19 @@
         </ul>
     <header class="header">
         <div class="header-content">
-            <div>
-                <a href="index.html" class="nav-link">首页</a>
-                <a href="About.html" class="nav-link">关于</a>
-                <a href="time.html" class="nav-link active">时间轴</a>
-                <a href="comment.html" class="nav-link active">留言版</a>
-                <a href="Sound.html" class="nav-link active">语音按钮</a>
-                <a href="LiveHistory.html" class="nav-link">往期回放</a>
-            </div>
+            <div> 
+              <a href="index.html" class="nav-link" data-i18n="home">首页</a>
+              <a href="About.html" class="nav-link" data-i18n="about">关于</a>
+              <a href="time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
+              <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言版</a>
+              <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+              <a href="LiveHistory.html" class="nav-link" data-i18n="previous_replays">往期回放</a>
+                <!-- 您的设置按钮（使用您自己的样式） -->
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <!-- 设置面板容器（默认隐藏，由JS控制显示） -->
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
+          </div> 
             <div class="search-container">
                 <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
                 <button class="tag-search-btn toggle-tags-btn">标签筛选</button>
@@ -188,6 +194,69 @@
                 </div>
 
                 
+                <!-- 分割 -->
+                <div class="art-card" data-tags="SINA,小王子,读书">
+                    <img src="img/gallery/web/ae049be5e7cbe0c493486a4947fbe9a612136555.avif" alt="小王子的故事" class="art-image" data-origin="img/gallery/origin/ae049be5e7cbe0c493486a4947fbe9a612136555.jpg">
+                    <div class="art-info">
+                        <h3 class="art-title">小王子的故事</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：2025.07.24</p>
+                            <p>简介：念小王子的故事的封面</p>
+                            <p>出处：
+                                <a href="https://t.bilibili.com/1092893181962354695"
+                                    target="_blank"
+                                    class="source-link">
+                                    想和sina一起看小王子的故事吗
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                            <span class="tag" onclick="filterByTag('小王子')">小王子</span>
+                            <span class="tag" onclick="filterByTag('读书')">读书</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- 分割 -->
+                <div class="art-card" data-tags="SINA,MISIDE,米塔,游戏,恐怖游戏,烖晞">
+                    <img src="img/gallery/web/8d7a22226538c1d418a231049f76008d12136555.webp" alt="SINA在看戏" class="art-image" data-origin="img/gallery/origin/8d7a22226538c1d418a231049f76008d12136555.jpg">
+                    <div class="art-info">
+                        <h3 class="art-title">SINA在看戏</h3>
+                        <div class="art-details">
+                            <p>作者：
+                                <a href="https://space.bilibili.com/12136555"
+                                    target="_blank"
+                                    class="source-link">
+                                    御坂
+                                </a>
+                            </p>
+                            <p>创作日期：2025.06.25</p>
+                            <p>简介：米塔大完结</p>
+                            <p>出处：
+                                <a href="https://www.bilibili.com/opus/1082336483075948544"
+                                    target="_blank"
+                                    class="source-link">
+                                    也是慢慢吞吞打出结局了，没逝，也就吓得魂飞魄散而已😭
+                                </a>
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
+                            <span class="tag" onclick="filterByTag('MISIDE')">MISIDE</span>
+                            <span class="tag" onclick="filterByTag('米塔')">米塔</span>
+                            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
+                            <span class="tag" onclick="filterByTag('恐怖游戏')">恐怖游戏</span>
+                            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
+                        </div>
+                    </div>
+                </div>
                 <!-- 分割 -->
                 <div class="art-card" data-tags="周年庆,SINA,小伙伴">
                     <img src="img/gallery/web/ded4243719ca2d0ecb0d95a9546cc58112136555.webp" alt="SINA和她的小伙伴们" class="art-image" data-origin="img/gallery/origin/ded4243719ca2d0ecb0d95a9546cc58112136555.jpg">

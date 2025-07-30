@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/pages.css">
     <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="./css/setting.css"/>
     <script src="js/pages.js"></script>
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="./live2d/css/live2d.css"/>
@@ -47,25 +48,24 @@
     <header class="header"> 
         <div class="header-content"> 
             <div> 
-                <a href="index.html" class="nav-link">首页</a>
-                <a href="gallery.html" class="nav-link active">画廊</a>
-                <a href="time.html" class="nav-link active">时间轴</a>
-                <a href="comment.html" class="nav-link active">留言版</a>
-                <a href="Sound.html" class="nav-link active">语音按钮</a>
-                <a href="LiveHistory.html" class="nav-link">往期回放</a>
-            </div> 
-            <div> 
-                <div class="util-buttons">
-                  <a href="https://space.bilibili.com/12136555"  target="_blank" class="bilibili-btn">个人主页</a> 
-                  <a href="https://live.bilibili.com/8414339"  target="_blank" class="bilibili-btn">进入直播间</a> 
-                </div> 
-            </div> 
+                <a href="index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="gallery.html" class="nav-link active" data-i18n="gallery">画廊</a>
+                <a href="time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
+                <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言版</a>
+                <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+                <a href="LiveHistory.html" class="nav-link" data-i18n="previous_replays">往期回放</a>
+                <!-- 您的设置按钮（使用您自己的样式） -->
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <!-- 设置面板容器（默认隐藏，由JS控制显示） -->
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
+            </div>  
         </div> 
     </header> 
  
     <div class="container"> 
         <div class="banner"> 
-            <h1>📄关于这个小站📄</h1> 
+            <h1 data-i18n="About_the_site">📄关于这个小站📄</h1> 
             <div class="about-item"> 
                <p>欢迎来到御坂19039の温馨小站的关于页面！(≧∇≦)ﾉ</p> 
             </div> 
@@ -73,11 +73,11 @@
  
         <div class="profile-card"> 
             <div> 
-                <h2 style="color: #e91e63; margin-top: 0;">✨ 小站介绍 ✨</h2> 
+                <h2 style="color: #e91e63; margin-top: 0;" data-i18n="Station_Introduction">✨ 小站介绍 ✨</h2> 
                  <div class="about-item">
                    <p>这个网站是御坂19039的粉丝应援站，旨在为喜欢御坂19039的小伙伴们提供一个集中了解主播信息、直播动态以及相关数据的平台。我们希望通过这个小站，能让大家更加深入地了解主播，并且为大家创造一个温馨、有趣的交流环境。</p> 
                  </div> 
-                <h2 style="color: #e91e63; margin-top: 20px;">✨ 技术支持与感谢 ✨</h2> 
+                <h2 style="color: #e91e63; margin-top: 20px;"data-i18n="Technical_Support_and_Acknowledgments">✨ 技术支持与感谢 ✨</h2> 
                  <div class="about-item">   
                       <p>🎈 特别感谢人工智能技术对本网站编程的帮助。</p>
                       <p>本人对编程一窍不通，是<a href="https://chat.deepseek.com/" target="_blank" class="text-link">DeepSeek</a>和<a href="https://chat.deepseek.com/" target="_blank" class="text-link">豆包</a>等人工智能在代码编写、逻辑构建以及功能实现等方面给予了极大的支持，使得这个网站能够以更高效、更优质的状态呈现给大家。</p> 
@@ -95,11 +95,15 @@
                      <p>🎈 当然，也要感谢每一位访问这个小站的小伙伴，是你们的支持和喜爱，让这个小站充满意义。希望大家在这个小站里度过愉快的时光！</p> 
                  </div> 
                  
-                <h2 style="color: #e91e63; margin-top: 20px;">更新日志</h2> 
+                <h2 style="color: #e91e63; margin-top: 20px;" data-i18n="Update_Log">更新日志</h2> 
                 <h6 margin-top: 2px;>前言：我肯定懒得写这东西</h6> 
           <!--  <div class="dynamic-item">    
                      <p>模板</p> 
                  </div>  -->
+                 <div class="date-log">
+                    <a>2025/7/31</a> 
+                    <a>为网页添加了“网页设置”，能更改网页的语言（中、英、喵）、风格（默认、蓝色妖姬）、光标（默认、烖晞）。</a>
+                </div>
                  <div class="date-log">
                     <a>2025/6/24</a> 
                     <a>为这个页面添加了live2d，其它界面由于和其它的js冲突，不能加载live2d。</a> <a href="https://www.bilibili.com/read/readlist/rl481957"class="text-link" style="margin-left: 10px;">网页live2d教程</a> 
@@ -185,4 +189,5 @@
     var modelDir = 'dongluyungui';  // 指定需要加载的模型
     init();  // 初始化模型，属于message.js文件
   </script>
+<script src = "./js/setting.js"></script>
 </html> 

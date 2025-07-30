@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="css/pages.css">
   <link rel="stylesheet" href="css/captain.css">
   <link rel="stylesheet" href="css/head.css">
+  <link rel="stylesheet" href="./css/setting.css"/>
+  <script src = "./js/setting.js"></script>
   <script src="js/pages.js"></script>  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <style>
     /* 新增动态样式 */
@@ -174,20 +176,21 @@
     </ul>
   <header class="header">
     <div class="header-content">
-      <div>
-        <a href="index.html" class="nav-link">首页</a>
-        <a href="About.html" class="nav-link">关于</a>
-        <a href="gallery.html" class="nav-link active">画廊</a>
-        <a href="time.html" class="nav-link active">时间轴</a>
-        <a href="comment.html" class="nav-link active">留言版</a>
-        <a href="Sound.html" class="nav-link active">语音按钮</a>
-        <a href="LiveHistory.html" class="nav-link">往期回放</a>
+          <div> 
+              <a href="index.html" class="nav-link" data-i18n="home">首页</a>
+              <a href="About.html" class="nav-link" data-i18n="about">关于</a>
+              <a href="gallery.html" class="nav-link active" data-i18n="gallery">画廊</a>
+              <a href="time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
+              <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言版</a>
+              <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+              <a href="LiveHistory.html" class="nav-link" data-i18n="previous_replays">往期回放</a>
+                <!-- 您的设置按钮（使用您自己的样式） -->
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <!-- 设置面板容器（默认隐藏，由JS控制显示） -->
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
+          </div> 
       </div>
-      <div class="util-buttons">
-        <a href="https://space.bilibili.com/12136555" target="_blank" class="bilibili-btn">个人主页</a>
-        <a href="https://live.bilibili.com/8414339" target="_blank" class="bilibili-btn">进入直播间</a>
-      </div>
-    </div>
   </header>
 
   <div class="container">
@@ -291,6 +294,58 @@
     <!-- 下面 -->
     <!-- 下面 -->
     <!-- 下面 -->
+     <div id="dynamics-container" class="dynamic-list">
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 07月24日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1092893181962354695" target="_blank">sina会在直播最后一小时念小王子的故事哦！（不过普通话不是很好喵喵喵）</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 07月20日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1091637672837906457" target="_blank">不知道说什么了喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 07月17日</div>
+      <div class="dynamic-style">投稿视频</div>
+      <div class="dynamic-content">呜呜呜呜米塔不准吓我QAQ呜呜呜呜呜</div><div class="dynamic-content"><a class="source-link" href="https://www.bilibili.com/video/BV1x8gNzeEM1/" target="_blank">[Zaix1]你们怎么敢让我玩米塔的！！！（哭</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 07月09日</div>
+      <div class="dynamic-style">投稿视频</div>
+      <div class="dynamic-content">-</div><div class="dynamic-content"><a class="source-link" href="https://www.bilibili.com/video/BV1D3GszNEfk/" target="_blank">「手书」老师我们家两小只好像有点要热熟了</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 07月09日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1087344672667336713" target="_blank">好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热好热(꒪Д꒪)ﾉ</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 07月04日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1085715428368449570" target="_blank">来一起玩qwq，还有顺便炫耀一下忍三常驻一抽出的怒鲤(*´I`*)</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 06月25日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1082336483075948544" target="_blank">也是慢慢吞吞打出结局了，没逝，也就吓得魂飞魄散而已😭
+  疯婆娘可爱捏😭帽子可爱捏😭善米可爱捏😭小米塔可爱捏😭瞌睡可爱捏😭米拉可爱捏😭总之都可爱捏😭呜呜X(இωஇ)</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 06月25日</div>
+      <div class="dynamic-style">投稿视频</div>
+      <div class="dynamic-content">米塔老婆不要再吓我了啦QAQ</div><div class="dynamic-content"><a class="source-link" href="https://www.bilibili.com/video/BV1yJKLzjEja/" target="_blank">以防你不知道烖晞玩米塔的时候是什么样子</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 06月17日</div>
+      <div class="dynamic-style">文字动态</div>
+      <div class="dynamic-content"><a class="source-link" href="https://t.bilibili.com/1079117452362645507" target="_blank">啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊[某科学的超电磁炮T_晕]</a></div>
+    </div>
+    <div class="dynamic-item">
+      <div class="dynamic-time">📅 06月11日</div>
+      <div class="dynamic-style">投稿视频</div>
+      <div class="dynamic-content">-</div><div class="dynamic-content"><a class="source-link" href="https://www.bilibili.com/video/BV1beMJzgELT/" target="_blank">你们说我们在别的世界也会在一起吗？</a></div>
+    </div>
     <div id="dynamics-container" class="dynamic-list">
     <div class="dynamic-item">
       <div class="dynamic-time">📅 06月08日</div>
