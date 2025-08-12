@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="css/pages.css">
     <link rel="stylesheet" href="css/menu.css">
     <link rel="stylesheet" href="./css/setting.css"/>
+    <link rel="stylesheet" href="./css/responsive-nav.css"/>
+    <script src = "./js/responsive-nav.js"></script>
     <script src="js/pages.js"></script>
     <link rel="icon" href="img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="./live2d/css/live2d.css"/>
@@ -51,15 +53,38 @@
                 <a href="index.html" class="nav-link" data-i18n="home">首页</a>
                 <a href="gallery.html" class="nav-link active" data-i18n="gallery">画廊</a>
                 <a href="time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
-                <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言版</a>
-                <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
-                <a href="LiveHistory.html" class="nav-link" data-i18n="previous_replays">往期回放</a>
-                <!-- 您的设置按钮（使用您自己的样式） -->
+                    <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言板</a>
+                
+                <!-- 需要在PC端"更多"中显示的链接（默认显示，超出时隐藏） -->
+                
+                <!-- 需要在移动端"更多"中显示的链接（PC端正常显示，移动端隐藏） -->
+                <a href="Sound.html" class="nav-link active hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+                <a href="LiveHistory.html" class="nav-link active hidden-on-mobile" data-i18n="previous_replays">往期回放</a>
+                
+                <!-- 设置按钮 -->
                 <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
-                <!-- 设置面板容器（默认隐藏，由JS控制显示） -->
                 <div id="settingOverlay" class="setting-overlay"></div>
                 <div id="settingPanel" class="setting-panel"></div>
+                
+                <!-- 1. PC端专用"更多"容器 -->
+                <div class="more-container more-container-pc" style="display: none;">
+                    <button class="more-btn more-btn-pc nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-pc">
+                    <!-- PC端"更多"菜单内容 -->
+                    </div>
+                </div>
+                
+                <!-- 2. 移动端专用"更多"容器 -->
+                <div class="more-container more-container-mobile">
+                    <button class="more-btn more-btn-mobile nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-mobile">
+                    <!-- 移动端"更多"菜单内容（比PC端多） -->
+                    <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+                    <a href="LiveHistory.html" class="nav-link active " data-i18n="previous_replays">往期回放</a>
+                    </div>
+                </div>
             </div>  
+      </div>
         </div> 
     </header> 
  
@@ -100,6 +125,14 @@
           <!--  <div class="dynamic-item">    
                      <p>模板</p> 
                  </div>  -->
+                 <div class="date-log">
+                    <a>2025/8/13</a> 
+                    <a>优化了setting、搜索功能、page、liverrecord等。</a>
+                </div>
+                 <div class="date-log">
+                    <a>2025/8/11</a> 
+                    <a>规范了直播记录的标签（年-主播-主题）修改了添加处理功能，应该要修改搜索功能的，但是现在的功能没坏，就不改了，改的方向是，搜索框支持正则，tag支持分类（游戏、其它、事件、主要是分类），然后是移动端的“更多”用来省略一行放不下的链接按钮。</a>
+                </div>
                  <div class="date-log">
                     <a>2025/7/31</a> 
                     <a>为网页添加了“网页设置”，能更改网页的语言（中、英、喵）、风格（默认、蓝色妖姬）、光标（默认、烖晞）。</a>

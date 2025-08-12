@@ -242,3 +242,15 @@ height: 30px; /* 设置固定高度为 50 像素 */
     box-shadow: none;
   }
 }
+
+/* 移动端专门用于移动端隐藏元素的工具类 */
+.hide-on-mobile {
+  display: block; /* 默认在非移动端显示 */
+}
+
+/* 当屏幕宽度小于 768px 时隐藏 */
+@media (max-width: 767px) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}

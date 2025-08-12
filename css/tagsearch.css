@@ -4,7 +4,7 @@
   align-items: center;
   gap: 10px;
   position: relative; 
- height: 30px; /* 设置固定高度为 50 像素 */
+  height: 30px; /* 设置固定高度为 50 像素 */
 }
 
 .search-box {
@@ -175,5 +175,255 @@
 @media (max-width: 768px) and (orientation: landscape) {
   .tags-list {
     max-height: 50vh; /* 调整高度适应横屏 */
+  }
+}
+
+/* 筛选中状态样式 */
+.tag-search-btn.filtering {
+  background-color: #dc3545; /* 红色 */
+}
+
+/* 标签列表样式补充 */
+.tags-list {
+  display: none;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.tags-list.visible {
+  display: block;
+}
+
+.tags-list span {
+  display: inline-block;
+  margin: 3px 5px;
+  padding: 4px 10px;
+  background: #f0f0f0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.tags-list span.selected {
+  background: #007bff;
+  color: white;
+}
+
+
+/* 添加筛选面板样式 */
+.filter-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  padding: 15px 20px;
+  background: white;
+  border-top: 1px solid #eee;
+  flex-shrink: 0;
+}
+.filter-panel {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  z-index: 2000;
+  width: 90%;
+  max-width: 700px; /* 增加最大宽度以容纳更多列 */
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 20px;
+  display: none;
+}
+
+.filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.filter-header h3 {
+  margin: 0;
+}
+
+.close-filter {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.filter-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.filter-group {
+  margin-bottom: 15px;
+}
+
+.filter-group h4 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+
+
+.filter-options {
+  display: flex;
+  flex-direction: column; /* 垂直排列成一列 */
+  gap: 8px;
+}
+
+/* 修改多列布局样式 */
+.filter-options.multi-column {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); /* 减小最小宽度 */
+  gap: 6px 10px; /* 减小间距 */
+}
+
+
+
+/* 其他标签特殊样式 - 占满整个容器 */
+#otherTagOptions.filter-options.multi-column {
+  grid-template-columns: repeat(auto-fill, minmax(min-content, 1fr));
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 标签文本样式调整 */
+.filter-options.multi-column label {
+  white-space: normal; /* 允许文本换行 */
+  line-height: 1.3; /* 增加行高 */
+  padding: 4px 0; /* 增加垂直内边距 */
+}
+
+/* 其他标签文本样式优化 */
+#otherTagOptions.filter-options.multi-column label {
+  word-break: break-word; /* 长文本强制换行 */
+  padding: 4px 6px; /* 增加内边距提升点击体验 */
+}
+
+.filter-options label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+  margin-bottom: 5px;
+}
+
+/* 选中状态样式 */
+.filter-options input[type="checkbox"]:checked + span {
+  color: #fff;
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+/* 标签悬停效果 */
+.filter-options label:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.filter-options input[type="checkbox"],
+.filter-options input[type="radio"] {
+  margin-right: 8px;
+}
+
+/* 筛选操作区域样式 */
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.filter-mode {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 20px;
+}
+
+.filter-mode span {
+  font-weight: bold;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+  margin-left: auto; /* 关键属性：将按钮推到右侧 */
+}
+
+.filter-buttons button {
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+}
+
+.apply-filter {
+  background: var(--primary-color);
+  color: white;
+}
+
+.reset-filter {
+  background: #eee;
+  color: #333;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .filter-panel {
+    width: 95%;
+    max-height: 85vh;
+  }
+  
+  .filter-groups {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filter-mode {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .filter-buttons {
+    justify-content: center;
+  }
+  
+  /* 移动端其他标签单列显示 */
+  .filter-options.multi-column {
+    grid-template-columns: 1fr;
+  }
+  
+  /* 保持移动端其他标签的良好显示 */
+  #otherTagOptions.filter-options.multi-column {
+    grid-template-columns: 1fr;
   }
 }

@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="css/head.css">
   <link rel="stylesheet" href="./css/setting.css"/>
   <script src = "./js/setting.js"></script>
+  <link rel="stylesheet" href="./css/responsive-nav.css"/>
+  <script src = "./js/responsive-nav.js"></script>
   <script src="js/pages.js"></script>  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <style>
     /* 新增动态样式 */
@@ -177,19 +179,42 @@
   <header class="header">
     <div class="header-content">
           <div> 
-              <a href="index.html" class="nav-link" data-i18n="home">首页</a>
-              <a href="About.html" class="nav-link" data-i18n="about">关于</a>
-              <a href="gallery.html" class="nav-link active" data-i18n="gallery">画廊</a>
-              <a href="time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
-              <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言版</a>
-              <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
-              <a href="LiveHistory.html" class="nav-link" data-i18n="previous_replays">往期回放</a>
-                <!-- 您的设置按钮（使用您自己的样式） -->
+                <a href="index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="About.html" class="nav-link" data-i18n="about">关于</a>
+                <a href="gallery.html" class="nav-link active" data-i18n="gallery">画廊</a>
+                <a href="time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
+                
+                <!-- 需要在PC端"更多"中显示的链接（默认显示，超出时隐藏） -->
+                
+                <!-- 需要在移动端"更多"中显示的链接（PC端正常显示，移动端隐藏） -->
+                <a href="comment.html" class="nav-link active hidden-on-mobile" data-i18n="comment_board">留言板</a>
+                <a href="Sound.html" class="nav-link active hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+              <a href="LiveHistory.html" class="nav-link active hidden-on-mobile" data-i18n="previous_replays">往期回放</a>
+                
+                <!-- 设置按钮 -->
                 <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
-                <!-- 设置面板容器（默认隐藏，由JS控制显示） -->
                 <div id="settingOverlay" class="setting-overlay"></div>
                 <div id="settingPanel" class="setting-panel"></div>
-          </div> 
+                
+                <!-- 1. PC端专用"更多"容器 -->
+                <div class="more-container more-container-pc" style="display: none;">
+                    <button class="more-btn more-btn-pc nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-pc">
+                    <!-- PC端"更多"菜单内容 -->
+                    </div>
+                </div>
+                
+                <!-- 2. 移动端专用"更多"容器 -->
+                <div class="more-container more-container-mobile">
+                    <button class="more-btn more-btn-mobile nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-mobile">
+                    <!-- 移动端"更多"菜单内容（比PC端多） -->
+                    <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言板</a>
+                    <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+                  <a href="LiveHistory.html" class="nav-link active" data-i18n="previous_replays">往期回放</a>
+                    </div>
+                </div>
+            </div>  
       </div>
   </header>
 

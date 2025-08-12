@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
   <title>生成直播记录</title>
   <link rel="stylesheet" href="../css/styles.css">
-  <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
   <style>
-    /* 表单专属样式 */
+    /* 仅保留表单布局相关样式，按钮样式依赖外部CSS */
     .form-panel {
       background: white;
       padding: 20px;
@@ -42,8 +42,15 @@
 
     .tags-container {
       display: flex;
+      flex-wrap: wrap;
       gap: 5px;
       margin-top: 5px;
+    }
+
+    .tag-input-container {
+      display: flex;
+      gap: 10px;
+      width: 100%;
     }
 
     .tag-input {
@@ -59,6 +66,11 @@
       padding: 4px 8px;
       border-radius: 12px;
       margin: 2px;
+      cursor: pointer;
+    }
+
+    .tag.selected {
+      background: var(--primary-color);
     }
 
     .delete-btn {
@@ -69,6 +81,7 @@
 
     .action-buttons {
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       margin-top: 15px;
     }
@@ -85,6 +98,102 @@
       word-break: break-all;
       margin: 0;
     }
+
+    .fixed-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .fixed-tag {
+      flex: 1;
+      min-width: 200px;
+      background: #f5f5f5;
+      padding: 10px;
+      border-radius: 6px;
+    }
+
+    .fixed-tag label {
+      display: block;
+      margin-bottom: 5px;
+      color: #333;
+      font-weight: bold;
+    }
+
+    .other-tags {
+      margin-top: 10px;
+    }
+
+    .tag-panel {
+      margin-top: 8px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .tag-panel.expanded {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .toggle-tags-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #f0f0f0;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .toggle-tags-btn svg {
+      transition: transform 0.3s ease;
+    }
+
+    .tag-panel.expanded + .toggle-tags-btn svg {
+      transform: rotate(180deg);
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 15px;
+      background: #52c41a;
+      color: white;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transform: translateX(110%);
+      transition: transform 0.3s ease;
+    }
+    
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    @media (max-width: 768px) {
+      .fixed-tags, .time-picker-group {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .action-buttons {
+        flex-direction: column;
+      }
+      
+      .bilibili-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body>
@@ -96,9 +205,11 @@
         <a href="../LiveHistory.html" class="nav-link">往期回放</a>
       </div>
       <div class="util-buttons">
-       <button class="bilibili-btn" onclick="openBiligankAndCopy()">查询直播日志</button>
-    </div>      
-  </div>
+        <button class="bilibili-btn" onclick="openBiligankAndCopy()">
+          查询直播日志
+        </button>
+      </div>      
+    </div>
   </header>
 
   <div class="container">
@@ -107,7 +218,7 @@
     <div class="form-panel">
       <div class="form-group">
         <label for="title">直播标题：</label>
-        <input type="text" id="title" class="form-control" required>
+        <input type="text" id="title" class="form-control" placeholder="输入直播标题" required>
       </div>
 
       <div class="form-group">
@@ -128,37 +239,146 @@
 
       <div class="form-group">
         <label for="description">直播简介：</label>
-        <textarea id="description" class="form-control" rows="4" required></textarea>
+        <textarea id="description" class="form-control" rows="4" placeholder="输入直播简介" required></textarea>
       </div>
 
       <div class="form-group">
         <label for="link">视频链接：</label>
-        <input type="url" id="link" class="form-control" required>
+        <input type="text" id="link" class="form-control" placeholder="输入BV号或完整链接" required>
+      </div>
+      
+      <div class="fixed-tags">
+        <div class="fixed-tag">
+          <label for="yearTag">年份标签：</label>
+          <input type="text" id="yearTag" class="form-control" placeholder="年份">
+        </div>
+        <div class="fixed-tag">
+          <label for="hostTag">主播标签：</label>
+          <select id="hostTag" class="form-control">
+            <option value="SINA">SINA</option>
+            <option value="御坂19039">御坂19039</option>
+            <option value="烖晞">烖晞</option>
+          </select>
+        </div>
+        <div class="fixed-tag">
+          <label for="themeTag">主题标签：</label>
+          <select id="themeTag" class="form-control">
+            <option value="杂谈">杂谈</option>
+            <option value="游戏">游戏</option>
+            <option value="绘画">绘画</option>
+            <option value="静音">静音</option>
+          </select>
+        </div>
+
+        <div class="other-tags">
+          <label>其它标签：</label>
+          <div class="tag-panel" id="tag-panel">
+            <div class="tags-container" id="common-tags">
+              <!-- 游戏分类 -->
+              <div class="tag-group">
+                  <span class="tag-category">游戏</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">FPS</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">瓦罗兰特</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">沙盒</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">我的世界</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">泰拉瑞亚</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">恐怖游戏</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">米塔</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">星穹铁道</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">qq14</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">光遇</span>
+              </div>
+
+              <!-- 内容分类 -->
+              <div class="tag-group">
+                  <span class="tag-category">内容</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">剪视频</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">音乐</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">摸鱼</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">练习</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">调试</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">live2d</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">光标</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">仓鼠</span>
+              </div>
+
+              <!-- 状态分类 -->
+              <div class="tag-group">
+                  <span class="tag-category">状态</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">逃离现实</span>
+              </div>
+
+              <!-- 事件分类 -->
+              <div class="tag-group">
+                  <span class="tag-category">事件</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">节日</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">六一</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">端午</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">出道</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">周年</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">生日</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">跨年</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">挑战</span>
+              </div>
+
+              <!-- 其他分类 -->
+              <div class="tag-group">
+                  <span class="tag-category">其他</span>
+                  <span class="tag" onclick="toggleCommonTag(this)">读书</span>
+              </div>
+          </div>
+          </div>
+          <button class="toggle-tags-btn" onclick="toggleTagPanel()">
+            选择标签
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <div class="form-group">
-        <label>标签管理：</label>
-        <div class="tags-container">
+        <label>已选标签：</label>
+        <div class="tag-input-container">
           <input type="text" class="form-control tag-input" placeholder="输入新标签">
-          <button class="bilibili-btn" onclick="addTag()">添加</button>
+          <button class="bilibili-btn" onclick="addTag()">
+            添加
+          </button>
         </div>
         <div id="tags-list" class="tags-container"></div>
       </div>
 
       <div class="form-group">
-        <label>导入已有代码：</label>
-        <textarea id="import-code" class="form-control" rows="4" placeholder="粘贴直播记录代码（此功能待修复）"></textarea>
+        <label>导入初始数据（Ctrl+B粘贴并解析）：</label>
+        <textarea id="import-code" class="form-control" rows="6" 
+          placeholder="粘贴直播初始数据（示例：
+下播提示： 御坂19039下播了
+直播间标题： 【slna】灵感来了！
+开播时间： 2025-08-06 22:31:27
+下播时间： 2025-08-07 01:06:58
+直播时长： 2小时35分钟31秒）"
+          onkeydown="handleImportKeydown(event)"></textarea>
       </div>
 
       <div class="action-buttons">
-        <button class="bilibili-btn" onclick="generateCode()">生成代码</button>
-        <button class="bilibili-btn" onclick="parseExistingCode()">解析代码</button>
-        <button class="bilibili-btn" onclick="copyCode()">复制代码</button>
+        <button class="bilibili-btn" onclick="resetForm()">
+          重置表单
+        </button>
+        <button class="bilibili-btn" onclick="parseExistingCode()">
+          解析数据
+        </button>
+        <button class="bilibili-btn" onclick="copyCode()">
+          复制代码
+        </button>
+        <button class="bilibili-btn" onclick="generateCode()">
+          生成代码
+        </button>
       </div>
     </div>
 
     <div class="result">
-      <pre id="code-output"></pre>
+      <h3>生成的直播记录代码：</h3>
+      <pre id="code-output">// 生成的代码将显示在这里</pre>
     </div>
   </div>
 
@@ -166,82 +386,247 @@
   <div style="text-align: center; padding: 30px; color: #666;"> 
     <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p> 
     <p>本站为粉丝自制，与哔哩哔哩官方无关</p> 
-  </div> 
+  </div>
+
+  <div class="notification" id="notification">
+    <span id="notification-msg">操作成功！</span>
+  </div>
 
   <script>
+    // 初始化页面
+    document.addEventListener('DOMContentLoaded', function() {
+      // 设置当前日期为默认值
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('date').value = today;
+      
+      // 设置默认年份为当前年份
+      const currentYear = new Date().getFullYear();
+      document.getElementById('yearTag').value = currentYear;
+      
+      // 监听Ctrl+B快捷键
+      document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && event.key === 'b') {
+          event.preventDefault();
+          pasteAndParse();
+        }
+      });
+    });
+    
+    // 切换标签面板显示/隐藏
+    function toggleTagPanel() {
+      const panel = document.getElementById('tag-panel');
+      panel.classList.toggle('expanded');
+    }
+    
+    // Ctrl+B粘贴并解析数据
+    function pasteAndParse() {
+      navigator.clipboard.readText()
+        .then(text => {
+          if (text) {
+            const importInput = document.getElementById('import-code');
+            importInput.value = text;
+            parseExistingCode();
+            showNotification('已粘贴并解析数据！');
+          } else {
+            showNotification('剪贴板为空！');
+          }
+        })
+        .catch(err => {
+          showNotification('无法访问剪贴板，请手动粘贴！');
+          console.error('剪贴板访问错误:', err);
+        });
+    }
+    
+    // 初始数据输入框快捷键处理
+    function handleImportKeydown(event) {
+      if (event.key === 'Enter') {
+        if (!event.shiftKey) {
+          // 按下Enter且未按Shift：解析数据
+          event.preventDefault(); // 阻止默认换行
+          parseExistingCode();
+        }
+        // 按下Shift+Enter：保留默认换行
+      }
+    }
+    
+    // 切换常用标签选中状态
+    function toggleCommonTag(element) {
+      element.classList.toggle('selected');
+      
+      // 将选中的标签添加到自定义标签列表（去重）
+      const tagText = element.textContent;
+      const tagsList = document.getElementById('tags-list');
+      const existingTags = [...tagsList.getElementsByClassName('tag')]
+                            .map(tag => tag.firstElementChild.textContent);
+      
+      if (element.classList.contains('selected') && !existingTags.includes(tagText)) {
+        // 添加新标签
+        const tagElement = document.createElement('div');
+        tagElement.className = 'tag';
+        tagElement.innerHTML = `
+          <span>${tagText}</span>
+          <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
+        `;
+        tagsList.appendChild(tagElement);
+      } else if (!element.classList.contains('selected')) {
+        // 移除已删除的标签
+        [...tagsList.getElementsByClassName('tag')].forEach(tag => {
+          if (tag.firstElementChild.textContent === tagText) {
+            tag.remove();
+          }
+        });
+      }
+    }
+    
+    // 显示通知
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      const msgElement = document.getElementById('notification-msg');
+      
+      msgElement.textContent = message;
+      notification.classList.add('show');
+      
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+    
+    // 重置表单
+    function resetForm() {
+      document.getElementById('title').value = '';
+      document.getElementById('date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('startTime').value = '';
+      document.getElementById('endTime').value = '';
+      document.getElementById('description').value = '';
+      document.getElementById('link').value = '';
+      document.getElementById('yearTag').value = new Date().getFullYear();
+      document.getElementById('hostTag').value = '御坂19039'; // 默认设为御坂19039
+      document.getElementById('themeTag').value = '杂谈';
+      document.getElementById('tags-list').innerHTML = '';
+      document.getElementById('code-output').textContent = '// 生成的代码将显示在这里';
+      document.getElementById('import-code').value = '';
+      
+      // 重置常用标签选中状态
+      [...document.getElementById('common-tags').getElementsByClassName('tag')].forEach(tag => {
+        tag.classList.remove('selected');
+      });
+      
+      // 收起标签面板
+      document.getElementById('tag-panel').classList.remove('expanded');
+      
+      showNotification('表单已重置！');
+    }
+
     // 标签管理功能
     function addTag() {
       const tagInput = document.querySelector('.tag-input');
       const tagValue = tagInput.value.trim();
       if (tagValue) {
-        const tagElement = document.createElement('div');
-        tagElement.className = 'tag';
-        tagElement.innerHTML = `
-          <span>${tagValue}</span>
-          <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
-        `;
-        document.getElementById('tags-list').appendChild(tagElement);
+        // 检查标签是否已存在
+        const existingTags = [...document.getElementById('tags-list').getElementsByClassName('tag')]
+                              .map(tag => tag.firstElementChild.textContent);
+        
+        if (!existingTags.includes(tagValue)) {
+          const tagElement = document.createElement('div');
+          tagElement.className = 'tag';
+          tagElement.innerHTML = `
+            <span>${tagValue}</span>
+            <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
+          `;
+          document.getElementById('tags-list').appendChild(tagElement);
+          
+          // 同步选中常用标签
+          [...document.getElementById('common-tags').getElementsByClassName('tag')].forEach(tag => {
+            if (tag.textContent === tagValue) {
+              tag.classList.add('selected');
+            }
+          });
+        }
+        
         tagInput.value = '';
       }
     }
 
     // 打开新标签页并复制指定文本
     function openBiligankAndCopy() {
-     // 复制指定文本
       navigator.clipboard.writeText('12136555');
-     // 打开新标签页访问指定网址
       window.open('https://biligank.com', '_blank');
-   }
+      showNotification('直播间ID已复制到剪贴板！');
+    }
 
-    // 提取B站视频链接的核心部分（只保留到BV号）
+    // 处理B站视频链接（支持纯BV号、带参数链接）
     function extractBilibiliVideoLink(link) {
       if (!link) return '';
       
-      // 匹配B站视频链接格式，提取BV号部分
-      const bvRegex = /(https?:\/\/)?(www\.)?bilibili\.com\/video\/(BV[0-9A-Za-z]+)/;
+      // 匹配纯BV号（如BV1GotNzoEfE）
+      const pureBvRegex = /^BV[0-9A-Za-z]+$/;
+      if (pureBvRegex.test(link.trim())) {
+        return `https://www.bilibili.com/video/${link.trim()}`;
+      }
+      
+      // 匹配带参数的B站视频链接，提取BV号
+      const bvRegex = /BV[0-9A-Za-z]+/;
       const match = link.match(bvRegex);
-      
-      if (match && match[3]) {
-        return `https://www.bilibili.com/video/${match[3]}`;
+      if (match && match[0]) {
+        return `https://www.bilibili.com/video/${match[0]}`;
       }
       
-      // 处理av号格式（可选）
-      const avRegex = /(https?:\/\/)?(www\.)?bilibili\.com\/video\/av(\d+)/;
+      // 处理直播间链接
+      const liveRegex = /(https?:\/\/)?(www\.)?bilibili\.com\/live\/(\d+)/;
+      const liveMatch = link.match(liveRegex);
+      if (liveMatch && liveMatch[3]) {
+        return `https://www.bilibili.com/live/${liveMatch[3]}`;
+      }
+      
+      // 处理av号格式
+      const avRegex = /av\d+/;
       const avMatch = link.match(avRegex);
-      
-      if (avMatch && avMatch[3]) {
-        return `https://www.bilibili.com/video/av${avMatch[3]}`;
+      if (avMatch && avMatch[0]) {
+        return `https://www.bilibili.com/video/${avMatch[0]}`;
       }
       
-      // 如果无法匹配，返回原始链接
+      // 无法识别的链接保持原样
       return link;
     }
 
     // 生成代码功能
     function generateCode() {
-        const getValue = id => document.getElementById(id).value;
-        const tags = [...document.querySelectorAll('#tags-list .tag span:first-child')]
-                       .map(span => span.textContent);
+      const getValue = id => document.getElementById(id).value;
+      const tags = [...document.querySelectorAll('#tags-list .tag span:first-child')]
+                     .map(span => span.textContent);
 
-        const tagSpans = tags.map(t => `            <span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('\n');
-        
-        // 处理视频链接，只保留到BV号部分
-        const processedLink = extractBilibiliVideoLink(getValue('link'));
+      // 获取固定标签
+      const fixedTags = [
+        getValue('yearTag'),
+        getValue('hostTag'),
+        getValue('themeTag')
+      ];
+      
+      // 合并所有标签并去重
+      const allTags = [...new Set([...fixedTags, ...tags])];
+      
+      const tagSpans = allTags.map(t => `            <span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('\n');
+      
+      // 处理视频链接
+      const processedLink = extractBilibiliVideoLink(getValue('link'));
 
-        const code = `
-    <div class="live-record" data-tags="${tags.join(',')}">
+      const code = `
+    <div class="live-record" data-tags="${allTags.join(',')}">
       <div class="live-info">
         <h2>${getValue('title')}</h2>
         <p><strong>直播日期：</strong>${formatDate(getValue('date'))}</p>
         <p><strong>直播时间：</strong>${getValue('startTime')} - ${getValue('endTime')}</p>
         <p><strong>直播简介：</strong>${getValue('description')}</p>
         <p><strong>视频链接：</strong><a class="source-link" href="${processedLink}" target="_blank">点击观看</a></p>
+      </div>
+    </div>`;
+    /*原本在下面的tag，现在不用了
         <div class="tags">
 ${tagSpans}
         </div>
-      </div>
-    </div>`;
-        document.getElementById('code-output').textContent = code;
+    */
+      document.getElementById('code-output').textContent = code;
+      showNotification('直播记录代码已生成！');
     }
 
     // 日期格式化
@@ -250,65 +635,113 @@ ${tagSpans}
       return `${date.getFullYear()}年${(date.getMonth()+1).toString().padStart(2,'0')}月${date.getDate().toString().padStart(2,'0')}日`;
     }
 
-    // 代码解析功能
+    // 解析初始数据功能
     function parseExistingCode() {
       try {
         const code = document.getElementById('import-code').value;
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(code, 'text/html');
-        
-        // 解析数据
-        const record = doc.querySelector('.live-record');
-        const getText = (selector) => doc.querySelector(selector)?.textContent.trim();
-        
-        // 填充表单
-        document.getElementById('title').value = getText('h2') || '';
-        document.getElementById('date').value = parseChineseDate(getText('p:has(strong:contains("直播日期"))'));
-        document.getElementById('description').value = getText('p:has(strong:contains("直播简介"))')?.split('：')[1] || '';
-        document.getElementById('link').value = doc.querySelector('a')?.href || '';
-        
-        // 处理时间
-        const timeRange = getText('p:has(strong:contains("直播时间"))')?.split('：')[1];
-        if(timeRange) {
-          const [start, end] = timeRange.split(' - ');
-          document.getElementById('startTime').value = start;
-          document.getElementById('endTime').value = end;
+        if (!code) {
+          showNotification('请粘贴初始数据！');
+          return;
         }
         
-        // 处理标签
-        document.getElementById('tags-list').innerHTML = 
-          [...doc.querySelectorAll('.tag')].map(tag => `
-            <div class="tag">
-              <span>${tag.textContent}</span>
-              <span class="delete-btn">×</span>
-            </div>
-          `).join('');
+        // 按行分割
+        const lines = code.split('\n');
+        const data = {};
+        
+        // 解析每一行
+        lines.forEach(line => {
+          const index = line.indexOf('：');
+          if (index > 0) {
+            const key = line.substring(0, index).trim();
+            const value = line.substring(index + 1).trim();
+            data[key] = value;
+          }
+        });
+        
+        // 填充表单 - 直播标题
+        if (data['直播间标题']) {
+          const title = data['直播间标题'];
+          document.getElementById('title').value = title;
           
+          // 主播标签识别逻辑（不区分大小写）
+          const lowerTitle = title.toLowerCase();
+          const sinaKeywords = ['sina', 'slna', 'xina'];
+          const zaixiKeywords = ['zaixi', 'Zaix1'];
+          
+          let hostTag = '御坂19039'; // 默认值
+          
+          // 检查是否包含SINA相关关键词
+          if (sinaKeywords.some(key => lowerTitle.includes(key.toLowerCase()))) {
+            hostTag = 'SINA';
+          }
+          // 检查是否包含烖晞相关关键词
+          else if (zaixiKeywords.some(key => lowerTitle.includes(key.toLowerCase()))) {
+            hostTag = '烖晞';
+          }
+          
+          document.getElementById('hostTag').value = hostTag;
+        }
+        
+        // 填充开播/下播时间
+        if (data['开播时间']) {
+          const startTime = data['开播时间'];
+          const [datePart, timePart] = startTime.split(' ');
+          
+          document.getElementById('date').value = datePart;
+          document.getElementById('startTime').value = timePart.substring(0, 5);
+          
+          // 设置年份
+          const year = datePart.split('-')[0];
+          document.getElementById('yearTag').value = year;
+          
+          // 自动选中年份标签
+          [...document.getElementById('common-tags').getElementsByClassName('tag')].forEach(tag => {
+            if (tag.textContent === year) {
+              if (!tag.classList.contains('selected')) {
+                tag.click(); // 触发点击事件，自动添加到标签列表
+              }
+            }
+          });
+        }
+        
+        if (data['下播时间']) {
+          const endTime = data['下播时间'];
+          const timePart = endTime.split(' ')[1];
+          document.getElementById('endTime').value = timePart.substring(0, 5);
+        }
+        
+        showNotification('初始数据已解析并填充！');
       } catch (error) {
-        alert('解析错误，请检查代码格式');
+        showNotification('解析错误，请检查数据格式！');
+        console.error(error);
       }
-    }
-
-    // 中文日期解析
-    function parseChineseDate(dateStr) {
-      const match = dateStr?.match(/(\d+)年(\d+)月(\d+)日/);
-      if(match) {
-        const [, year, month, day] = match;
-        return `${year}-${month.padStart(2,'0')}-${day.padStart(2,'0')}`;
-      }
-      return '';
     }
 
     // 复制功能
     function copyCode() {
       const output = document.getElementById('code-output');
-      navigator.clipboard.writeText(output.textContent);
+      if (output.textContent.trim() === '// 生成的代码将显示在这里') {
+        showNotification('请先生成代码！');
+        return;
+      }
+      
+      navigator.clipboard.writeText(output.textContent)
+        .then(() => {
+          showNotification('代码已复制到剪贴板！');
+        })
+        .catch(err => {
+          showNotification('复制失败，请手动复制！');
+        });
     }
 
-    // 初始化标签输入
+    // 标签输入框回车添加标签
     document.querySelector('.tag-input').addEventListener('keypress', (e) => {
-      if(e.key === 'Enter') addTag();
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addTag();
+      }
     });
   </script>
 </body>
 </html>
+    

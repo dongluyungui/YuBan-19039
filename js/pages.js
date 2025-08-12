@@ -25,15 +25,20 @@ function initPagination() {
         </div>
     */
     // 获取所有需要分页的元素，只选择显示的元素
-    const artCards = Array.from(document.querySelectorAll('.art-card, .live-record, .date-log,.dynamic-item,.message-card,.yet-another-class')).filter(card => getComputedStyle(card).display!== 'none');
-    // 总项目数
+    // 修改后：添加.category-box，与搜索功能匹配
+const artCards = Array.from(document.querySelectorAll(
+  '.art-card, .live-record, .category-box, .date-log, .dynamic-item, .message-card, .yet-another-class'
+)).filter(card => getComputedStyle(card).display!== 'none');
     const totalItems = artCards.length;
     // 总页数通过总项目数除以每页显示的项目数并向上取整得到
     const totalPages = Math.ceil(totalItems / itemsPerPage);
     // 若总页数少于 2 页，隐藏分页容器
     if (totalPages < 2) {
         paginationContainer.style.display = 'none';
-        return;
+    } 
+    // 新增：总页数≥2时显示
+    else {
+        paginationContainer.style.display = 'block'; 
     }
     // 标志变量，用于区分页面初始化和用户操作
     let isInitialLoad = true;

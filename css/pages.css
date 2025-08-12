@@ -3,21 +3,28 @@
     text-align: center;
     margin-top: 20px;
     border-radius: 8px;
+    background-color: var(--bg-color); /* 关联背景色变量 */
+}
+
+.page-info {
+    color: var(--text-color); /* 关联文本色变量 */
+    margin-bottom: 10px;
 }
 
 .page-buttons button {
     margin: 0 5px;
     padding: 8px 16px;
-    background: #e91e63;
+    background: var(--primary-color); /* 关联主色变量 */
     color: white;
-    border: none;
+    border: 1px solid var(--border-color); /* 关联边框色变量 */
     border-radius: 4px;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.3s; /* 扩展过渡效果 */
 }
-/*错误信息提示 */
+
+/* 错误信息提示 */
 .error-message {
-    color: #dc2626;
+    color: var(--error-color, #dc2626); /* 使用错误色变量，默认值为#dc2626 */
     font-size: 0.9em;
     margin-left: 8px;
     display: inline-block;
@@ -32,20 +39,41 @@
 }
 
 .page-buttons button:hover {
-    background: #c2185b;
+    background: var(--hover-color); /* 关联悬停色变量 */
+    transform: translateY(-2px); /* 增加悬停效果 */
 }
 
 .page-buttons button.active {
-    background: #c2185b;
+    background: var(--hover-color); /* 关联悬停色变量 */
     transform: scale(1.05);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .jump-to {
     margin-top: 15px;
+    color: var(--text-color); /* 关联文本色变量 */
 }
 
 .jump-to input {
     padding: 6px;
     margin-right: 5px;
     width: 60px;
+    border: 1px solid var(--border-color); /* 关联边框色变量 */
+    background-color: white;
+    color: var(--text-color); /* 关联文本色变量 */
+    border-radius: 4px;
+}
+
+.jump-to button {
+    background: var(--primary-color); /* 关联主色变量 */
+    color: white;
+    border: 1px solid var(--border-color); /* 关联边框色变量 */
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.jump-to button:hover {
+    background: var(--hover-color); /* 关联悬停色变量 */
 }

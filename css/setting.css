@@ -48,6 +48,8 @@
 
 /* 面板内容区 */
 .setting-content {
+    /* 将元素的显示方式设置为弹性布局 */
+    display: flex;
     padding: 18px;
 }
 
@@ -214,4 +216,158 @@
   .cursor-zaixi * {
     cursor: default !important;
   }
+}
+
+/* 设置面板基础样式 */
+.setting-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* 设置面板居中显示 - 增加宽度和内边距 */
+.setting-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 420px; /* 增加宽度 */
+    max-width: 90vw;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.setting-panel.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* 面板标题 */
+.setting-header {
+    padding: 20px 24px; /* 增加内边距 */
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.setting-title {
+    margin: 0;
+    font-size: 20px; /* 增大标题 */
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* 面板内容区 - 增加内边距 */
+.setting-content {
+    padding: 24px;
+}
+
+/* 设置项分组 - 增加间距和分隔 */
+.setting-section {
+    margin-bottom: 32px; /* 增加分组间距 */
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.setting-section:last-child {
+    border-bottom: none;
+    margin-bottom: 16px;
+    padding-bottom: 0;
+}
+
+.setting-label {
+    display: block;
+    margin-bottom: 16px; /* 增加标签与选项间距 */
+    margin-top: 8px;
+    font-weight: 500;
+    color: #475569;
+    padding-left: 4px;
+    font-size: 15px;
+}
+
+/* 选项容器 */
+.setting-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 选项之间的间距 */
+}
+
+/* 选项通用样式 - 增大点击区域 */
+.setting-option {
+    padding: 14px 16px; /* 增加内边距 */
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.setting-option:hover {
+    background-color: #f1f5f9;
+}
+
+.setting-option.active {
+    background-color: #eef2ff;
+}
+
+/* 选中标记 */
+.setting-option .check-mark {
+    color: #6366f1;
+    display: none;
+    font-weight: bold;
+}
+
+.setting-option.active .check-mark {
+    display: inline-block;
+}
+
+/* 面板底部 */
+.setting-footer {
+    padding: 18px 24px; /* 增加内边距 */
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.setting-close {
+    padding: 9px 18px; /* 增大按钮 */
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 15px;
+}
+
+.setting-close:hover {
+    background-color: #5254f7;
+}
+
+/* 防止面板内文本被选中 */
+.setting-panel {
+    user-select: none;
+}
+
+/* 响应式调整 */
+@media (max-width: 480px) {
+    .setting-panel {
+        width: 95vw;
+    }
+    
+    .setting-content,
+    .setting-header,
+    .setting-footer {
+        padding: 16px;
+    }
 }

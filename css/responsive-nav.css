@@ -1,0 +1,78 @@
+/* 基础样式保持不变 */
+.more-container {
+    position: relative;
+    display: inline-block;
+}
+
+.more-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.more-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    padding: 10px 0;
+    z-index: 1000;
+    display: none;
+    min-width: 150px;
+}
+
+.more-dropdown a {
+    display: block;
+    padding: 8px 15px;
+    text-decoration: none;
+    color: inherit;
+}
+
+.more-dropdown a:hover {
+    background-color: #f5f5f5;
+}
+
+/* 新增：PC端需要隐藏到"更多"的链接（默认显示，通过JS控制隐藏） */
+.hidden-on-pc-more {
+    display: inline-block; /* 默认显示 */
+}
+
+/* 移动端适配（max-width: 769px） */
+@media (max-width: 769px) {
+    /* 显示移动端"更多"按钮，隐藏PC端"更多"按钮 */
+    .more-btn-mobile {
+        display: inline-block;
+    }
+    .more-btn-pc {
+        display: none !important;
+    }
+    
+    /* 移动端隐藏指定链接（放入移动端"更多"） */
+    .hidden-on-mobile {
+        display: none;
+    }
+    
+    /* 移动端不需要隐藏PC端的特殊链接 */
+    .hidden-on-pc-more {
+        display: none;
+    }
+}
+
+/* 桌面端适配（min-width: 769px） */
+@media (min-width: 769px) {
+    /* 显示PC端"更多"按钮，隐藏移动端"更多"按钮 */
+    .more-btn-pc {
+        display: none; /* 默认隐藏，通过JS判断是否显示 */
+    }
+    .more-btn-mobile {
+        display: none !important;
+    }
+    
+    /* 移动端"更多"菜单始终隐藏 */
+    .more-dropdown-mobile {
+        display: none !important;
+    }
+}

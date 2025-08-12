@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const HOVER_DELAY = 600; // 显示延迟（毫秒）
+    const HOVER_DELAY = 1800; // 显示延迟（毫秒）
     let showTimeout; // 显示定时器
 
     // 1. 处理.summary-title的悬停和点击事件

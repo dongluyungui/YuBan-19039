@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="css/menu.css">
   <link rel="stylesheet" href="css/aisummary.css">
   <link rel="stylesheet" href="./css/setting.css"/>
+    <link rel="stylesheet" href="./css/responsive-nav.css"/>
+    <script src = "./js/responsive-nav.js"></script>
   <script src = "./js/setting.js"></script>
   <script src="js/pages.js"></script>
   <script src="js/tagsearch.js"></script>
@@ -26,27 +28,162 @@
             <li>ai总结</li>
         </ul>
   <header class="header">
-    <div class="header-content">
+        <div class="header-content">
             <div> 
-              <a href="index.html" class="nav-link" data-i18n="home">首页</a>
-              <a href="About.html" class="nav-link" data-i18n="about">关于</a>
-              <a href="gallery.html" class="nav-link active" data-i18n="gallery">画廊</a>
-              <a href="time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
-              <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言版</a>
-              <a href="LiveHistory.html" class="nav-link" data-i18n="previous_replays">往期回放</a>
-                <!-- 您的设置按钮（使用您自己的样式） -->
+                <a href="index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="About.html" class="nav-link" data-i18n="about">关于</a>
+                <a href="gallery.html" class="nav-link active" data-i18n="gallery">画廊</a>
+                <a href="time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
+                
+                <!-- 需要在PC端"更多"中显示的链接（默认显示，超出时隐藏） -->
+                
+                <!-- 需要在移动端"更多"中显示的链接（PC端正常显示，移动端隐藏） -->
+                <a href="comment.html" class="nav-link active hidden-on-mobile" data-i18n="comment_board">留言板</a>
+                <a href="Sound.html" class="nav-link active hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+                
+                <!-- 设置按钮 -->
                 <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
-                <!-- 设置面板容器（默认隐藏，由JS控制显示） -->
                 <div id="settingOverlay" class="setting-overlay"></div>
                 <div id="settingPanel" class="setting-panel"></div>
-          </div>
-          <div class="search-container">
-              <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
-              <button class="tag-search-btn toggle-tags-btn">标签筛选</button>
-              <div class="tags-list" id="tags-list"><span>2025</span><span>杂谈</span><span>御姐</span><span>大版</span><span>OSaKa</span><span>无畏契约</span><span>FPS</span><span>游戏</span><span>仓鼠</span><span>静音</span><span>绘画</span><span>逃离现实</span><span>我的世界</span><span>泰拉瑞亚</span><span>搞笑</span><span>调试</span><span>跨年</span><span>挑战</span><span>2024</span></div>
-              <button class="clear-search-btn">清除筛选</button>          
-           </div>
-    </div>
+                
+                <!-- 1. PC端专用"更多"容器 -->
+                <div class="more-container more-container-pc" style="display: none;">
+                    <button class="more-btn more-btn-pc nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-pc">
+                    <!-- PC端"更多"菜单内容 -->
+                    </div>
+                </div>
+                
+                <!-- 2. 移动端专用"更多"容器 -->
+                <div class="more-container more-container-mobile">
+                    <button class="more-btn more-btn-mobile nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-mobile">
+                    <!-- 移动端"更多"菜单内容（比PC端多） -->
+                    <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言板</a>
+                    <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+                    </div>
+                </div>
+            </div>  
+            <div class="search-container">
+                <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
+                <button class="tag-search-btn toggle-tags-btn">标签筛选</button>
+                <div class="tags-list" id="tags-list"></div>
+                <button class="clear-search-btn">清除筛选</button>
+                <!-- 在搜索容器内添加筛选面板 -->
+                <div class="filter-panel" id="filterPanel" style="display: none;">
+                  <div class="filter-header">
+                    <h3>筛选条件</h3>
+                    <button class="close-filter">×</button>
+                  </div>
+                  
+                  <div class="filter-content">
+                    <h10>可多选tag，滑到底部应用筛选（可更改筛选模式）</h10>
+                    <div class="filter-groups">
+                        <div class="filter-left-groups" >
+                            <!-- 时间筛选组 -->
+                            <div class="filter-group">
+                              <h4>直播时间</h4>
+                              <div class="filter-options" id="timeOptions">
+                                <label><input type="checkbox" name="year" value="2025"> 2025年</label>
+                                <label><input type="checkbox" name="year" value="2024"> 2024年</label>
+                              </div>
+                            </div>
+                            
+                            <!-- 主播筛选组 -->
+                            <div class="filter-group">
+                              <h4>主播</h4>
+                              <div class="filter-options" id="hostOptions">
+                                <label><input type="checkbox" name="host" value="SINA"> SINA</label>
+                                <label><input type="checkbox" name="host" value="烖晞"> 烖晞</label>
+                                <label><input type="checkbox" name="host" value="御坂19039"> 御坂19039</label>
+                              </div>
+                            </div>
+                          
+                            <!-- 主题筛选组 -->
+                            <div class="filter-group">
+                              <h4>直播主题</h4>
+                              <div class="filter-options" id="themeOptions">
+                                <label><input type="checkbox" name="theme" value="杂谈"> 杂谈</label>
+                                <label><input type="checkbox" name="theme" value="游戏"> 游戏</label>
+                                <label><input type="checkbox" name="theme" value="静音"> 静音</label>
+                                <label><input type="checkbox" name="theme" value="音乐"> 音乐</label>
+                              </div>
+                            </div>
+                            
+                        </div>
+                        <div class="filter-right-groups">
+
+                              <!-- 节日筛选组 -->
+                              <div class="filter-group">
+                                <h4>节日</h4>
+                                <div class="filter-options multi-column" id="festival">
+                                  <label><input type="checkbox" name="game" value="生日"> 生日</label>
+                                  <label><input type="checkbox" name="game" value="双满"> 双满</label>
+                                  <label><input type="checkbox" name="game" value="周年"> 周年</label>
+                                  <label><input type="checkbox" name="game" value="端午"> 端午</label>
+                                  <label><input type="checkbox" name="game" value="跨年"> 跨年</label>
+                                  <label><input type="checkbox" name="game" value="节日"> 节日</label>
+                                  <label><input type="checkbox" name="game" value="六一"> 六一</label>
+                                  <label><input type="checkbox" name="game" value="出道"> 出道</label>
+                                </div>
+                              </div>
+                              
+                              <!-- 游戏类型筛选组 -->
+                              <div class="filter-group">
+                                <h4>游戏类型</h4>
+                                <div class="filter-options" id="gameTitleOptions">
+                                  <label><input type="checkbox" name="game" value="FPS"> FPS</label>
+                                  <label><input type="checkbox" name="game" value="沙盒"> 沙盒</label>
+                                  <label><input type="checkbox" name="game" value="恐怖游戏"> 恐怖游戏</label>
+                                </div>
+                              </div>
+
+                              <!-- 游戏筛选组 -->
+                              <div class="filter-group">
+                                <h4>游戏</h4>
+                                <div class="filter-options multi-column" id="gameOptions">
+                                  <label><input type="checkbox" name="game" value="csgo"> csgo</label>
+                                  <label><input type="checkbox" name="game" value="米塔"> 米塔</label>
+                                  <label><input type="checkbox" name="game" value="光遇"> 光遇</label>
+                                  <label><input type="checkbox" name="game" value="qq14"> qq14</label>
+                                  <label><input type="checkbox" name="game" value="我的世界"> 我的世界</label>
+                                  <label><input type="checkbox" name="game" value="瓦罗兰特"> 瓦罗兰特</label>
+                                  <label><input type="checkbox" name="game" value="泰拉瑞亚"> 泰拉瑞亚</label>
+                                  <label><input type="checkbox" name="game" value="星穹铁道"> 星穹铁道</label>
+                                </div>
+                                
+                              </div>
+                          </div>
+                    </div>
+                    <!-- 其他标签筛选组 -->
+                    <div class="filter-group">
+                      <h4>其他标签</h4>
+                      <div class="filter-options multi-column" id="otherTagOptions">
+                        <!-- 其他标签将通过JS动态添加 -->
+                      </div>
+                    </div>
+                  
+                  <div class="filter-footer">
+                    <div class="filter-mode">
+                      <span>筛选模式：</span>
+                      <label>
+                        <input type="radio" name="filterMode" value="any" checked>
+                        宽松(包含任意标签)
+                      </label>
+                      <label>
+                        <input type="radio" name="filterMode" value="all">
+                        严格(包含所有标签)
+                      </label>
+                    </div>
+                    <div class="filter-buttons">
+                      <button class="reset-filter">重置</button>
+                      <button class="apply-filter">应用筛选</button>
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+        </div>
   </header>
 
   <div class="container">
@@ -55,6 +192,351 @@
     <!-- 直播记录列表 -->
 
     
+    <div class="live-record" data-tags="2025,SINA,杂谈,剪视频,米塔">
+      <div class="live-info">
+        <h2>【slna】看烖晞玩米塔</h2>
+        <p><strong>直播日期：</strong>2025年08月12日</p>
+        <p><strong>直播时间：</strong>00:24 - 01:27</p>
+        <p><strong>直播简介：</strong>直播剪米塔视频</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1mGtQzVEmB" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,烖晞,游戏,FPS,csgo">
+      <div class="live-info">
+        <h2>【Zaix1】想要成为go学姐</h2>
+        <p><strong>直播日期：</strong>2025年08月11日</p>
+        <p><strong>直播时间：</strong>13:50 - 15:51</p>
+        <p><strong>直播简介：</strong>直播打go 一开始卡卡的</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV17tbGz9Eg4" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,SINA,杂谈">
+      <div class="live-info">
+        <h2>【slna】这么晚了？还没睡吗？</h2>
+        <p><strong>直播日期：</strong>2025年08月10日</p>
+        <p><strong>直播时间：</strong>23:18 - 02:12</p>
+        <p><strong>直播简介：</strong>好久不见</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1xAbMzsELx" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+
+    <div class="live-record" data-tags="2025,御坂19039,绘画">
+      <div class="live-info">
+        <h2>灵感来了！</h2>
+        <p><strong>直播日期：</strong>2025年08月06日</p>
+        <p><strong>直播时间：</strong>22:31 - 01:06</p>
+        <p><strong>直播简介：</strong>灵感来了（花了两个小时，时间被跳过了</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1GotNzoEfE" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,SINA,杂谈">
+      <div class="live-info">
+        <h2>【slna】这么晚了？还没睡吗？</h2>
+        <p><strong>直播日期：</strong>2025年08月04日</p>
+        <p><strong>直播时间：</strong>22:16 - 13:11</p>
+        <p><strong>直播简介：</strong>肚子痛得下播了</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1eMt5zHE64" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,SINA,游戏,光遇">
+      <div class="live-info">
+        <h2>【SlNA】在光遇里跟大家聊聊天吧～/偶遇我可以送心心哦</h2>
+        <p><strong>直播日期：</strong>2025年08月03日</p>
+        <p><strong>直播时间：</strong>22:40 - 01:34</p>
+        <p><strong>直播简介：</strong>卡卡西，又被老登制裁力</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV11ah5z1EuZ" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,烖晞,游戏,瓦罗兰特,qq14">
+      <div class="live-info">
+        <h2>【Zaix1】我要成为瓦瓦高手！/丘丘14！启动！</h2>
+        <p><strong>直播日期：</strong>2025年08月02日</p>
+        <p><strong>直播时间：</strong>14:35 - 17:51</p>
+        <p><strong>直播简介：</strong>被叫妈妈力</p>
+                    <div class="ai-summary">
+                        <div class="source-link summary-title">
+                            御坂19039在《Zaix1》中挑战瓦瓦高手与丘丘14任务，穿插游戏战术、装备调整及幽默互动，途中因网络卡顿调侃、烹饪日常、音乐片段和角色成长，最终通过团队协作克服困难，展现竞技乐趣与生活趣味的结合。
+                        </div>
+                        <div class="summary-details">
+                            <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline">
+                                <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline"><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                游戏直播混搭怀旧与互动调侃
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">00:10</span>
+                                </span>
+                                <span class="content">
+                                    爱情无法挽回，独自承受内心情感与风雨考验
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:03</span>
+                                </span>
+                                <span class="content">
+                                    夜色中独自徘徊，执着追求却无人回应的寂寥感
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">05:08</span>
+                                </span>
+                                <span class="content">
+                                    自信老登不在家，大胆游玩游戏并调侃直播互动
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                直播中频繁卡顿与互动调侃
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">11:42</span>
+                                </span>
+                                <span class="content">
+                                    调整小窗模式以便查看弹幕缓解卡顿问题
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">14:01</span>
+                                </span>
+                                <span class="content">
+                                    上传视频多次失败需重新上传并持续等待进度
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">16:56</span>
+                                </span>
+                                <span class="content">
+                                    网络延迟严重导致游戏卡顿频繁影响操作体验
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                瓦瓦高手训练与网络困扰
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">20:01</span>
+                                </span>
+                                <span class="content">
+                                    创意调侃用口香糖模拟抽烟效果引发笑声
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">21:57</span>
+                                </span>
+                                <span class="content">
+                                    表达练习枪法目标并回忆童年梦想与坚持
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">26:23</span>
+                                </span>
+                                <span class="content">
+                                    反复尝试上传视频因网络问题导致进度缓慢
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                分享帕尔游戏与午餐趣事
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">30:38</span>
+                                </span>
+                                <span class="content">
+                                    建议适量补充小零食缓解饥饿感
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">31:41</span>
+                                </span>
+                                <span class="content">
+                                    幻兽帕鲁游戏易上瘾且内容更新丰富
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">39:32</span>
+                                </span>
+                                <span class="content">
+                                    今日幸运中奖三等奖，种植作物进展顺利
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                主播练枪与生活琐事混剪
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">41:16</span>
+                                </span>
+                                <span class="content">
+                                    练习枪械挑战丘丘14目标提升战斗技巧
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">42:15</span>
+                                </span>
+                                <span class="content">
+                                    讨论游戏更新联动及病毒相关游戏内容
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">46:17</span>
+                                </span>
+                                <span class="content">
+                                    与角色互动并配合音乐节奏进行游戏操作
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                主播趣味对战笑料不断
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">50:52</span>
+                                </span>
+                                <span class="content">
+                                    骑士黑人名字引发全场爆笑调侃
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">52:20</span>
+                                </span>
+                                <span class="content">
+                                    连续击退敌人并展现可爱战斗风格
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">59:25</span>
+                                </span>
+                                <span class="content">
+                                    插播遵义美食推荐与幽默互动场景
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                趣味游戏对战与可爱互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:0:29</span>
+                                </span>
+                                <span class="content">
+                                    通过震荡冲击清场并调侃敌人状态
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:2:14</span>
+                                </span>
+                                <span class="content">
+                                    多层烟雾配合强化信标战术压制敌人
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:6:54</span>
+                                </span>
+                                <span class="content">
+                                    奶妈瞄地不放道具与对手操作风格形成反差萌
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                游戏直播搞笑对战与互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:10:00</span>
+                                </span>
+                                <span class="content">
+                                    回忆温暖场景与音乐共鸣情感交织
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:13:36</span>
+                                </span>
+                                <span class="content">
+                                    队伍A区遭遇战失利引发连环吐槽
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:19:03</span>
+                                </span>
+                                <span class="content">
+                                    团队配合压制成功展现强大实力
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                游戏战斗与幽默互动片段
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:20:40</span>
+                                </span>
+                                <span class="content">
+                                    精准释放大招压制敌人并调侃失误操作
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:21:55</span>
+                                </span>
+                                <span class="content">
+                                    以表演姿态化解压力展现真实实力突破
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:24:18</span>
+                                </span>
+                                <span class="content">
+                                    针对枪械问题调整灵敏度并持续训练提升
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                主播直播游戏抽卡与角色联动讨论
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:30:24</span>
+                                </span>
+                                <span class="content">
+                                    鼠标操作需放松调整，小拇指习惯影响操控效率
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:37:21</span>
+                                </span>
+                                <span class="content">
+                                    大白兔干员或推出服装联动，角色设定与兔系关联
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:38:07</span>
+                                </span>
+                                <span class="content">
+                                    联动概率较高，角色与服装同步更新可能性大
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                激烈战斗与游戏回顾片段
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:42:31</span>
+                                </span>
+                                <span class="content">
+                                    玩家精准操作斩获五杀扭转战局，火男连携爆发压制对手
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:45:16</span>
+                                </span>
+                                <span class="content">
+                                    对手法术输出受阻，守方尝试反制未果最终失利
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:48:35</span>
+                                </span>
+                                <span class="content">
+                                    连续斩获三杀掌控战场节奏，战术调整成功锁定胜利
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                家庭做饭与电台登录趣事
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:50:15</span>
+                                </span>
+                                <span class="content">
+                                    主人公准备切洋芋备餐，展现家庭烹饪日常
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:57:50</span>
+                                </span>
+                                <span class="content">
+                                    完成洋芋处理后继续操作，提及扫码登录游戏故障
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:59:38</span>
+                                </span>
+                                <span class="content">
+                                    反馈长时间未登录账号导致系统异常，调整状态应对挑战
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                游玩稻香村与听周杰伦歌曲
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:0:32</span>
+                                </span>
+                                <span class="content">
+                                    过剧情遇NPC助力缓解紧张氛围
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:3:32</span>
+                                </span>
+                                <span class="content">
+                                    欣赏周杰伦歌词传递温暖生活感悟
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:9:58</span>
+                                </span>
+                                <span class="content">
+                                    熔岩环境遭遇敌人并反思成长心态
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                回忆与冒险交织的温馨旅程
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:10:45</span>
+                                </span>
+                                <span class="content">
+                                    场景呈现如恶灵古堡般神秘紧张氛围
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:12:07</span>
+                                </span>
+                                <span class="content">
+                                    表达渴望简单纯粹与爱人共同生活的愿望
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:15:20</span>
+                                </span>
+                                <span class="content">
+                                    渴望重逢过去甜蜜时光续写美好故事
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                游戏冒险与情感交织的旅程
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:20:46</span>
+                                </span>
+                                <span class="content">
+                                    角色装扮如陆行鸟引发趣味联想，回忆游戏世界探索经历
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:21:51</span>
+                                </span>
+                                <span class="content">
+                                    描绘情感矛盾与内心挣扎，隐藏真心却易被察觉
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:25:43</span>
+                                </span>
+                                <span class="content">
+                                    反复强调品级不足阻碍进展，反思聪明卖弄导致遗憾
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                轻柔互动引发趣味战斗
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:30:00</span>
+                                </span>
+                                <span class="content">
+                                    展现角色轻盈动作与丘丘人战斗节奏结合
+                                </span></div></div></div>
+                            </div>
+                        </div>
+                    </div>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1JMhNz3EtY" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,SINA,杂谈,剪视频">
+      <div class="live-info">
+        <h2>【slna】看烖晞玩米塔的样子~</h2>
+        <p><strong>直播日期：</strong>2025年07月31日</p>
+        <p><strong>直播时间：</strong>23:02 - 01:04</p>
+        <p><strong>直播简介：</strong>剪米塔视频完结</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1H88mzAEdR" target="_blank">点击观看</a></p>
+      </div>
+    </div>
     <div class="live-record" data-tags="2025,SINA,杂谈,剪视频">
       <div class="live-info">
         <h2>【slna】这么晚了？还没睡吗？</h2>
@@ -62,12 +544,6 @@
         <p><strong>直播时间：</strong>22:11 - 00:00</p>
         <p><strong>直播简介：</strong>剪米塔视频</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1du86zYEzz" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-            <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-            <span class="tag" onclick="filterByTag('剪视频')">剪视频</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,烖晞,我的世界">
@@ -490,11 +966,6 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV12o8nzfEW2" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('我的世界')">我的世界</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,SINA,杂谈">
@@ -820,25 +1291,15 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1K2b9zDEDL" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-            <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,绘画,御坂19039">
+    <div class="live-record" data-tags="2025,御坂19039,绘画">
       <div class="live-info">
         <h2>我好想睡觉</h2>
         <p><strong>直播日期：</strong>2025年07月24日</p>
         <p><strong>直播时间：</strong>13:45 - 14:56</p>
         <p><strong>直播简介：</strong>摸鱼绘画</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1Wj8uztEmZ" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('御坂19039')">御坂19039</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,烖晞,绘画">
@@ -1113,11 +1574,6 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1hc8uzBEfB" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,SINA,杂谈">
@@ -1438,11 +1894,6 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1kvgjzfE5o" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-            <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,烖晞,游戏,瓦罗兰特">
@@ -1916,12 +2367,6 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1rbgGz7EDe" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-            <span class="tag" onclick="filterByTag('瓦罗兰特')">瓦罗兰特</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,SINA,杂谈,小王子">
@@ -2247,12 +2692,6 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1yPgizQEZZ" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-            <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-            <span class="tag" onclick="filterByTag('小王子')">小王子</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,SINA,杂谈,小王子">
@@ -2262,12 +2701,6 @@
         <p><strong>直播时间：</strong>00:03 - 02:04</p>
         <p><strong>直播简介：</strong>杂谈，然后小王子</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1iagMzfETs" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-            <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-            <span class="tag" onclick="filterByTag('小王子')">小王子</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,御坂19039,剪视频">
@@ -2277,11 +2710,6 @@
         <p><strong>直播时间：</strong>13:38 - 18:04</p>
         <p><strong>直播简介：</strong>剪米塔视频3</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1NbgNzNEg8" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('御坂19039')">御坂19039</span>
-            <span class="tag" onclick="filterByTag('剪视频')">剪视频</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,SINA,qq14,瓦罗兰特">
@@ -2589,12 +3017,6 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1Jdu8zfE13" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-            <span class="tag" onclick="filterByTag('qq14')">qq14</span>
-            <span class="tag" onclick="filterByTag('瓦罗兰特')">瓦罗兰特</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,烖晞,剪视频">
@@ -2699,11 +3121,6 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1MZubzzEjq" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('剪视频')">剪视频</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,烖晞,绘画">
@@ -2961,11 +3378,6 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1xbuHzLEqK" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,烖晞,绘画,光标">
@@ -3359,15 +3771,9 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1ckuYzKE3u" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('光标')">光标</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,游戏,御坂19039,星穹铁道">
+    <div class="live-record" data-tags="2025,御坂19039,游戏,星穹铁道">
       <div class="live-info">
         <h2>我要跟saber结婚！</h2>
         <p><strong>直播日期：</strong>2025年07月13日</p>
@@ -3690,12 +4096,6 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1JguAz1Erz" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-            <span class="tag" onclick="filterByTag('御坂19039')">御坂19039</span>
-            <span class="tag" onclick="filterByTag('星穹铁道')">星穹铁道</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,烖晞,游戏,我的世界,剪视频">
@@ -4055,46 +4455,27 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1J4uVzyELK" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-            <span class="tag" onclick="filterByTag('我的世界')">我的世界</span>
-            <span class="tag" onclick="filterByTag('剪视频')">剪视频</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,御坂19039,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>老师，我们家烖晞好像热的快熟了</h2>
         <p><strong>直播日期：</strong>2025年07月09日</p>
         <p><strong>直播时间：</strong>04:59 - 07:42</p>
         <p><strong>直播简介：</strong>被热醒了</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1JaGwzpEuu" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('御坂19039')">御坂19039</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,御坂19039,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>画画！</h2>
         <p><strong>直播日期：</strong>2025年07月05日</p>
         <p><strong>直播时间：</strong>23:49 - 02:33</p>
         <p><strong>直播简介：</strong>绘画 摸鱼</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1Vh3dzfESz" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('御坂19039')">御坂19039</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,qq14,游戏,烖晞">
+    <div class="live-record" data-tags="2025,烖晞,qq14,游戏">
       <div class="live-info">
         <h2>打一会qq14，然后修bug</h2>
         <p><strong>直播日期：</strong>2025年07月04日</p>
@@ -4502,45 +4883,24 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1Ar3SzZEWh" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('qq14')">qq14</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,摸鱼,静音,御坂19039,qq14,游戏">
+    <div class="live-record" data-tags="2025,御坂19039,摸鱼,静音,qq14,游戏">
       <div class="live-info">
         <h2>qq14，启动！</h2>
         <p><strong>直播日期：</strong>2025年07月03日</p>
         <p><strong>直播时间：</strong>23:04 - 00:22</p>
         <p><strong>直播简介：</strong>qq14</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1EM3VzyEYA" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('摸鱼')">摸鱼</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-            <span class="tag" onclick="filterByTag('御坂19039')">御坂19039</span>
-            <span class="tag" onclick="filterByTag('qq14')">qq14</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,摸鱼,绘画,静音,御坂19039">
+    <div class="live-record" data-tags="2025,御坂19039,摸鱼,静音,绘画">
       <div class="live-info">
         <h2>想画一点不一样的</h2>
         <p><strong>直播日期：</strong>2025年07月03日</p>
         <p><strong>直播时间：</strong>03:18 - 04:22</p>
         <p><strong>直播简介：</strong>画</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1eh3gzwEkm" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('摸鱼')">摸鱼</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-            <span class="tag" onclick="filterByTag('御坂19039')">御坂19039</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,御坂19039,游戏,摸鱼,静音">
@@ -4550,13 +4910,6 @@
         <p><strong>直播时间：</strong>14:53 - 15:20</p>
         <p><strong>直播简介：</strong>摸鱼 玩游戏</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1UvKrzwEMR" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('御坂19039')">御坂19039</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-            <span class="tag" onclick="filterByTag('摸鱼')">摸鱼</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,SINA,杂谈">
@@ -4882,14 +5235,9 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1UvKrzwEMR" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-            <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,音乐,御坂19039">
+    <div class="live-record" data-tags="2025,御坂19039,音乐">
       <div class="live-info">
         <h2>可以监督我练琴到8_40嘛？</h2>
         <p><strong>直播日期：</strong>2025年06月24日</p>
@@ -5093,14 +5441,9 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1dDKGztE1o" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('音乐')">音乐</span>
-            <span class="tag" onclick="filterByTag('御坂19039')">御坂19039</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,米塔,游戏,恐怖游戏,烖晞">
+    <div class="live-record" data-tags="2025,烖晞,米塔,游戏,恐怖游戏">
       <div class="live-info">
         <h2>你们怎么敢让我玩米塔的！！！</h2>
         <p><strong>直播日期：</strong>2025年06月22日</p>
@@ -5440,46 +5783,27 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1sJNRzdEfu" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('米塔')">米塔</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-            <span class="tag" onclick="filterByTag('恐怖游戏')">恐怖游戏</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,静音,qq14,游戏">
+    <div class="live-record" data-tags="2025,御坂19039,静音,qq14,游戏">
       <div class="live-info">
         <h2>好困，玩会ff14</h2>
         <p><strong>直播日期：</strong>2025年06月22日</p>
         <p><strong>直播时间：</strong>00:14 - 03:40</p>
         <p><strong>直播简介：</strong>玩ff14</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1LqNRz5E3G" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-            <span class="tag" onclick="filterByTag('qq14')">qq14</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="米塔,2025,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,米塔,静音,绘画">
       <div class="live-info">
         <h2>画米塔</h2>
         <p><strong>直播日期：</strong>2025年06月22日</p>
         <p><strong>直播时间：</strong>00:14 - 03:40</p>
         <p><strong>直播简介：</strong>画米塔封面</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1qYNrzzEAE" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('米塔')">米塔</span>
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,米塔,游戏,恐怖游戏,烖晞">
+    <div class="live-record" data-tags="2025,烖晞,米塔,游戏,恐怖游戏">
       <div class="live-info">
         <h2>你们怎么敢让我玩米塔的！！！</h2>
         <p><strong>直播日期：</strong>2025年06月14日</p>
@@ -5836,28 +6160,15 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV13sMbzMEtJ" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('米塔')">米塔</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-            <span class="tag" onclick="filterByTag('恐怖游戏')">恐怖游戏</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,烖晞,米塔,游戏">
+    <div class="live-record" data-tags="2025,烖晞,米塔,游戏,恐怖游戏">
       <div class="live-info">
         <h2>你们怎么敢让我玩米塔的！！！</h2>
         <p><strong>直播日期：</strong>2025年06月08日</p>
         <p><strong>直播时间：</strong>00:40 - 03:18</p>
         <p><strong>直播简介：</strong>游戏，米塔！</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1SZTUzpE52" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('米塔')">米塔</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,SINA,杂谈">
@@ -6012,14 +6323,9 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1qjTmzaEGF" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-            <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,我的世界,烖晞,游戏">
+    <div class="live-record" data-tags="2025,烖晞,我的世界,游戏">
       <div class="live-info">
         <h2>能一直生存嘛？</h2>
         <p><strong>直播日期：</strong>2025年06月07日</p>
@@ -6376,41 +6682,24 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1inTLzzEL4" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('我的世界')">我的世界</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,静音,绘画">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>进一个画的画</h2>
         <p><strong>直播日期：</strong>2025年06月04日</p>
         <p><strong>直播时间：</strong>19:08 - 19:54</p>
         <p><strong>直播简介：</strong>画头像</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1qbTJzSEEK" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,我的世界,游戏,烖晞">
+    <div class="live-record" data-tags="2025,烖晞,我的世界,游戏">
       <div class="live-info">
         <h2>能一直生存嘛？</h2>
         <p><strong>直播日期：</strong>2025年06月01日</p>
         <p><strong>直播时间：</strong>21:44 - 22:33</p>
         <p><strong>直播简介：</strong>我的世界</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1EQ7CzEEDm" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('我的世界')">我的世界</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-        </div>
       </div>
     </div>
     <div class="live-record" data-tags="2025,SINA,六一,节日,杂谈">
@@ -6420,16 +6709,9 @@
         <p><strong>直播时间：</strong>00:14 - 02:01</p>
         <p><strong>直播简介：</strong>六一</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1uK7MzAEuY" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-            <span class="tag" onclick="filterByTag('六一')">六一</span>
-            <span class="tag" onclick="filterByTag('节日')">节日</span>
-            <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,烖晞,出道,周年,端午">
+    <div class="live-record" data-tags="2025,SINA,烖晞,出道,周年,端午">
       <div class="live-info">
         <h2>周年庆！端午安康！烖晞报道！</h2>
         <p><strong>直播日期：</strong>2025年05月30日</p>
@@ -6922,16 +7204,9 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV15ijfzDEiu" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('出道')">出道</span>
-            <span class="tag" onclick="filterByTag('周年')">周年</span>
-            <span class="tag" onclick="filterByTag('端午')">端午</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,烖晞,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音">
       <div class="live-info">
         <h2>烖晞最后测试中</h2>
         <p><strong>直播日期：</strong>2025年05月28日</p>
@@ -6939,14 +7214,9 @@
         <p><strong>直播简介：</strong>烖晞最后测试中
 主播月底没流量 25分钟的直播卡成63段文件 拼尽全力修复成30s视频</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1ZC75zcEju" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,音乐,练习">
+    <div class="live-record" data-tags="2025,御坂19039,音乐,练习">
       <div class="live-info">
         <h2>哄自己练琴中</h2>
         <p><strong>直播日期：</strong>2025年05月26日</p>
@@ -7099,74 +7369,45 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1oDj2zQEKo" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('音乐')">音乐</span>
-            <span class="tag" onclick="filterByTag('练习')">练习</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="烖晞,绘画,静音,2025">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>烖晞生成中</h2>
         <p><strong>直播日期：</strong>2025年05月24日</p>
         <p><strong>直播时间：</strong>16:12 - 18:29</p>
         <p><strong>直播简介：</strong>烖晞生成中4</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1y2jtzkEPz" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="烖晞,绘画,静音,2025">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>烖晞生成中</h2>
         <p><strong>直播日期：</strong>2025年05月17日</p>
         <p><strong>直播时间：</strong>22:39 - 02:02</p>
         <p><strong>直播简介：</strong>烖晞生成中3</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1JMJgz4Ent" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="烖晞,绘画,静音,2025">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>烖晞生成中</h2>
         <p><strong>直播日期：</strong>2025年05月16日</p>
         <p><strong>直播时间：</strong>23:45 - 02:26</p>
         <p><strong>直播简介：</strong>烖晞生成中2</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV11sEazcEcv" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="烖晞,绘画,静音,2025">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>烖晞生成中</h2>
         <p><strong>直播日期：</strong>2025年05月10日</p>
         <p><strong>直播时间：</strong>22:20 - 00:20</p>
         <p><strong>直播简介：</strong>烖晞生成中1</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1PNEMzoEf8" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="网易,我的世界,2025,游戏">
+    <div class="live-record" data-tags="2025,御坂19039,游戏,我的世界">
       <div class="live-info">
         <h2>沉浸式单人生存（其实是么力气说话了</h2>
         <p><strong>直播日期：</strong>2025年05月09日</p>
@@ -7387,15 +7628,9 @@
                         </div>
                     </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1WeVZzpEuJ" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('网易')">网易</span>
-            <span class="tag" onclick="filterByTag('我的世界')">我的世界</span>
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="生日回,2025,瓦罗兰特,游戏">
+    <div class="live-record" data-tags="2025,SINA,生日,瓦罗兰特,游戏">
       <div class="live-info">
         <h2>猜猜今天谁过生日啊</h2>
         <p><strong>直播日期：</strong>2025年04月30日</p>
@@ -7684,32 +7919,21 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1nJG8zNEjz" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('生日回')">生日回</span>
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('瓦罗兰特')">瓦罗兰特</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-        </div>
       </div>
     </div>
      
-    <div class="live-record" data-tags="2025,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>进行一个生贺的画</h2>
         <p><strong>直播日期：</strong>2025年04月26日</p>
         <p><strong>直播时间：</strong>13:17 - 17:59</p>
         <p><strong>直播简介：</strong>"进行一个生贺的画"系列3</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1vyLozCE4V" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
      
      
-    <div class="live-record" data-tags="2025,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>进行一个生贺的画</h2>
         <p><strong>直播日期：</strong>2025年04月25日</p>
@@ -7857,16 +8081,11 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV12zLHzFEuR" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
 
     
-    <div class="live-record" data-tags="2025,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>进行一个生贺的画</h2>
         <p><strong>直播日期：</strong>2025年04月23日</p>
@@ -7985,16 +8204,11 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1FWLtziEon" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
 
     
-    <div class="live-record" data-tags="2025,live2d">
+    <div class="live-record" data-tags="2025,御坂19039,live2d">
       <div class="live-info">
         <h2>与live2d大战</h2>
         <p><strong>直播日期：</strong>2025年04月20日</p>
@@ -8113,15 +8327,11 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1UKLNzmEtf" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('live2d')">live2d</span>
-        </div>
       </div>
     </div>
 
     
-    <div class="live-record" data-tags="2025,SINA,光遇,游戏">
+    <div class="live-record" data-tags="2025,SINA,游戏,光遇">
       <div class="live-info">
         <h2>一边跑图一边聊聊天~</h2>
         <p><strong>直播日期：</strong>2025年04月19日</p>
@@ -8206,17 +8416,11 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1P8LwzvEWo" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('SINA')">SINA</span>
-            <span class="tag" onclick="filterByTag('光遇')">光遇</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-        </div>
       </div>
     </div>
 
     
-    <div class="live-record" data-tags="2025,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>进行一个烖晞的赶</h2>
         <p><strong>直播日期：</strong>2025年04月16日</p>
@@ -8342,31 +8546,21 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1mroTY7Esy" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
 
     
-    <div class="live-record" data-tags="2025,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>2025年04月15日-进行一个烖晞的赶</h2>
         <p><strong>直播日期：</strong>2025年04月15日</p>
         <p><strong>直播时间：</strong>11:19 - 12:00</p>
         <p><strong>直播简介：</strong>"进行一个烖晞的赶"系列7</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1pLopYnELq" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
 
-    <div class="live-record" data-tags="2025,烖晞,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>进行一个烖晞的赶</h2>
         <p><strong>直播日期：</strong>2025年04月13日</p>
@@ -8475,15 +8669,9 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1EyoGYDE9a" target="_blank">点击观看</a></p>
-        <div class="tags">
-          <span class="tag" onclick="filterByTag('2025')">2025</span>
-          <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-          <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-          <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,游戏,光遇">
+    <div class="live-record" data-tags="2025,SINA,游戏,光遇">
       <div class="live-info">
         <h2>好久不见~聊聊天~</h2>
         <p><strong>直播日期：</strong>2025年04月05日</p>
@@ -8602,14 +8790,9 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1MgRZY9E3w" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-            <span class="tag" onclick="filterByTag('光遇')">光遇</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,烖晞,绘画,OSaKa">
+    <div class="live-record" data-tags="2025,御坂19039,烖晞,绘画">
       <div class="live-info">
         <h2>进行一个烖晞的赶</h2>
         <p><strong>直播日期：</strong>2025年03月29日</p>
@@ -8728,150 +8911,140 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1dGZaYTEda" target="_blank">点击观看</a></p>
-        <div class="tags">
-          <span class="tag" onclick="filterByTag('2025')">2025</span>
-          <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-          <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-          <span class="tag" onclick="filterByTag('OSaKa')">OSaKa</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,烖晞,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
-        <h2>进行一个烖晞的赶</h2>
-        <p><strong>直播日期：</strong>2025年03月29日</p>
-        <p><strong>直播时间：</strong>00:09 - 03:10</p>
-        <p><strong>直播简介：</strong>"进行一个烖晞的赶"系列4</p><div class="biliscope-ai-summary-popup-body">
-          <div id="biliscope-ai-summary-abstracts" class="biliscope-ai-summary-popup-body-abstracts">一段充满乐趣与互动的直播经历。主播不仅与观众分享了音乐，还展示了她制作皮套的过程，期间与观众互动，回答了关于皮套设计、颜色以及她本人的声音等问题。她还分享了个人经历，比如回老家爬山的故事，给观众带来了轻松愉快的氛围。直播中，主播还与观众讨论了小说创作、角色设定以及使用PS处理图像的趣事，展示了自己独特的角色设定。尽管在尝试打开某个文件时遇到了各种问题，包括卡顿、颜色变化和模式错误，但主播的幽默应对方式为观众带来了欢乐。最后，主播表达了对未来直播内容的规划，打算更多地与观众分享整活视频和搞笑内容。</div>
-          <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline"><div class="ai-summary-section" ><div class="ai-summary-section-title">
-                          歌手深情演唱，互动有趣。
-                      </div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">00:01</span>
-                          </span>
-                          <span class="content">
-                              视频开始，播放音乐，内容不明
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">00:15</span>
-                          </span>
-                          <span class="content">
-                              描述工作状态，提到“开车”，内容模糊
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">00:43</span>
-                          </span>
-                          <span class="content">
-                              描述故事，内容不明
-                          </span></div></div><div class="ai-summary-section" ><div class="ai-summary-section-title">
-                          虚拟主播互动聊天
-                      </div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">10:00</span>
-                          </span>
-                          <span class="content">
-                              晚上好，进行烖晞的赶
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">11:04</span>
-                          </span>
-                          <span class="content">
-                              感谢粉丝团灯牌，表达疲惫
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">12:59</span>
-                          </span>
-                          <span class="content">
-                              讨论走错地方，提及欧巴卡萨
-                          </span></div></div><div class="ai-summary-section" ><div class="ai-summary-section-title">
-                          直播画图遇到各种小问题
-                      </div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">20:00</span>
-                          </span>
-                          <span class="content">
-                              主播忘记文件格式，询问弹幕
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">21:40</span>
-                          </span>
-                          <span class="content">
-                              主播忘记导出设置，询问格式
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">24:33</span>
-                          </span>
-                          <span class="content">
-                              主播忘记图层设置，检查画布
-                          </span></div></div><div class="ai-summary-section" ><div class="ai-summary-section-title">
-                          主播与观众互动，讨论爬山和写作。
-                      </div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">31:47</span>
-                          </span>
-                          <span class="content">
-                              笨蛋奶妈失踪记，软件无法锁定图层
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">33:59</span>
-                          </span>
-                          <span class="content">
-                              爬山路难走，杂草丛生，需带工具清理
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">38:47</span>
-                          </span>
-                          <span class="content">
-                              写小说，内容为失败谢罪，奇幻异世界背景
-                          </span></div></div><div class="ai-summary-section" ><div class="ai-summary-section-title">
-                          主播展示法术与化学相似，提取以太提纯释放。
-                      </div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">40:07</span>
-                          </span>
-                          <span class="content">
-                               视频介绍了法术的调配过程，可以从空气中提取物质，凝聚以太。
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">41:15</span>
-                          </span>
-                          <span class="content">
-                               视频提到主包的画与原皮不太相关，讨论C的问题。
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">44:46</span>
-                          </span>
-                          <span class="content">
-                               视频提到需要重新导到微信上，治疗最快的方法是重新弄一下。
-                          </span></div></div><div class="ai-summary-section" ><div class="ai-summary-section-title">
-                          主播电脑故障，直播中断。
-                      </div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">50:00</span>
-                          </span>
-                          <span class="content">
-                              视频中的人物提到自己并没有刻意表演，而是想搞点特殊。
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">51:01</span>
-                          </span>
-                          <span class="content">
-                              角色提到花世界的像素效果不佳，决定后面加个零。
-                          </span></div><div class="bullet" ><span class="timestamp">
-                              <span class="timestamp-inner">53:06</span>
-                          </span>
-                          <span class="content">
-                              讨论到JSC出了大哥哥手办，角色表示好奇。
-                          </span></div></div></div>
-      </div>
-        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1cGZwYdETG" target="_blank">点击观看</a></p>
-        <div class="tags">
-          <span class="tag" onclick="filterByTag('2025')">2025</span>
-          <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-          <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-          <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
+            <h2>进行一个烖晞的赶</h2>
+            <p><strong>直播日期：</strong>2025年03月29日</p>
+            <p><strong>直播时间：</strong>00:09 - 03:10</p>
+            <p><strong>直播简介：</strong>"进行一个烖晞的赶"系列4</p>
+            <div class="ai-summary">
+                <div class="source-link summary-title">
+                    一段充满乐趣与互动的直播经历。主播不仅与观众分享了音乐，还展示了她制作皮套的过程，期间与观众互动，回答了关于皮套设计、颜色以及她本人的声音等问题。她还分享了个人经历，比如回老家爬山的故事，给观众带来了轻松愉快的氛围。直播中，主播还与观众讨论了小说创作、角色设定以及使用PS处理图像的趣事，展示了自己独特的角色设定。尽管在尝试打开某个文件时遇到了各种问题，包括卡顿、颜色变化和模式错误，但主播的幽默应对方式为观众带来了欢乐。最后，主播表达了对未来直播内容的规划，打算更多地与观众分享整活视频和搞笑内容。
+                </div>
+                <div class="summary-details">
+                    <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline">
+                        <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline">
+                <div class="ai-summary-section"><div class="ai-summary-section-title">
+                            歌手深情演唱，互动有趣。
+                        </div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">00:01</span>
+                            </span>
+                            <span class="content">
+                                视频开始，播放音乐，内容不明
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">00:15</span>
+                            </span>
+                            <span class="content">
+                                描述工作状态，提到“开车”，内容模糊
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">00:43</span>
+                            </span>
+                            <span class="content">
+                                描述故事，内容不明
+                            </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                            虚拟主播互动聊天
+                        </div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">10:00</span>
+                            </span>
+                            <span class="content">
+                                晚上好，进行烖晞的赶
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">11:04</span>
+                            </span>
+                            <span class="content">
+                                感谢粉丝团灯牌，表达疲惫
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">12:59</span>
+                            </span>
+                            <span class="content">
+                                讨论走错地方，提及欧巴卡萨
+                            </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                            直播画图遇到各种小问题
+                        </div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">20:00</span>
+                            </span>
+                            <span class="content">
+                                主播忘记文件格式，询问弹幕
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">21:40</span>
+                            </span>
+                            <span class="content">
+                                主播忘记导出设置，询问格式
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">24:33</span>
+                            </span>
+                            <span class="content">
+                                主播忘记图层设置，检查画布
+                            </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                            主播与观众互动，讨论爬山和写作。
+                        </div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">31:47</span>
+                            </span>
+                            <span class="content">
+                                笨蛋奶妈失踪记，软件无法锁定图层
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">33:59</span>
+                            </span>
+                            <span class="content">
+                                爬山路难走，杂草丛生，需带工具清理
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">38:47</span>
+                            </span>
+                            <span class="content">
+                                写小说，内容为失败谢罪，奇幻异世界背景
+                            </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                            主播展示法术与化学相似，提取以太提纯释放。
+                        </div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">40:07</span>
+                            </span>
+                            <span class="content">
+                                视频介绍了法术的调配过程，可以从空气中提取物质，凝聚以太。
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">41:15</span>
+                            </span>
+                            <span class="content">
+                                视频提到主包的画与原皮不太相关，讨论C的问题。
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">44:46</span>
+                            </span>
+                            <span class="content">
+                                视频提到需要重新导到微信上，治疗最快的方法是重新弄一下。
+                            </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                            主播电脑故障，直播中断。
+                        </div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">50:00</span>
+                            </span>
+                            <span class="content">
+                                视频中的人物提到自己并没有刻意表演，而是想搞点特殊。
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">51:01</span>
+                            </span>
+                            <span class="content">
+                                角色提到花世界的像素效果不佳，决定后面加个零。
+                            </span></div><div class="bullet"><span class="timestamp">
+                                <span class="timestamp-inner">53:06</span>
+                            </span>
+                            <span class="content">
+                                讨论到JSC出了大哥哥手办，角色表示好奇。
+                            </span></div></div></div>
+                                </div>
+                            </div>
+                        </div>
+            <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1cGZwYdETG" target="_blank">点击观看</a></p>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,烖晞,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>进行一个烖晞的赶</h2>
         <p><strong>直播日期：</strong>2025年03月26日</p>
         <p><strong>直播时间：</strong>19:21 - 20:20</p>
         <p><strong>直播简介：</strong>"进行一个烖晞的赶"系列3</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1jyZNYhEQb" target="_blank">点击观看</a></p>
-        <div class="tags">
-          <span class="tag" onclick="filterByTag('2025')">2025</span>
-          <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-          <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-          <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,烖晞,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>进行一个烖晞的赶</h2>
         <p><strong>直播日期：</strong>2025年03月25日</p>
@@ -9002,15 +9175,9 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1JCovYSEJo" target="_blank">点击观看</a></p>
-        <div class="tags">
-          <span class="tag" onclick="filterByTag('2025')">2025</span>
-          <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-          <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-          <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>r
       </div>
     </div>
-    <div class="live-record" data-tags="2025,烖晞,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>进行一个烖晞的赶</h2>
         <p><strong>直播日期：</strong>2025年03月22日</p>
@@ -9129,44 +9296,27 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1QcXnYEEbd" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('烖晞')">烖晞</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>进行一个画的赶</h2>
         <p><strong>直播日期：</strong>2025年03月16日</p>
         <p><strong>直播时间：</strong>22:32 - 00:28</p>
         <p><strong>直播简介：</strong>直播赶画</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1fHXjY7Ewx/" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,绘画,静音,摸鱼">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画,摸鱼">
       <div class="live-info">
         <h2>不想上课，，，</h2>
         <p><strong>直播日期：</strong>2025年03月14日</p>
         <p><strong>直播时间：</strong>09:11 - 10:05</p>
         <p><strong>直播简介：</strong>上课摸鱼</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1VKQuYHEfT/" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-            <span class="tag" onclick="filterByTag('摸鱼')">摸鱼</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,绘画,静音">
+    <div class="live-record" data-tags="2025,御坂19039,静音,绘画">
       <div class="live-info">
         <h2>进行一个事情的乱做</h2>
         <p><strong>直播日期：</strong>2025年03月11日</p>
@@ -9217,33 +9367,23 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1xbREYME7m/" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-            <span class="tag" onclick="filterByTag('静音')">静音</span>
-        </div>
       </div>
     </div>
-    <div class="live-record" data-tags="2025,瓦罗兰特,绘画">
+    <div class="live-record" data-tags="2025,SINA,游戏,瓦罗兰特,绘画">
       <div class="live-info">
         <h2>进行一个事情的乱做</h2>
         <p><strong>直播日期：</strong>2025年03月08日</p>
         <p><strong>直播时间：</strong>21:34 - 01:53</p>
         <p><strong>直播简介：</strong>绘画，然后打瓦，然后下播</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1GVRaYdEdY/" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2025')">2025</span>
-            <span class="tag" onclick="filterByTag('瓦罗兰特')">瓦罗兰特</span>
-            <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-        </div>
       </div>
     </div>
-   <div><div class="live-record" data-tags="2025,杂谈,御姐,大版,OSaKa,瓦罗兰特,FPS">
+   <div><div class="live-record" data-tags="2025,御坂19039,杂谈,游戏,FPS,瓦罗兰特">
   <div class="live-info">
     <h2>OSAKA本体上线！</h2>
     <p><strong>直播日期：</strong>2025年02月28日</p>
     <p><strong>直播时间：</strong>21:27 - 00:33</p>
-    <p><strong>直播简介：</strong>OSAKA本体上线！</p>
+    <p><strong>直播简介：</strong>SINA睡觉了，OSAKA（大阪）代播！</p>
     <div class="ai-summary">
         <div class="source-link summary-title">
             2025年02月28日OSAKA本体上线的游戏直播。直播中，OSAKA与观众互动，询问声音问题，并表示自己因为学校事务感到疲惫，尤其是发书时间安排让他感到困扰。他还提到晚上睡觉时需要冷十多分钟，表示学校生活并不容易。直播中，他还与观众互动，询问谁是笨蛋奶妈，并感谢观众的点赞和粉丝团灯牌。
@@ -9286,18 +9426,9 @@
         </div>
     </div>
     <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1hqXDYNEYq" target="_blank">点击观看</a></p>
-    <div class="tags">
-        <span class="tag" onclick="filterByTag('2025')">2025</span>
-        <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-        <span class="tag" onclick="filterByTag('御姐')">御姐</span>
-        <span class="tag" onclick="filterByTag('御坂19039')">御坂19039</span>
-        <span class="tag" onclick="filterByTag('OSaKa')">OSaKa</span>
-        <span class="tag" onclick="filterByTag('瓦罗兰特')">瓦罗兰特</span>
-        <span class="tag" onclick="filterByTag('FPS')">FPS</span>
-    </div>
   </div>
 
-</div></div><div><div class="live-record" data-tags="2025,杂谈">
+</div></div><div><div class="live-record" data-tags="2025,SINA,杂谈">
   <div class="live-info">
     <h2>看比赛！！！(马上开学版）/这么晚了，还没睡吗~？</h2>
     <p><strong>直播日期：</strong>2025年02月22日</p>
@@ -9416,12 +9547,8 @@
         </div>
     </div>
     <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1Q6ADebEn7" target="_blank">点击观看</a></p>
-    <div class="tags">
-        <span class="tag" onclick="filterByTag('2025')">2025</span>
-        <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-    </div>
   </div>
-</div></div><div><div class="live-record" data-tags="2025,游戏,瓦罗兰特,FPS">
+</div></div><div><div class="live-record" data-tags="2025,SINA,游戏,FPS,瓦罗兰特">
   <div class="live-info">
     <h2>我要打！瓦！！！(马上开学版）</h2>
     <p><strong>直播日期：</strong>2025年02月19日</p>
@@ -9540,14 +9667,8 @@
         </div>
     </div>
     <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1jfAHe9E1D/" target="_blank">点击观看</a></p>
-    <div class="tags">
-      <span class="tag" onclick="filterByTag('2025')">2025</span>
-      <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-      <span class="tag" onclick="filterByTag('瓦罗兰特')">瓦罗兰特</span>
-      <span class="tag" onclick="filterByTag('FPS')">FPS</span>
-    </div>
   </div>
-</div></div><div><div class="live-record" data-tags="2025,杂谈,仓鼠">
+</div></div><div><div class="live-record" data-tags="2025,SINA,杂谈,仓鼠">
   <div class="live-info">
     <h2>这么晚了，还没睡吗~？</h2>
     <p><strong>直播日期：</strong>2025年02月17日</p>
@@ -9666,13 +9787,8 @@
         </div>
     </div>
     <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1b3AFejEwQ/" target="_blank">点击观看</a></p>
-    <div class="tags">
-        <span class="tag" onclick="filterByTag('2025')">2025</span>
-        <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-        <span class="tag" onclick="filterByTag('仓鼠')">仓鼠</span>
-    </div>
   </div>
-</div></div><div><div class="live-record" data-tags="2025,杂谈,仓鼠">
+</div></div><div><div class="live-record" data-tags="2025,SINA,杂谈,仓鼠">
   <div class="live-info">
     <h2>这么晚了，还没睡吗~？</h2>
     <p><strong>直播日期：</strong>2025年02月16日</p>
@@ -9723,11 +9839,8 @@
         </div>
     </div>
     <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1CfATe4EMz" target="_blank">点击观看</a></p>
-    <div class="tags">
-      <span class="tag">2025</span><span class="tag">杂谈</span><span class="tag">仓鼠</span>
-    </div>
   </div>
-</div></div><div><div class="live-record" data-tags="2025,瓦罗兰特,FPS,游戏">
+</div></div><div><div class="live-record" data-tags="2025,SINA,游戏,FPS,瓦罗兰特">
   <div class="live-info">
     <h2>非常好情人节，使我变成打瓦高手</h2>
     <p><strong>直播日期：</strong>2025年02月15日</p>
@@ -9778,41 +9891,24 @@
         </div>
     </div>
     <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1JpANe5EPz/" target="_blank">点击观看</a></p>
-    <div class="tags">
-        <span class="tag" onclick="filterByTag('2025')">2025</span>
-        <span class="tag" onclick="filterByTag('瓦罗兰特')">瓦罗兰特</span>
-        <span class="tag" onclick="filterByTag('FPS')">FPS</span>
-        <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-    </div>
   </div>
-</div></div><div><div class="live-record" data-tags="2025,静音,绘画,瓦罗兰特,FPS,游戏">
+</div></div><div><div class="live-record" data-tags="2025,SINA,静音,绘画,游戏,FPS,瓦罗兰特">
   <div class="live-info">
     <h2>非常好情人节，使我跟平板过</h2>
     <p><strong>直播日期：</strong>2025年02月13日</p>
     <p><strong>直播时间：</strong>20:50 - 01:28</p>
-    <p><strong>直播简介：</strong>赶稿，然后打瓦</p>
-    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV17zN5e3Ejz/" target="_blank">点击观看</a></p>
-    <div class="tags">
-        <span class="tag" onclick="filterByTag('2025')">2025</span>
-        <span class="tag" onclick="filterByTag('静音')">静音</span>
-        <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-        <span class="tag" onclick="filterByTag('瓦罗兰特')">瓦罗兰特</span>
-        <span class="tag" onclick="filterByTag('FPS')">FPS</span>
-        <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-    </div>
+    <p><strong>直播简介：</strong>一起感冒，赶稿，然后打瓦</p>
+    <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1hvKce8EGR/" target="_blank">点击观看</a></p>
   </div>
-</div></div><div><div class="live-record" data-tags="2025,静音,绘画">
+</div></div><div><div class="live-record" data-tags="2025,御坂19039,静音,绘画">
   <div class="live-info">
     <h2>非常好感冒，使我变哑巴QAQ</h2>
     <p><strong>直播日期：</strong>2025年02月08日</p>
     <p><strong>直播时间：</strong>23:11 - 01:16</p>
     <p><strong>直播简介：</strong>赶稿</p>
     <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV17zN5e3Ejz/" target="_blank">点击观看</a></p>
-    <div class="tags">
-      <span class="tag">2025</span><span class="tag">静音</span><span class="tag">绘画</span>
-    </div>
   </div>
-</div></div><div><div class="live-record" data-tags="杂谈,逃离现实,2025,瓦罗兰特,FPS,游戏">
+</div></div><div><div class="live-record" data-tags="2025,SINA,杂谈,逃离现实,游戏,FPS,瓦罗兰特">
   <div class="live-info">
     <h2>逃离现实第8天</h2>
     <p><strong>直播日期：</strong>2025年02月07日</p>
@@ -9938,13 +10034,8 @@
         </div>
     </div>
     <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1sdPme1EUq/" target="_blank">点击观看</a></p>
-    <div class="tags">
-        <span class="tag" onclick="filterByTag('2025')">2025</span>
-        <span class="tag" onclick="filterByTag('静音')">静音</span>
-        <span class="tag" onclick="filterByTag('绘画')">绘画</span>
-    </div>
   </div>
-</div></div><div><div class="live-record" data-tags="杂谈,逃离现实,2025">
+</div></div><div><div class="live-record" data-tags="2025,SINA,杂谈,逃离现实">
   <div class="live-info">
     <h2>逃离现实第7天</h2>
     <p><strong>直播日期：</strong>2025年02月05日</p>
@@ -10070,13 +10161,8 @@
         </div>
     </div>
     <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV19ENueJEzK/" target="_blank">点击观看</a></p>
-    <div class="tags">
-        <span class="tag" onclick="filterByTag('杂谈')">杂谈</span>
-        <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
-        <span class="tag" onclick="filterByTag('2025')">2025</span>
-    </div>
   </div>
-</div></div><div><div class="live-record" data-tags="2025,FPS,瓦罗兰特,游戏">
+</div></div><div><div class="live-record" data-tags="2025,SINA,游戏,FPS,瓦罗兰特">
   <div class="live-info">
     <h2>想成为fps高手第一天</h2>
     <p><strong>直播日期：</strong>2025年02月04日</p>
@@ -10195,14 +10281,8 @@
         </div>
     </div>
     <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1ShPzefE8B" target="_blank">点击观看</a></p>
-    <div class="tags">
-        <span class="tag" onclick="filterByTag('FPS')">FPS</span>
-        <span class="tag" onclick="filterByTag('瓦罗兰特')">瓦罗兰特</span>
-        <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-        <span class="tag" onclick="filterByTag('2025')">2025</span>
-    </div>
   </div>
-</div></div><div><div class="live-record" data-tags="2025,逃离现实,游戏,瓦罗兰特,FPS">
+</div></div><div><div class="live-record" data-tags="2025,SINA,逃离现实,游戏,瓦罗兰特,FPS">
   <div class="live-info">
     <h2>逃离现实第5天/我来打瓦？真的假的？</h2>
     <p><strong>直播日期：</strong>2025年02月03日</p>
@@ -10304,13 +10384,6 @@
         </div>
     </div>
     <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1dyNAeMEpf" target="_blank">点击观看</a></p>
-    <div class="tags">
-        <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
-        <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-        <span class="tag" onclick="filterByTag('瓦罗兰特')">瓦罗兰特</span>
-        <span class="tag" onclick="filterByTag('FPS')">FPS</span>
-        <span class="tag" onclick="filterByTag('2025')">2025</span>
-    </div>
   </div>
 </div></div><div class="live-record" data-tags="2025,游戏,我的世界"> 
        <div class="live-info"> 
@@ -10438,16 +10511,12 @@
                </div>
            </div>
            <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1cuF2eWEq4/" target="_blank">点击观看</a></p> 
-           <div class="tags"> 
-               <span class="tag" onclick="filterByTag('游戏')">游戏</span>
-               <span class="tag" onclick="filterByTag('我的世界')">我的世界</span> 
-               <span class="tag" onclick="filterByTag('2025')">2025</span>
-           </div> 
+ 
        </div> 
 </div> 
             
 
-    <div class="live-record" data-tags="逃离现实,2025">
+    <div class="live-record" data-tags="2025,SINA,逃离现实">
       <div class="live-info">
         <h2>逃离现实第三天</h2>
         <p><strong>直播日期：</strong>2025年2月1日</p>
@@ -10498,103 +10567,94 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1uYFveMEzA" target="_blank">点击观看</a></p>
-        <div class="tags">
-          <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
-          <span class="tag" onclick="filterByTag('2025')">2025</span>
-        </div>
       </div>
     </div>
 
-    <div class="live-record" data-tags="逃离现实,2025">
+    <div class="live-record" data-tags="2025,SINA,逃离现实">
       <div class="live-info">
-        <h2>逃离现实第二天</h2>
-        <p><strong>直播日期：</strong>2025年1月26日</p>
-        <p><strong>直播时间：</strong>23:21 - 02:02</p>
-        <p><strong>直播简介：</strong>逃离现实的第二天，继续分享心得。</p>
-        <div class="ai-summary">
-            <div class="source-link summary-title">
-                御坂19039在2025年1月26日的直播中遇到的网络卡顿问题。尽管她尝试了多种解决方法，如调整码率和检查网络，问题依然存在。她还与观众分享了个人经历和趣事，保持了乐观的态度，与观众互动度过了一个充满挑战的夜晚。
-            </div>
-            <div class="summary-details">
-                <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline">
-                    <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline"><div class="ai-summary-section" ><div class="ai-summary-section-title">
-                    主播测试新麦克风，观众互动闲聊。
-                </div><div class="bullet" ><span class="timestamp">
-                        <span class="timestamp-inner">01:50</span>
-                    </span>
-                    <span class="content">
-                        主播询问声音大小，观众表示不大
-                    </span></div><div class="bullet" ><span class="timestamp">
-                        <span class="timestamp-inner">03:13</span>
-                    </span>
-                    <span class="content">
-                        主播询问声音大小，观众表示不大
-                    </span></div><div class="bullet" ><span class="timestamp">
-                        <span class="timestamp-inner">05:01</span>
-                    </span>
-                    <span class="content">
-                        主播有回声，调整设备后声音变好
-                    </span></div></div><div class="ai-summary-section" ><div class="ai-summary-section-title">
-                    主播直播卡顿，网络问题导致观看体验不佳。
-                </div><div class="bullet" ><span class="timestamp">
-                        <span class="timestamp-inner">10:04</span>
-                    </span>
-                    <span class="content">
-                        主播与观众互动，讨论直播状态和网络问题
-                    </span></div><div class="bullet" ><span class="timestamp">
-                        <span class="timestamp-inner">12:50</span>
-                    </span>
-                    <span class="content">
-                        主播提到自己最近在玩原神，但因工作原因两天未登录
-                    </span></div><div class="bullet" ><span class="timestamp">
-                        <span class="timestamp-inner">17:00</span>
-                    </span>
-                    <span class="content">
-                        主播遇到网络卡顿问题，怀疑是网络问题，后确认是自己卡顿
-                    </span></div></div><div class="ai-summary-section" ><div class="ai-summary-section-title">
-                    主播因网络卡顿问题被迫直播，尝试解决但效果不佳。
-                </div><div class="bullet" ><span class="timestamp">
-                        <span class="timestamp-inner">21:14</span>
-                    </span>
-                    <span class="content">
-                        米娜因为月末网络卡顿，怀疑是网络问题
-                    </span></div><div class="bullet" ><span class="timestamp">
-                        <span class="timestamp-inner">23:16</span>
-                    </span>
-                    <span class="content">
-                        昨天网络正常，今天卡顿原因不明
-                    </span></div><div class="bullet" ><span class="timestamp">
-                        <span class="timestamp-inner">24:20</span>
-                    </span>
-                    <span class="content">
-                        主播准备看春晚，但网络问题未解决
-                    </span></div></div></div>
+            <h2>逃离现实第二天</h2>
+            <p><strong>直播日期：</strong>2025年1月26日</p>
+            <p><strong>直播时间：</strong>23:21 - 02:02</p>
+            <p><strong>直播简介：</strong>逃离现实的第二天，继续分享心得。</p>
+            <div class="ai-summary">
+                <div class="source-link summary-title">
+                    御坂19039在2025年1月26日的直播中遇到的网络卡顿问题。尽管她尝试了多种解决方法，如调整码率和检查网络，问题依然存在。她还与观众分享了个人经历和趣事，保持了乐观的态度，与观众互动度过了一个充满挑战的夜晚。
+                </div>
+                <div class="summary-details">
+                    <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline">
+                        <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline"><div class="ai-summary-section" ><div class="ai-summary-section-title">
+                        主播测试新麦克风，观众互动闲聊。
+                    </div>
+                    <div class="bullet" ><span class="timestamp">
+                            <span class="timestamp-inner">01:50</span>
+                        </span>
+                        <span class="content">
+                            主播询问声音大小，观众表示不大
+                        </span></div><div class="bullet" ><span class="timestamp">
+                            <span class="timestamp-inner">03:13</span>
+                        </span>
+                        <span class="content">
+                            主播询问声音大小，观众表示不大
+                        </span></div><div class="bullet" ><span class="timestamp">
+                            <span class="timestamp-inner">05:01</span>
+                        </span>
+                        <span class="content">
+                            主播有回声，调整设备后声音变好
+                        </span></div></div><div class="ai-summary-section" ><div class="ai-summary-section-title">
+                        主播直播卡顿，网络问题导致观看体验不佳。
+                    </div>
+                    <div class="bullet" ><span class="timestamp">
+                            <span class="timestamp-inner">10:04</span>
+                        </span>
+                        <span class="content">
+                            主播与观众互动，讨论直播状态和网络问题
+                        </span></div><div class="bullet" ><span class="timestamp">
+                            <span class="timestamp-inner">12:50</span>
+                        </span>
+                        <span class="content">
+                            主播提到自己最近在玩原神，但因工作原因两天未登录
+                        </span></div><div class="bullet" ><span class="timestamp">
+                            <span class="timestamp-inner">17:00</span>
+                        </span>
+                        <span class="content">
+                            主播遇到网络卡顿问题，怀疑是网络问题，后确认是自己卡顿
+                        </span></div></div><div class="ai-summary-section" ><div class="ai-summary-section-title">
+                        主播因网络卡顿问题被迫直播，尝试解决但效果不佳。
+                    </div>
+                    <div class="bullet" ><span class="timestamp">
+                            <span class="timestamp-inner">21:14</span>
+                        </span>
+                        <span class="content">
+                            米娜因为月末网络卡顿，怀疑是网络问题
+                        </span></div><div class="bullet" ><span class="timestamp">
+                            <span class="timestamp-inner">23:16</span>
+                        </span>
+                        <span class="content">
+                            昨天网络正常，今天卡顿原因不明
+                        </span></div><div class="bullet" ><span class="timestamp">
+                            <span class="timestamp-inner">24:20</span>
+                        </span>
+                        <span class="content">
+                            主播准备看春晚，但网络问题未解决
+                        </span></div></div></div>
+                    </div>
                 </div>
             </div>
+            <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1HefCY1EBG" target="_blank">点击观看</a></p>
         </div>
-        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1HefCY1EBG" target="_blank">点击观看</a></p>
-        <div class="tags">
-          <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
-          <span class="tag" onclick="filterByTag('2025')">2025</span>
-        </div>
-      </div>
     </div>
 
-    <div class="live-record" data-tags="逃离现实,2025">
+    <div class="live-record" data-tags="2025,SINA,逃离现实">
       <div class="live-info">
         <h2>逃离现实第一天</h2>
         <p><strong>直播日期：</strong>2025年1月25日</p>
         <p><strong>直播时间：</strong>22:59 - 01:26</p>
         <p><strong>直播简介：</strong>静音直播，逃离现实的第一天。</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1bQFFeMEnE" target="_blank">点击观看</a></p>
-        <div class="tags">
-          <span class="tag" onclick="filterByTag('逃离现实')">逃离现实</span>
-          <span class="tag" onclick="filterByTag('2025')">2025</span>
-        </div>
       </div>
     </div>
 
-    <div class="live-record" data-tags="泰拉瑞亚,搞笑,2025">
+    <div class="live-record" data-tags="2025,SINA,游戏,沙盒,泰拉瑞亚">
       <div class="live-info">
         <h2>背着家里人偷偷啵啵~</h2>
         <p><strong>直播日期：</strong>2025年1月25日</p>
@@ -10815,15 +10875,10 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV12TfZY8En1" target="_blank">点击观看</a></p>
-        <div class="tags">
-          <span class="tag" onclick="filterByTag('泰拉瑞亚')">泰拉瑞亚</span>
-          <span class="tag" onclick="filterByTag('搞笑')">搞笑</span>
-          <span class="tag" onclick="filterByTag('2025')">2025</span>
-        </div>
       </div>
     </div>
 
-    <div class="live-record" data-tags="调试,2025">
+    <div class="live-record" data-tags="2025,御坂19039,调试">
       <div class="live-info">
         <h2>调试中···</h2>
         <p><strong>直播日期：</strong>2025年1月18日</p>
@@ -10932,38 +10987,26 @@
             </div>
         </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1USwveVEfZ" target="_blank">点击观看</a></p>
-        <div class="tags">
-          <span class="tag" onclick="filterByTag('调试')">调试</span>
-          <span class="tag" onclick="filterByTag('2025')">2025</span>
-        </div>
       </div>
     </div>
 
-    <div class="live-record" data-tags="跨年,挑战,2024">
+    <div class="live-record" data-tags="2024,SINA,跨年,挑战">
       <div class="live-info">
         <h2>不要笑挑战！一起跨年~</h2>
         <p><strong>直播日期：</strong>2024年12月31日</p>
         <p><strong>直播时间：</strong>22:59 - 02:16</p>
         <p><strong>直播简介：</strong>跨年特别直播，一起参与不要笑挑战，共度美好时光。</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1G669Y2EHQ" target="_blank">点击观看</a></p>
-        <div class="tags">
-          <span class="tag" onclick="filterByTag('跨年')">跨年</span>
-          <span class="tag" onclick="filterByTag('挑战')">挑战</span>
-          <span class="tag" onclick="filterByTag('2024')">2024</span>
-        </div>
       </div>
      </div>
 
-    <div class="live-record" data-tags="2024">
+    <div class="live-record" data-tags="2024,SINA,双满">
       <div class="live-info">
         <h2>夏日观影？双满庆会！</h2>
         <p><strong>直播日期：</strong>2024年07月30日</p>
         <p><strong>直播时间：</strong>00:00 - 03:00</p>
         <p><strong>直播简介：</strong>发布于御坂的空间，连接跳转有问题</p>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1Kf421i79x" target="_blank">点击观看</a></p>
-        <div class="tags">
-            <span class="tag" onclick="filterByTag('2024')">2024</span>
-        </div>
       </div>
     </div>
 </div>

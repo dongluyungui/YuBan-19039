@@ -1,4 +1,3 @@
-
 /* 右键菜单样式 */
 #context-menu {
     display: none;
@@ -9,7 +8,7 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
-    z-index: 9999; /* 添加 z-index 属性，设置较高的值 */
+    z-index: 9999;
 }
 
 #context-menu li {
@@ -19,4 +18,15 @@
 
 #context-menu li:hover {
     background-color: #f0f0f0;
+}
+
+/* 烟花容器样式 */
+#fireworks-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9998;
 }
