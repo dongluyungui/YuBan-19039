@@ -1,4 +1,3 @@
-
 /**
  * 去除 HTML 标签的函数
  * @param {string} str 包含HTML标签的字符串
@@ -17,34 +16,46 @@ function renderCaptainList(container, captains) {
     container.innerHTML = '';
     if (captains && captains.length > 0) {
         captains.forEach((captain, index) => {
+            // 兼容原版数据结构，同时适配新数据的嵌套格式
+            const uinfo = captain.uinfo || {};
+            const baseInfo = uinfo.base || {};
+            
+            // 从嵌套结构提取数据，保持与原版访问方式一致
+            const faceUrl = baseInfo.face || captain.face;
+            const userName = baseInfo.name || captain.username;
+            const userId = uinfo.uid || captain.uid;
+            const guardLevel = uinfo.guard?.level || uinfo.medal?.guard_level || captain.guard_level || 3;
+            
             const card = document.createElement('div');
             card.classList.add('captain-card');
             
-            // 添加排名
+            // 排名使用榜单排名
             const rank = document.createElement('div');
             rank.classList.add('captain-rank');
-            if (index === 0) rank.classList.add('rank1');
-            if (index === 1) rank.classList.add('rank2');
-            if (index === 2) rank.classList.add('rank3');
-            rank.textContent = index + 1;
+            const rankNum = captain.rank || (index + 1);
+            if (rankNum === 1) rank.classList.add('rank1');
+            if (rankNum === 2) rank.classList.add('rank2');
+            if (rankNum === 3) rank.classList.add('rank3');
+            rank.textContent = rankNum;
             
             const avatar = document.createElement('img');
             avatar.classList.add('captain-avatar');
             
-            let displayName = captain.username || '未知舰长';
+            // 名称处理
+            let displayName = userName || '未知舰长';
             displayName = stripHtmlTags(displayName);
             avatar.alt = displayName;
 
-            // 使用图片代理解决跨域问题
-            if (captain.face) {
-                // 使用代理获取图片
-                avatar.src = `${CONFIG.IMG_PROXY}${encodeURIComponent(captain.face)}&w=150&h=150`;
+            // 头像处理（完全复刻原版逻辑，仅调整数据来源）
+            if (faceUrl) {
+                // 与原版完全一致的代理拼接方式
+                avatar.src = `${CONFIG.IMG_PROXY}${encodeURIComponent(faceUrl)}&w=150&h=150`;
             } else {
-                // 使用默认头像
+                // 仅在无真实头像时使用默认头像
                 avatar.src = `https://i.pravatar.cc/150?img=${index % 10}`;
             }
 
-            // 添加默认头像处理
+            // 错误处理保持原版逻辑
             avatar.onerror = function() {
                 this.src = `https://i.pravatar.cc/150?img=${index % 10}`;
             };
@@ -53,32 +64,40 @@ function renderCaptainList(container, captains) {
             name.classList.add('captain-name');
             name.textContent = displayName;
             
+            // 陪伴天数（新增功能保留）
+            const accompanyDays = document.createElement('p');
+            accompanyDays.classList.add('captain-accompany');
+            accompanyDays.textContent = `陪伴 ${captain.accompany || 0} 天`;
+            
             // 舰长等级
             const level = document.createElement('span');
             level.classList.add('captain-level');
             
-            // 根据舰长等级显示不同文本和样式
-            if (captain.guard_level === 0) {
+            // 修正等级对应关系（与数据定义一致）
+            if (guardLevel === 1) {
                 level.textContent = '总督';
                 level.style.background = 'rgba(255, 85, 85, 0.15)';
                 level.style.color = '#ff5555';
-            } else if (captain.guard_level === 1) {
+            } else if (guardLevel === 2) {
                 level.textContent = '提督'; 
                 level.style.background = 'rgba(255, 184, 108, 0.15)';
                 level.style.color = '#ffb86c';
             } else {
                 level.textContent = '舰长';
+                level.style.background = 'rgba(100, 149, 237, 0.15)';
+                level.style.color = '#6495ed';
             }
               
             card.appendChild(rank);
             card.appendChild(avatar);
             card.appendChild(name);
+            card.appendChild(accompanyDays);
             card.appendChild(level);
               
-            // 添加点击事件，打开舰长个人空间
+            // 个人空间链接
             card.addEventListener('click', () => {
-                if (captain.uid) {
-                    window.open(`https://space.bilibili.com/${captain.uid}`, '_blank');
+                if (userId) {
+                    window.open(`https://space.bilibili.com/${userId}`, '_blank');
                 }
             });
               
@@ -105,47 +124,40 @@ async function loadAndRenderCaptainData(roomId, uid, container) {
     try {
         const url = `https://api.live.bilibili.com/xlive/app-room/v2/guardTab/topList?roomid=${roomId}&page=1&ruid=${uid}&page_size=${CONFIG.PAGE_SIZE}`;
         
-        // 定义通用请求方法
-        async function fetchData(url) {
-            try {
-                const response = await fetch(`${CONFIG.CORS_PROXY}${encodeURIComponent(url)}`);
-                if (!response.ok) throw new Error('网络请求失败');
-        
-                const data = await response.json();
-                return JSON.parse(data.contents);
-            } catch (error) {
-                console.error('获取舰长数据失败:', error);
-                return null;
-            }
-        }
-        
+        // 复用全局定义的fetchData方法（与页面内JS保持一致）
         const captainData = await fetchData(url);
         
         if (captainData) {
-            // 合并 top3 和 list 中的舰长数据
             const allCaptains = [
                 ...(captainData.data.top3 || []),
                 ...(captainData.data.list || [])
             ].slice(0, CONFIG.PAGE_SIZE);
             
-            // 模拟添加舰长等级（实际应用中应从API获取）
-            allCaptains.forEach((captain, index) => {
-                if (index === 0) captain.guard_level = 1; // 总督
-                else if (index < 3) captain.guard_level = 2; // 提督
-                else captain.guard_level = 3; // 舰长
-            });
-            
             renderCaptainList(container, allCaptains);
             return true;
         } else {
-            // 加载失败时显示模拟数据
+            // 模拟数据保持与原版结构一致
             const mockCaptains = [];
             for (let i = 0; i < CONFIG.PAGE_SIZE; i++) {
+                const guardLevel = i === 0 ? 1 : (i < 3 ? 2 : 3);
+                // 同时提供扁平结构和嵌套结构，确保兼容性
                 mockCaptains.push({
+                    rank: i + 1,
+                    accompany: Math.floor(Math.random() * 365) + 10,
                     username: `舰长${i+1}`,
-                    face: `https://i.pravatar.cc/150?img=${i}`,
+                    face: `https://i0.hdslb.com/bfs/face/5dc2df837803a3ece3e69e59df4130809d323949.jpg`,
                     uid: 1000000 + i,
-                    guard_level: i === 0 ? 1 : (i < 3 ? 2 : 3)
+                    guard_level: guardLevel,
+                    uinfo: {
+                        uid: 1000000 + i,
+                        base: {
+                            name: `舰长${i+1}`,
+                            face: `https://i0.hdslb.com/bfs/face/5dc2df837803a3ece3e69e59df4130809d323949.jpg`
+                        },
+                        guard: {
+                            level: guardLevel
+                        }
+                    }
                 });
             }
             renderCaptainList(container, mockCaptains);
@@ -153,14 +165,24 @@ async function loadAndRenderCaptainData(roomId, uid, container) {
         }
     } catch (error) {
         console.error('加载舰长数据时发生错误:', error);
-        // 显示模拟数据
+        // 错误时显示模拟数据
         const mockCaptains = [];
         for (let i = 0; i < CONFIG.PAGE_SIZE; i++) {
+            const guardLevel = i === 0 ? 1 : (i < 3 ? 2 : 3);
             mockCaptains.push({
+                rank: i + 1,
+                accompany: Math.floor(Math.random() * 365) + 10,
                 username: `舰长${i+1}`,
-                face: `https://i.pravatar.cc/150?img=${i}`,
+                face: `https://i0.hdslb.com/bfs/face/5dc2df837803a3ece3e69e59df4130809d323949.jpg`,
                 uid: 1000000 + i,
-                guard_level: i === 0 ? 1 : (i < 3 ? 2 : 3)
+                guard_level: guardLevel,
+                uinfo: {
+                    uid: 1000000 + i,
+                    base: {
+                        name: `舰长${i+1}`,
+                        face: `https://i0.hdslb.com/bfs/face/5dc2df837803a3ece3e69e59df4130809d323949.jpg`
+                    }
+                }
             });
         }
         renderCaptainList(container, mockCaptains);

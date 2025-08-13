@@ -37,8 +37,15 @@
 
        .tags-container {
             display: flex;
+            flex-wrap: wrap;
             gap: 5px;
             margin-top: 5px;
+        }
+
+       .tag-input-container {
+            display: flex;
+            gap: 10px;
+            width: 100%;
         }
 
        .tag-input {
@@ -54,6 +61,11 @@
             padding: 4px 8px;
             border-radius: 12px;
             margin: 2px;
+            cursor: pointer;
+        }
+
+       .tag.selected {
+            background: var(--primary-color);
         }
 
        .delete-btn {
@@ -64,6 +76,7 @@
 
        .action-buttons {
             display: flex;
+            flex-wrap: wrap;
             gap: 10px;
             margin-top: 15px;
         }
@@ -79,6 +92,117 @@
             white-space: pre-wrap;
             word-break: break-all;
             margin: 0;
+        }
+
+       .fixed-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+       .fixed-tag {
+            flex: 1;
+            min-width: 200px;
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+       .fixed-tag label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+       .other-tags {
+            margin-top: 10px;
+        }
+
+       .tag-panel {
+            margin-top: 8px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+       .tag-panel.expanded {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+       .toggle-tags-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: #f0f0f0;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+       .toggle-tags-btn svg {
+            transition: transform 0.3s ease;
+        }
+
+       .tag-panel.expanded +.toggle-tags-btn svg {
+            transform: rotate(180deg);
+        }
+
+       .tag-group {
+            margin: 10px 0;
+            padding: 8px;
+            background: #f9f9f9;
+            border-radius: 6px;
+        }
+
+       .tag-category {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #666;
+            font-size: 14px;
+        }
+
+       .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background: #52c41a;
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transform: translateX(110%);
+            transition: transform 0.3s ease;
+        }
+        
+       .notification.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 768px) {
+            .fixed-tags {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+           .action-buttons {
+                flex-direction: column;
+            }
+            
+           .bilibili-btn {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -147,9 +271,92 @@
                 </select>
             </div>
 
-            <div class="form-group">
-                <label>标签管理：</label>
-                <div class="tags-container">
+            <!-- 固定标签区域 -->
+            <div class="fixed-tags">
+                <div class="fixed-tag">
+                    <label for="yearTag">年份标签：</label>
+                    <input type="text" id="yearTag" class="form-control" placeholder="年份" readonly>
+                    <small style="color:#666; font-size:12px;">自动从创作日期获取</small>
+                </div>
+            </div>
+
+            <!-- 其它标签区域（与参考页面完全一致） -->
+            <div class="form-group other-tags">
+                <label>其它标签：</label>
+                <div class="tag-panel" id="tag-panel">
+                    <div class="tags-container" id="common-tags">
+
+                        <!-- 主播分类 -->
+                        <div class="tag-group">
+                            <span class="tag-category">主播</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">SINA</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">御坂19039</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">烖晞</span>
+                        </div>
+                        <!-- 游戏分类 -->
+                        <div class="tag-group">
+                            <span class="tag-category">游戏</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">游戏</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">FPS</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">瓦罗兰特</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">csgo</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">沙盒</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">我的世界</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">泰拉瑞亚</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">恐怖游戏</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">米塔</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">星穹铁道</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">qq14</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">光遇</span>
+                        </div>
+
+                        <!-- 内容分类 -->
+                        <div class="tag-group">
+                            <span class="tag-category">内容</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">剪视频</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">音乐</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">摸鱼</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">练习</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">调试</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">live2d</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">光标</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">仓鼠</span>
+                        </div>
+
+                        <!-- 状态分类 -->
+                        <div class="tag-group">
+                            <span class="tag-category">状态</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">逃离现实</span>
+                        </div>
+
+                        <!-- 事件分类 -->
+                        <div class="tag-group">
+                            <span class="tag-category">事件</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">节日</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">六一</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">端午</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">出道</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">周年</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">生日</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">跨年</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">挑战</span>
+                        </div>
+
+                        <!-- 其他分类 -->
+                        <div class="tag-group">
+                            <span class="tag-category">其他</span>
+                            <span class="tag" onclick="toggleCommonTag(this)">读故事</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="toggle-tags-btn" onclick="toggleTagPanel()">
+                    选择标签
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6"/>
+                    </svg>
+                </button>
+
+                <div class="tag-input-container">
                     <input type="text" class="form-control tag-input" placeholder="输入新标签">
                     <button class="bilibili-btn" onclick="addTag()">添加</button>
                 </div>
@@ -157,6 +364,7 @@
             </div>
 
             <div class="action-buttons">
+                <button class="bilibili-btn" onclick="resetForm()">重置表单</button>
                 <button class="bilibili-btn" onclick="generateCode()">生成代码</button>
                 <button class="bilibili-btn" onclick="copyCode()">复制代码</button>
             </div>
@@ -173,19 +381,134 @@
         <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
     </div>
 
+    <div class="notification" id="notification">
+        <span id="notification-msg">操作成功！</span>
+    </div>
+
     <script>
-        // 标签管理功能
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置当前日期为默认值
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+            
+            // 从当前日期提取年份并设置
+            const currentYear = new Date().getFullYear();
+            document.getElementById('yearTag').value = currentYear;
+            
+            // 监听日期变化，自动更新年份标签
+            document.getElementById('date').addEventListener('change', function() {
+                if (this.value) {
+                    const year = new Date(this.value).getFullYear();
+                    document.getElementById('yearTag').value = year;
+                }
+            });
+        });
+
+        // 切换标签面板显示/隐藏
+        function toggleTagPanel() {
+            const panel = document.getElementById('tag-panel');
+            panel.classList.toggle('expanded');
+        }
+
+        // 切换常用标签选中状态
+        function toggleCommonTag(element) {
+            element.classList.toggle('selected');
+            
+            // 将选中的标签添加到已选标签列表（去重）
+            const tagText = element.textContent;
+            const tagsList = document.getElementById('tags-list');
+            const existingTags = [...tagsList.getElementsByClassName('tag')]
+                          .map(tag => tag.firstElementChild.textContent);
+            
+            if (element.classList.contains('selected') && !existingTags.includes(tagText)) {
+                // 添加新标签
+                const tagElement = document.createElement('div');
+                tagElement.className = 'tag';
+                tagElement.innerHTML = `
+                    <span>${tagText}</span>
+                    <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
+                `;
+                tagsList.appendChild(tagElement);
+            } else if (!element.classList.contains('selected')) {
+                // 移除已取消选中的标签
+                [...tagsList.getElementsByClassName('tag')].forEach(tag => {
+                    if (tag.firstElementChild.textContent === tagText) {
+                        tag.remove();
+                    }
+                });
+            }
+        }
+
+        // 显示通知
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const msgElement = document.getElementById('notification-msg');
+            
+            msgElement.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // 重置表单
+        function resetForm() {
+            document.getElementById('title').value = '';
+            document.getElementById('author').value = '';
+            document.getElementById('authorLink').value = '';
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = today;
+            document.getElementById('description').value = '';
+            document.getElementById('sourceName').value = '';
+            document.getElementById('sourceLink').value = '';
+            document.getElementById('imageName').value = '';
+            document.getElementById('originSuffix').value = 'jpg';
+            document.getElementById('tags-list').innerHTML = '';
+            document.getElementById('code-output').textContent = '';
+            
+            // 重置年份标签
+            const currentYear = new Date().getFullYear();
+            document.getElementById('yearTag').value = currentYear;
+            
+            // 重置常用标签选中状态
+            [...document.getElementById('common-tags').getElementsByClassName('tag')].forEach(tag => {
+                tag.classList.remove('selected');
+            });
+            
+            // 收起标签面板
+            document.getElementById('tag-panel').classList.remove('expanded');
+            
+            showNotification('表单已重置！');
+        }
+
+        // 标签管理功能 - 添加自定义标签
         function addTag() {
             const tagInput = document.querySelector('.tag-input');
             const tagValue = tagInput.value.trim();
             if (tagValue) {
-                const tagElement = document.createElement('div');
-                tagElement.className = 'tag';
-                tagElement.innerHTML = `
-                    <span>${tagValue}</span>
-                    <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
-                `;
-                document.getElementById('tags-list').appendChild(tagElement);
+                // 检查标签是否已存在
+                const existingTags = [...document.getElementById('tags-list').getElementsByClassName('tag')]
+                              .map(tag => tag.firstElementChild.textContent);
+                
+                if (!existingTags.includes(tagValue)) {
+                    const tagElement = document.createElement('div');
+                    tagElement.className = 'tag';
+                    tagElement.innerHTML = `
+                        <span>${tagValue}</span>
+                        <span class="delete-btn" onclick="this.parentElement.remove()">×</span>
+                    `;
+                    document.getElementById('tags-list').appendChild(tagElement);
+                    
+                    // 同步选中常用标签（如果存在）
+                    [...document.getElementById('common-tags').getElementsByClassName('tag')].forEach(tag => {
+                        if (tag.textContent === tagValue) {
+                            tag.classList.add('selected');
+                        }
+                    });
+                }
+                
                 tagInput.value = '';
             }
         }
@@ -196,7 +519,15 @@
             const tags = [...document.querySelectorAll('#tags-list .tag span:first-child')]
                .map(span => span.textContent);
 
-            const tagSpans = tags.map(t => `                            <span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('\n');
+            // 获取固定标签
+            const fixedTags = [
+                getValue('yearTag')
+            ];
+            
+            // 合并所有标签并去重
+            const allTags = [...new Set([...fixedTags, ...tags])];
+
+            const tagSpans = allTags.map(t => `                            <span class="tag" onclick="filterByTag('${t}')">${t}</span>`).join('\n');
 
             let author = getValue('author');
             let authorLink = getValue('authorLink');
@@ -214,7 +545,7 @@
 
             const code = `
                 <!-- 分割 -->
-                <div class="art-card" data-tags="${tags.join(',')}">
+                <div class="art-card" data-tags="${allTags.join(',')}">
                     <img src="${imageWeb}" alt="${getValue('title')}" class="art-image" data-origin="${imageOrigin}">
                     <div class="art-info">
                         <h3 class="art-title">${getValue('title')}</h3>
@@ -238,12 +569,9 @@
                         </div>
                     </div>
                 </div>`;
-                /*
-                        <div class="tags">
-${tagSpans}
-                        </div>
-                */
+                
             document.getElementById('code-output').textContent = code;
+            showNotification('艺术卡片代码已生成！');
         }
 
         // 日期格式化
@@ -255,12 +583,27 @@ ${tagSpans}
         // 复制功能
         function copyCode() {
             const output = document.getElementById('code-output');
-            navigator.clipboard.writeText(output.textContent);
+            if (!output.textContent.trim()) {
+                showNotification('请先生成代码！');
+                return;
+            }
+            
+            navigator.clipboard.writeText(output.textContent)
+               .then(() => {
+                    showNotification('代码已复制到剪贴板！');
+                })
+               .catch(err => {
+                    showNotification('复制失败，请手动复制！');
+                    console.error('复制失败:', err);
+                });
         }
 
-        // 初始化标签输入
+        // 标签输入框回车添加标签
         document.querySelector('.tag-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') addTag();
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addTag();
+            }
         });
     </script>
 </body>

@@ -78,12 +78,12 @@ function getTagElements() {
   return document.querySelectorAll('.art-tag');
 }
 
-// 初始化标签列表（支持单选/多选模式）
+// 初始化标签列表（搜索框弹出的tag列表）
 function initTagList() {
   const tagsList = document.getElementById('tags-list');
   const allTags = new Set();
 
-  // 收集所有标签（包含.art-card中的.tag）
+  // 收集所有标签
   const tagElements = getTagElements();
   tagElements.forEach(tag => {
     allTags.add(tag.textContent.trim());
@@ -94,23 +94,22 @@ function initTagList() {
   allTags.forEach(tag => {
     const tagItem = document.createElement('span');
     tagItem.textContent = tag;
-    tagItem.dataset.tag = tag; // 存储标签值用于筛选
+    tagItem.dataset.tag = tag;
 
-    // 标签点击事件（区分单选/多选模式）
+    // 搜索框tag的点击事件：调用统一筛选逻辑+关闭列表
     tagItem.onclick = (e) => {
       e.stopPropagation();
       const isMulti = tagsList.classList.contains('multi-select');
       
       if (isMulti) {
-        // 多选模式：切换选中状态
+        // 多选模式逻辑（保持不变）
         tagItem.classList.toggle('selected');
-        updateSelectedTags(); // 更新选中标签数组
+        updateSelectedTags();
+        triggerSearch();
       } else {
-        // 单选模式：直接填充搜索框并关闭列表
-        filterByTag(tag);
-        tagsList.classList.remove('visible');
+        // 单选模式：调用统一筛选函数，传入true表示需要关闭列表
+        filterByTag(tag, true); 
       }
-      triggerSearch(); // 触发筛选
     };
 
     tagsList.appendChild(tagItem);
@@ -127,16 +126,27 @@ function updateSelectedTags() {
   document.getElementById('search-box').value = selectedTags.join(' ');
 }
 
-// 单标签筛选（搜索框填充）
-function filterByTag(tag) {
+// 单标签筛选（统一处理逻辑，增加是否关闭列表的参数）
+function filterByTag(tag, shouldCloseList = false) {
   const searchBox = document.getElementById('search-box');
-  searchBox.value = tag;
-  selectedTags = [tag]; // 单选时也存入数组
-  // 清除所有选中样式
-  document.querySelectorAll('.tags-list span.selected').forEach(span => {
+  const tagsList = document.getElementById('tags-list');
+  
+  // 1. 更新选中标签和搜索框
+  selectedTags = [tag]; // 单选模式下仅保留当前标签
+  searchBox.value = tag; // 同步到搜索框
+  
+  // 2. 清除所有标签的选中样式（统一视觉状态）
+  document.querySelectorAll('.tags-list span.selected, .art-tag.selected, .live-tag.selected').forEach(span => {
     span.classList.remove('selected');
   });
+  
+  // 3. 触发筛选流程（核心逻辑统一）
   triggerSearch();
+  
+  // 4. 若需要关闭列表（仅搜索框的tag需要）
+  if (shouldCloseList && tagsList) {
+    tagsList.classList.remove('visible');
+  }
 }
 
 // 自动生成标签列表（分情况适配不同容器，排除.category-box）
@@ -194,17 +204,18 @@ function autoGenerateTags() {
     if (tagsContainer) { // 确保标签容器存在才执行后续操作
       tagsContainer.innerHTML = '';
       
-      // 4. 从data-tags属性获取标签并生成标签元素
-      const tags = container.dataset.tags?.split(/[,，]\s*/) || [];
-      tags.forEach(tag => {
-        const tagElement = document.createElement('span');
-        // 根据容器类型添加不同的类（便于样式区分）
-        tagElement.className = `tag ${isLiveRecord ? 'live-tag' : 'art-tag'}`;
-        tagElement.textContent = tag;
-        // 添加点击筛选事件
-        tagElement.addEventListener('click', () => filterByTag(tag));
-        tagsContainer.appendChild(tagElement);
-      });
+          // 生成卡片上的tag按钮
+    const tags = container.dataset.tags?.split(/[,，]\s*/) || [];
+    tags.forEach(tag => {
+      const tagElement = document.createElement('span');
+      tagElement.className = `tag ${isLiveRecord ? 'live-tag' : 'art-tag'}`;
+      tagElement.textContent = tag;
+      
+      // 卡片tag的点击事件：调用统一筛选逻辑，无需关闭列表（无弹窗）
+      tagElement.addEventListener('click', () => filterByTag(tag));
+      
+      tagsContainer.appendChild(tagElement);
+    });
     }
   });
 }
@@ -280,7 +291,7 @@ function populateOtherTagOptions() {
   });
   
   // 收集已存在的标签（在预定义分类中，需要跳过的部分，自定义）
-  const predefinedGroups = ['timeOptions', 'hostOptions', 'themeOptions', 'gameTitleOptions', 'gameOptions', 'festival', 'character'];
+  const predefinedGroups = ['timeOptions', 'hostOptions', 'themeOptions', 'gameTitleOptions', 'gameOptions', 'bookOptions', 'festival', 'character'];
   predefinedGroups.forEach(groupId => {
     const group = document.getElementById(groupId);
     if (group) {

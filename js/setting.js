@@ -247,15 +247,15 @@ function renderPanelContent(panel) {
             </div>
 
             <!-- 右键菜单设置组 -->
-            <div class="setting-section hide-on-mobile">
+            <div class="setting-section">
                 <h4 class="setting-label" data-i18n="context_menu_setting">右键菜单设置</h4>
                 <div class="setting-options">
-                    <div class="setting-option" data-setting="contextMenu" data-value="enabled">
-                        <span data-i18n="enable_context_menu">启用自定义菜单</span>
+                    <div class="setting-option" data-setting="contextMenu" data-value="disabled">
+                        <span data-i18n="disable_context_menu">默认右键菜单</span>
                         <span class="check-mark">✓</span>
                     </div>
-                    <div class="setting-option" data-setting="contextMenu" data-value="disabled">
-                        <span data-i18n="disable_context_menu">禁用自定义菜单</span>
+                    <div class="setting-option" data-setting="contextMenu" data-value="enabled">
+                        <span data-i18n="enable_context_menu">自定义右键菜单</span>
                         <span class="check-mark">✓</span>
                     </div>
                 </div>
@@ -420,7 +420,7 @@ function loadSavedSettings(panel) {
     updateActiveOption(panel, 'cursor', savedCursor);
 
     // 加载右键菜单设置
-    const savedContextMenu = localStorage.getItem('contextMenuState') || 'enabled';
+    const savedContextMenu = localStorage.getItem('contextMenuState') || 'disabled';
     setContextMenuState(savedContextMenu);
     updateActiveOption(panel, 'contextMenu', savedContextMenu);
 }
