@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星星币下注计算器</title>
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/setting.css"/>
+    <link rel="stylesheet" href="../css/responsive-nav.css"/>
+    <!-- 引入头部脚本 -->
+    <script src="../js/responsive-nav.js"></script>
+    <script src="../js/setting.js"></script>
+    <!-- 页面图标 -->
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <!-- 计算器专属样式 -->
+    <style>
+        /* 输入框图标定位 */
+        .input-with-icon {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        .input-with-icon .icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-color);
+        }
+        .input-with-icon .form-control {
+            padding-left: 35px;
+            height: 42px;
+            font-size: 16px;
+        }
+        /* 结果卡片样式 */
+        .calc-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        .calc-card .card-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .calc-card .card-row:last-child {
+            border-bottom: none;
+        }
+        .calc-card .card-label {
+            color: #666;
+            font-size: 15px;
+        }
+        .calc-card .card-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        /* 按钮组样式 */
+        .calc-btn-group {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .calc-btn {
+            flex: 1;
+            padding: 12px 0;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 500;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .calc-btn.win-btn {
+            background: var(--primary-color);
+        }
+        .calc-btn.lose-btn {
+            background: #333;
+        }
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .calc-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        /* 状态消息样式 */
+        #statusMessage {
+            text-align: center;
+            margin: 15px 0;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .status-success {
+            color: var(--primary-color);
+            opacity: 1;
+        }
+        .status-error {
+            color: #ef4444;
+            opacity: 1;
+        }
+        /* 标题样式 */
+        .calc-title {
+            text-align: center;
+            margin: 20px 0;
+            color: var(--primary-color);
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .calc-desc {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .calc-rule {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 烟花容器 -->
+    <div id="fireworks-container"></div>
+    <!-- 右键菜单 -->
+    <ul id="context-menu">
+        <li>彩蛋</li>
+        <li>当前时间</li>
+    </ul>
+
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="header-content">
+            <div> 
+                <a href="../index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="../About.html" class="nav-link" data-i18n="about">关于</a>
+                <a href="../gallery.html" class="nav-link active" data-i18n="gallery">画廊</a>
+                <a href="../time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
+                
+                <!-- PC端隐藏、移动端显示的链接 -->
+                <a href="../comment.html" class="nav-link active hidden-on-mobile" data-i18n="comment_board">留言板</a>
+                <a href="../Sound.html" class="nav-link active hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+                <a href="../LiveHistory.html" class="nav-link active hidden-on-mobile" data-i18n="previous_replays">往期回放</a>
+                
+                <!-- 设置按钮 -->
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
+                
+                <!-- PC端"更多"容器 -->
+                <div class="more-container more-container-pc" style="display: none;">
+                    <button class="more-btn more-btn-pc nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-pc">
+                        <!-- PC端"更多"菜单内容 -->
+                    </div>
+                </div>
+                
+                <!-- 移动端"更多"容器 -->
+                <div class="more-container more-container-mobile">
+                    <button class="more-btn more-btn-mobile nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-mobile">
+                        <a href="../comment.html" class="nav-link active" data-i18n="comment_board">留言板</a>
+                        <a href="../Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+                        <a href="../LiveHistory.html" class="nav-link active" data-i18n="previous_replays">往期回放</a>
+                    </div>
+                </div>
+            </div>  
+       </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <div class="container">
+        <!-- 计算器标题 -->
+        <h1 class="calc-title">星星币下注计算器</h1>
+        <p class="calc-desc">轻松计算您的下注和收益</p>
+
+        <!-- 输入区域 -->
+        <div class="input-with-icon">
+            <label for="initialAmount" class="block text-sm font-medium text-slate-700 mb-1">初始星星币数量</label>
+            <input 
+                type="number" 
+                id="initialAmount" 
+                class="form-control"
+                placeholder="输入初始星星币数量"
+                min="1"
+            >
+            <p class="text-xs text-slate-400 mt-1">请输入大于0的数字</p>
+        </div>
+
+        <!-- 结果显示区域 -->
+        <div class="calc-card">
+            <div class="card-row">
+                <span class="card-label">当前星星币:</span>
+                <span id="currentAmount" class="card-value">0</span>
+            </div>
+            <div class="card-row">
+                <span class="card-label">下注比例 (46.7%):</span>
+                <span id="betAmount" class="card-value">0</span>
+            </div>
+        </div>
+
+        <!-- 按钮区域 -->
+        <div class="calc-btn-group">
+            <button id="winBtn" class="calc-btn win-btn" disabled>赢</button>
+            <button id="loseBtn" class="calc-btn lose-btn" disabled>输</button>
+        </div>
+
+        <!-- 状态消息 -->
+        <div id="statusMessage"></div>
+
+        <!-- 规则说明 -->
+        <div class="calc-rule">
+            <p>规则说明: 先输入初始星星币，根据下注比例一直压“绿色” <br>
+                下注比例为当前星星币的46.7%<br>
+            赢: 获得与下注额相等的奖励 | 输: 失去下注额</p>
+        </div>
+    </div>
+
+    <!-- 底部版权 -->
+    <div style="text-align: center; padding: 30px; color: #666;">
+        <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
+        <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
+        <p id="running-time">加载中...</p>
+    </div>
+
+    <!-- 引入脚本 -->
+    <script src="../js/star.js"></script>
+    <script src="../js/click.js"></script>
+    <script src="../js/time.js"></script>
+    <script src="../js/fireworks.js"></script>
+    <script src="../js/menu.js"></script>
+
+    <!-- 计算器核心功能JS -->
+    <script>
+        // 获取DOM元素
+        const initialAmountInput = document.getElementById('initialAmount');
+        const currentAmountEl = document.getElementById('currentAmount');
+        const betAmountEl = document.getElementById('betAmount');
+        const winBtn = document.getElementById('winBtn');
+        const loseBtn = document.getElementById('loseBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        // 初始状态
+        let currentAmount = 0;
+        let betAmount = 0;
+        
+        // 禁用按钮
+        function disableButtons(disabled) {
+            winBtn.disabled = disabled;
+            loseBtn.disabled = disabled;
+        }
+        
+        // 显示状态消息
+        function showMessage(text, isSuccess = true) {
+            statusMessage.textContent = text;
+            statusMessage.className = isSuccess ? 'status-success' : 'status-error';
+            
+            // 3秒后隐藏消息
+            setTimeout(() => {
+                statusMessage.className = '';
+            }, 3000);
+        }
+        
+        // 计算下注金额
+        function calculateBetAmount(amount) {
+            return Math.floor(amount * 0.467);
+        }
+        
+        // 更新显示
+        function updateDisplay() {
+            currentAmountEl.textContent = currentAmount;
+            betAmount = calculateBetAmount(currentAmount);
+            betAmountEl.textContent = betAmount;
+            
+            // 根据当前金额状态更新按钮
+            const canBet = currentAmount > 0 && betAmount > 0;
+            disableButtons(!canBet);
+        }
+        
+        // 初始输入事件监听
+        initialAmountInput.addEventListener('input', function() {
+            const value = parseInt(this.value) || 0;
+            if (value > 0) {
+                currentAmount = value;
+                updateDisplay();
+            } else {
+                currentAmount = 0;
+                betAmount = 0;
+                updateDisplay();
+            }
+        });
+        
+        // 赢了按钮点击事件
+        winBtn.addEventListener('click', function() {
+            if (currentAmount > 0 && betAmount > 0) {
+                currentAmount += betAmount;
+                updateDisplay();
+                showMessage(`恭喜！您赢了 ${betAmount} 星星币`, true);
+                
+                // 动画效果
+                currentAmountEl.classList.add('scale-110');
+                setTimeout(() => {
+                    currentAmountEl.classList.remove('scale-110');
+                }, 300);
+            }
+        });
+        
+        // 输了按钮点击事件
+        loseBtn.addEventListener('click', function() {
+            if (currentAmount > 0 && betAmount > 0) {
+                currentAmount -= betAmount;
+                updateDisplay();
+                showMessage(`很遗憾，您输了 ${betAmount} 星星币`, false);
+                
+                // 动画效果
+                currentAmountEl.classList.add('scale-110');
+                setTimeout(() => {
+                    currentAmountEl.classList.remove('scale-110');
+                }, 300);
+            }
+        });
+        
+        // 初始化
+        disableButtons(true);
+    </script>
+</body>
+</html>
