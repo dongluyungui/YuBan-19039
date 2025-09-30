@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>SINA跑酷游戏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f1f1f1;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        
+        .game-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            border: 2px solid #333;
+            background-color: #fff;
+            overflow: hidden;
+        }
+        
+        #gameCanvas {
+            width: 100%;
+            height: 200px;
+            display: block;
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .score, .high-score {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .game-over h2 {
+            margin-bottom: 10px;
+        }
+        
+        .start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .start-screen h1 {
+            margin-bottom: 20px;
+        }
+        
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .key {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 0 5px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #eee;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* 隐藏图片预加载元素 */
+        .preload {
+            display: none;
+        }
+
+        /* 横屏提示 - 只在移动端显示 */
+        .landscape-prompt {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            z-index: 1000;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .landscape-prompt h2 {
+            margin-bottom: 20px;
+        }
+
+        .landscape-prompt p {
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+
+        .landscape-prompt .rotate-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: rotate 2s infinite ease-in-out;
+        }
+
+        .landscape-prompt .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .landscape-prompt .button-group button {
+            margin: 0;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            50% { transform: rotate(90deg); }
+            100% { transform: rotate(90deg); }
+        }
+
+        /* 横屏按钮 - 只在移动端显示 */
+        .landscape-btn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* 媒体查询 - 只在移动设备显示横屏相关元素 */
+        @media (max-width: 768px) and (orientation: portrait) {
+            .landscape-prompt {
+                display: flex;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .landscape-btn {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 预加载图片和音频 -->
+    <div class="preload">
+        <img id="sina1" src="SINA/SINA_1.png" alt="SINA1">
+        <img id="sina2" src="SINA/SINA_2.png" alt="SINA2">
+        <img id="sina3" src="SINA/SINA_3.png" alt="SINA3">
+        <img id="sina4" src="SINA/SINA_4.png" alt="SINA4">
+        <img id="sina5" src="SINA/SINA_5.png" alt="SINA5">
+        <img id="sina6" src="SINA/SINA_6.png" alt="SINA6">
+        <img id="sina7" src="SINA/SINA_7.png" alt="SINA7">
+        <img id="sina8" src="SINA/SINA_8.png" alt="SINA8">
+        <img id="sina9" src="SINA/SINA_9.png" alt="SINA9">
+        <img id="sina10" src="SINA/SINA_10.png" alt="SINA10">
+        <img id="sina11" src="SINA/SINA_11.png" alt="SINA11">
+        <img id="sina12" src="SINA/SINA_12.png" alt="SINA12">
+        <img id="hulusi" src="葫芦丝.png" alt="葫芦丝">
+        <!-- 添加音频元素 -->
+        <audio id="jumpSound" src="CiaLo.wav" preload="auto"></audio>
+    </div>
+
+    <!-- 横屏提示 -->
+    <div class="landscape-prompt">
+        <div class="rotate-icon">↻</div>
+        <h2>请横屏游玩</h2>
+        <p>为了更好的游戏体验，请将设备旋转至横屏模式</p>
+        <div class="button-group">
+            <button id="forceLandscapeBtn">强制横屏</button>
+            <button id="portraitPlayBtn" style="background-color: #FF9800;">竖屏游玩</button>
+        </div>
+    </div>
+
+    <!-- 横屏按钮 -->
+    <button class="landscape-btn" id="landscapeBtn">↻</button>
+
+    <div class="game-info">
+        <div class="score">分数: 0</div>
+        <div class="high-score">最高分: 0</div>
+    </div>
+    <div class="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div class="start-screen">
+            <h1>SINA跑酷</h1>
+            <p>按空格键开始游戏</p>
+            <p>空格/上键/点击/触摸：轻按轻跳，长按大跳</p>
+            <button id="startBtn">开始游戏</button>
+        </div>
+        <div class="game-over">
+            <h2>游戏结束</h2>
+            <p>最终得分: <span id="finalScore">0</span></p>
+            <button id="restartBtn">重新开始</button>
+        </div>
+    </div>
+    <div class="controls">
+        <p>控制: <span class="key">↑</span> / <span class="key">空格</span> / 点击/触摸（轻按轻跳，长按大跳）</p>
+    </div>
+
+    <script>
+        // 游戏主类
+        class SinaGame {
+            constructor() {
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.scoreElement = document.querySelector('.score');
+                this.highScoreElement = document.querySelector('.high-score');
+                this.finalScoreElement = document.getElementById('finalScore');
+                this.startScreen = document.querySelector('.start-screen');
+                this.gameOverScreen = document.querySelector('.game-over');
+                this.startBtn = document.getElementById('startBtn');
+                this.restartBtn = document.getElementById('restartBtn');
+                this.landscapePrompt = document.querySelector('.landscape-prompt');
+                this.landscapeBtn = document.getElementById('landscapeBtn');
+                this.forceLandscapeBtn = document.getElementById('forceLandscapeBtn');
+                this.portraitPlayBtn = document.getElementById('portraitPlayBtn');
+                
+                // 设置画布尺寸
+                this.canvas.width = 800;
+                this.canvas.height = 200;
+                
+                // 游戏状态
+                this.isRunning = false;
+                this.score = 0;
+                this.highScore = localStorage.getItem('sinaHighScore') || 0;
+                this.highScoreElement.textContent = `最高分: ${this.highScore}`;
+                this.gameOverTime = 0;
+                this.restartDelay = 1000;
+                
+                // 轻重跳配置
+                this.jumpConfig = {
+                    lightForce: -14,    // 轻跳力度
+                    heavyForce: -17,    // 大跳力度
+                    threshold: 300,     // 轻重跳时间阈值（毫秒）
+                    maxPressTime: 1000  // 最大按下时间
+                };
+                
+                // SINA 统一 y 轴偏移量
+                this.sinaYOffset = 20; 
+                
+                // 加载SINA图片资源
+                this.sinaImages = [];
+                for (let i = 1; i <= 12; i++) {
+                    this.sinaImages.push(document.getElementById(`sina${i}`));
+                }
+                
+                // 加载障碍物图片
+                this.hulusiImage = document.getElementById('hulusi');
+                
+                // 加载跳跃音效
+                this.jumpSound = document.getElementById('jumpSound');
+                
+                // SINA角色属性
+                this.sina = {
+                    x: 50,
+                    y: 0,
+                    width: 60,
+                    height: 60,
+                    velocityY: 0,
+                    jumping: false,
+                    frameCount: 0,
+                    animationSpeed: 5,
+                    currentFrame: 0,
+                    hitbox: {
+                        offsetX: 10,
+                        offsetY: 10,
+                        scaleX: 0.7,
+                        scaleY: 0.8
+                    },
+                    // 轻重跳相关状态
+                    pressStartTime: null,
+                    isPressing: false
+                };
+                
+                // 重力
+                this.gravity = 0.6;
+                
+                // 障碍物
+                this.obstacles = [];
+                this.obstacleSpeed = 6;
+                this.obstacleSpawnRate = 120; // 每多少帧生成一个障碍物
+                this.frameCount = 0;
+                this.lastObstacleTime = 0;
+                this.minObstacleInterval = 60; // 最小障碍物间隔帧数
+                
+                // 地面位置
+                this.groundY = this.canvas.height - 20;
+                this.sina.y = this.groundY - this.sina.height + this.sinaYOffset;
+                
+                // 检查图片加载状态
+                this.checkImagesLoaded();
+                
+                // 绑定事件
+                this.bindEvents();
+                
+                // 初始化横屏检测
+                this.initLandscapeDetection();
+            }
+            
+            // 初始化横屏检测
+            initLandscapeDetection() {
+                // 检查当前方向
+                this.checkOrientation();
+                
+                // 监听方向变化
+                window.addEventListener('orientationchange', () => {
+                    this.checkOrientation();
+                });
+                
+                // 监听窗口大小变化（某些设备方向变化不会触发orientationchange）
+                window.addEventListener('resize', () => {
+                    setTimeout(() => this.checkOrientation(), 100);
+                });
+                
+                // 强制横屏按钮点击事件
+                this.forceLandscapeBtn.addEventListener('click', () => {
+                    this.enterFullscreen();
+                });
+                
+                // 竖屏游玩按钮点击事件
+                this.portraitPlayBtn.addEventListener('click', () => {
+                    this.landscapePrompt.style.display = 'none';
+                });
+                
+                // 横屏按钮点击事件
+                this.landscapeBtn.addEventListener('click', () => {
+                    this.enterFullscreen();
+                });
+            }
+            
+            // 检查屏幕方向
+            checkOrientation() {
+                const isPortrait = window.innerHeight > window.innerWidth;
+                
+                // 如果是移动设备且处于竖屏状态，显示横屏提示
+                if (this.isMobileDevice() && isPortrait) {
+                    this.landscapePrompt.style.display = 'flex';
+                } else {
+                    this.landscapePrompt.style.display = 'none';
+                }
+            }
+            
+            // 检测是否为移动设备
+            isMobileDevice() {
+                return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            }
+            
+            // 进入全屏模式（模拟横屏）
+            enterFullscreen() {
+                const element = document.documentElement;
+                
+                if (element.requestFullscreen) {
+                    element.requestFullscreen();
+                } else if (element.mozRequestFullScreen) {
+                    element.mozRequestFullScreen();
+                } else if (element.webkitRequestFullscreen) {
+                    element.webkitRequestFullscreen();
+                } else if (element.msRequestFullscreen) {
+                    element.msRequestFullscreen();
+                }
+                
+                // 尝试锁定屏幕方向为横屏
+                if (screen.orientation && screen.orientation.lock) {
+                    screen.orientation.lock('landscape').catch(() => {
+                        console.log('屏幕方向锁定失败');
+                    });
+                }
+                
+                // 隐藏横屏提示
+                this.landscapePrompt.style.display = 'none';
+            }
+            
+            // 检查图片是否加载完成
+            checkImagesLoaded() {
+                const images = [...this.sinaImages, this.hulusiImage];
+                let loadedCount = 0;
+                
+                images.forEach(img => {
+                    if (img.complete) {
+                        loadedCount++;
+                    } else {
+                        img.onload = () => {
+                            loadedCount++;
+                            if (loadedCount === images.length) {
+                                this.updateOriginalSizes();
+                            }
+                        };
+                        
+                        img.onerror = () => {
+                            console.error(`图片加载失败: ${img.src}`);
+                            loadedCount++;
+                            if (loadedCount === images.length) {
+                                this.updateOriginalSizes();
+                            }
+                        };
+                    }
+                });
+                
+                if (loadedCount === images.length) {
+                    this.updateOriginalSizes();
+                }
+            }
+            
+            // 更新图片原始尺寸
+            updateOriginalSizes() {
+                const sinaScale = 0.8;
+                this.sina.width = this.sinaImages[0].width * sinaScale;
+                this.sina.height = this.sinaImages[0].height * sinaScale;
+                this.sina.y = this.groundY - this.sina.height + this.sinaYOffset;
+            }
+            
+            // 播放跳跃音效
+            playJumpSound() {
+                if (this.jumpSound) {
+                    // 重置音频到开始位置
+                    this.jumpSound.currentTime = 0;
+                    // 播放音频
+                    this.jumpSound.play().catch(e => {
+                        console.log("音频播放失败:", e);
+                    });
+                }
+            }
+            
+            // 绑定控制事件
+            bindEvents() {
+                // 键盘空格键/上键按下事件
+                document.addEventListener('keydown', (e) => {
+                    // 游戏启动/重启 - 仅在按下时触发一次
+                    if ((e.code === 'Space' || e.code === 'ArrowUp') && !this.isRunning) {
+                        const now = Date.now();
+                        if (now - this.gameOverTime < this.restartDelay) return;
+                        
+                        // 防止长按空格导致连续重启
+                        if (this.gameOverScreen.style.display === 'block') {
+                            this.restartGame();
+                        } else {
+                            this.startGame();
+                        }
+                        return; // 启动游戏后不执行后续跳跃逻辑
+                    }
+                    
+                    // 游戏中跳跃按下 - 记录开始时间
+                    if ((e.code === 'Space' || e.code === 'ArrowUp') && this.isRunning && !this.sina.jumping && !this.sina.isPressing) {
+                        this.sina.pressStartTime = Date.now();
+                        this.sina.isPressing = true;
+                    }
+                });
+
+                // 键盘空格键/上键抬起事件 - 判断轻重跳
+                document.addEventListener('keyup', (e) => {
+                    if ((e.code === 'Space' || e.code === 'ArrowUp') && this.isRunning && this.sina.isPressing) {
+                        const pressDuration = Math.min(Date.now() - this.sina.pressStartTime, this.jumpConfig.maxPressTime);
+                        const jumpForce = pressDuration < this.jumpConfig.threshold ? this.jumpConfig.lightForce : this.jumpConfig.heavyForce;
+                        
+                        this.sina.jumping = true;
+                        this.sina.velocityY = jumpForce;
+                        this.sina.pressStartTime = null;
+                        this.sina.isPressing = false;
+                        
+                        // 播放跳跃音效
+                        this.playJumpSound();
+                    }
+                });
+
+                // 鼠标点击按下事件
+                document.addEventListener('mousedown', (e) => {
+                    if (this.isRunning && !this.sina.jumping && !this.sina.isPressing && 
+                        e.target !== this.startBtn && e.target !== this.restartBtn) {
+                        this.sina.pressStartTime = Date.now();
+                        this.sina.isPressing = true;
+                    }
+                });
+
+                // 鼠标点击抬起事件
+                document.addEventListener('mouseup', (e) => {
+                    if (this.isRunning && this.sina.isPressing && 
+                        e.target !== this.startBtn && e.target !== this.restartBtn) {
+                        const pressDuration = Math.min(Date.now() - this.sina.pressStartTime, this.jumpConfig.maxPressTime);
+                        const jumpForce = pressDuration < this.jumpConfig.threshold ? this.jumpConfig.lightForce : this.jumpConfig.heavyForce;
+                        
+                        this.sina.jumping = true;
+                        this.sina.velocityY = jumpForce;
+                        this.sina.pressStartTime = null;
+                        this.sina.isPressing = false;
+                        
+                        // 播放跳跃音效
+                        this.playJumpSound();
+                    }
+                });
+
+                // 移动端触摸开始事件
+                document.addEventListener('touchstart', (e) => {
+                    if (this.isRunning && !this.sina.jumping && !this.sina.isPressing) {
+                        e.preventDefault(); // 防止页面滚动
+                        this.sina.pressStartTime = Date.now();
+                        this.sina.isPressing = true;
+                    }
+                }, { passive: false });
+
+                // 移动端触摸结束事件
+                document.addEventListener('touchend', (e) => {
+                    if (this.isRunning && this.sina.isPressing) {
+                        e.preventDefault();
+                        const pressDuration = Math.min(Date.now() - this.sina.pressStartTime, this.jumpConfig.maxPressTime);
+                        const jumpForce = pressDuration < this.jumpConfig.threshold ? this.jumpConfig.lightForce : this.jumpConfig.heavyForce;
+                        
+                        this.sina.jumping = true;
+                        this.sina.velocityY = jumpForce;
+                        this.sina.pressStartTime = null;
+                        this.sina.isPressing = false;
+                        
+                        // 播放跳跃音效
+                        this.playJumpSound();
+                    }
+                }, { passive: false });
+
+                // 按钮控制
+                this.startBtn.addEventListener('click', () => this.startGame());
+                this.restartBtn.addEventListener('click', () => this.restartGame());
+            }
+            
+            // 开始游戏
+            startGame() {
+                this.isRunning = true;
+                this.startScreen.style.display = 'none';
+                this.score = 0;
+                this.obstacles = [];
+                this.obstacleSpeed = 6;
+                this.frameCount = 0;
+                this.lastObstacleTime = 0;
+                this.scoreElement.textContent = `分数: ${this.score}`;
+                this.animate();
+            }
+            
+            // 重新开始游戏
+            restartGame() {
+                this.gameOverScreen.style.display = 'none';
+                this.startGame();
+            }
+            
+            // 游戏结束
+            gameOver() {
+                this.isRunning = false;
+                this.gameOverScreen.style.display = 'block';
+                this.finalScoreElement.textContent = this.score;
+                this.gameOverTime = Date.now();
+                
+                // 更新最高分
+                if (this.score > this.highScore) {
+                    this.highScore = this.score;
+                    localStorage.setItem('sinaHighScore', this.highScore);
+                    this.highScoreElement.textContent = `最高分: ${this.highScore}`;
+                }
+            }
+            
+            // 生成障碍物
+            spawnObstacle() {
+                this.frameCount++;
+                
+                if (this.frameCount - this.lastObstacleTime > this.obstacleSpawnRate) {
+                    const minScale = 0.07;
+                    const maxScale = 0.19;
+                    const scale = minScale + Math.random() * (maxScale - minScale);
+                    
+                    const width = this.hulusiImage.width * scale;
+                    const height = this.hulusiImage.height * scale;
+                    
+                    const obstacle = {
+                        x: this.canvas.width,
+                        y: this.groundY - height,
+                        width: width,
+                        height: height,
+                        scale: scale
+                    };
+                    
+                    this.obstacles.push(obstacle);
+                    this.lastObstacleTime = this.frameCount;
+                    
+                    // 动态调整生成速率
+                    this.obstacleSpawnRate = Math.max(40, 120 - Math.floor(this.score / 100) * 10);
+                }
+            }
+            
+            // 更新游戏状态
+            update() {
+                // 更新SINA位置
+                this.sina.velocityY += this.gravity;
+                this.sina.y += this.sina.velocityY;
+                
+                // 确保SINA不会穿过地面
+                if (this.sina.y >= this.groundY - this.sina.height + this.sinaYOffset) {
+                    this.sina.y = this.groundY - this.sina.height + this.sinaYOffset;
+                    this.sina.velocityY = 0;
+                    this.sina.jumping = false;
+                }
+                
+                // 更新SINA动画帧
+                this.sina.frameCount++;
+                if (this.sina.frameCount % this.sina.animationSpeed === 0) {
+                    if (!this.sina.jumping) {
+                        this.sina.currentFrame = (this.sina.currentFrame + 1) % this.sinaImages.length;
+                    } else {
+                        this.sina.currentFrame = 0;
+                    }
+                }
+                
+                // 生成障碍物
+                this.spawnObstacle();
+                
+                // 更新障碍物位置
+                for (let i = this.obstacles.length - 1; i >= 0; i--) {
+                    const obstacle = this.obstacles[i];
+                    obstacle.x -= this.obstacleSpeed;
+                    
+                    // 移除超出屏幕的障碍物
+                    if (obstacle.x + obstacle.width < 0) {
+                        this.obstacles.splice(i, 1);
+                        // 每避开一个障碍物增加分数
+                        this.score += 10;
+                        this.scoreElement.textContent = `分数: ${this.score}`;
+                        
+                        // 随着分数增加提高速度
+                        if (this.score % 100 === 0) {
+                            this.obstacleSpeed += 0.5;
+                        }
+                    }
+                }
+                
+                // 碰撞检测
+                this.checkCollision();
+            }
+            
+            // 碰撞检测（使用调整后的碰撞箱）
+            checkCollision() {
+                // 计算SINA的实际碰撞箱
+                const sinaHitbox = {
+                    x: this.sina.x + this.sina.hitbox.offsetX,
+                    y: this.sina.y + this.sina.hitbox.offsetY,
+                    width: this.sina.width * this.sina.hitbox.scaleX,
+                    height: this.sina.height * this.sina.hitbox.scaleY
+                };
+                
+                for (const obstacle of this.obstacles) {
+                    // 计算障碍物的实际碰撞箱
+                    const obstacleHitbox = {
+                        x: obstacle.x + 5,
+                        y: obstacle.y + 5,
+                        width: obstacle.width * 0.8,
+                        height: obstacle.height * 0.8
+                    };
+                    
+                    // 检测碰撞
+                    if (
+                        sinaHitbox.x + sinaHitbox.width > obstacleHitbox.x &&
+                        sinaHitbox.x < obstacleHitbox.x + obstacleHitbox.width &&
+                        sinaHitbox.y + sinaHitbox.height > obstacleHitbox.y &&
+                        sinaHitbox.y < obstacleHitbox.y + obstacleHitbox.height
+                    ) {
+                        this.gameOver();
+                        return;
+                    }
+                }
+            }
+            
+            // 绘制游戏
+            draw() {
+                // 清空画布
+                this.ctx.fillStyle = '#f1f1f1';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // 绘制地面
+                this.ctx.fillStyle = '#888';
+                this.ctx.fillRect(0, this.groundY, this.canvas.width, 20);
+                
+                // 绘制SINA
+                this.ctx.drawImage(
+                    this.sinaImages[this.sina.currentFrame],
+                    this.sina.x,
+                    this.sina.y,
+                    this.sina.width,
+                    this.sina.height
+                );
+                
+                // 绘制障碍物
+                for (const obstacle of this.obstacles) {
+                    this.ctx.drawImage(
+                        this.hulusiImage,
+                        obstacle.x,
+                        obstacle.y,
+                        obstacle.width,
+                        obstacle.height
+                    );
+                }
+            }
+            
+            // 游戏主循环
+            animate() {
+                if (!this.isRunning) return;
+                
+                this.update();
+                this.draw();
+                requestAnimationFrame(() => this.animate());
+            }
+        }
+        
+        // 初始化游戏
+        window.onload = () => {
+            const game = new SinaGame();
+        };
+    </script>
+</body>
+</html>
