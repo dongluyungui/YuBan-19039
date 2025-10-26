@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏中心 - 御坂19039 应援站</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/setting.css"/>
+    <link rel="stylesheet" href="../css/responsive-nav.css"/>
+    <script src = "../js/responsive-nav.js"></script>
+    <script src = "../js/setting.js"></script>
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <style>
+        /* 游戏中心特定样式 */
+        .games-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .games-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .games-header h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .games-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .game-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            /* 添加加载时的过渡效果 */
+            background-color: #f0f0f0; /* 图片加载前的背景色 */
+        }
+        
+        .game-info {
+            padding: 20px;
+        }
+        
+        .game-info h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .game-info {
+            padding: 20px;
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        .game-link {
+            display: inline-block;
+            background-color: #ff6b6b;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin-top: auto; 
+            align-self: flex-end; 
+        }
+        
+        .game-link:hover {
+            background-color: #ff5252;
+        }
+        
+        /* 分类标签样式 */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .category-tab {
+            padding: 10px 20px;
+            margin: 0 5px 10px;
+            background-color: #f5f5f5;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-tab.active {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .games-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="fireworks-container"></div>
+    <!-- 右键菜单 -->
+    <ul id="context-menu">
+        <li>彩蛋</li>
+        <li>当前时间</li>
+    </ul>
+    <header class="header">
+        <div class="header-content">
+            <div> 
+                <a href="index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="About.html" class="nav-link" data-i18n="about">关于</a>
+                <a href="gallery.html" class="nav-link" data-i18n="gallery">画廊</a>
+                <a href="time.html" class="nav-link" data-i18n="timeline">时间轴</a>
+                
+                <!-- 需要在PC端"更多"中显示的链接（默认显示，超出时隐藏） -->
+                
+                <!-- 需要在移动端"更多"中显示的链接（PC端正常显示，移动端隐藏） -->
+                <a href="comment.html" class="nav-link active hidden-on-mobile" data-i18n="comment_board">留言板</a>
+                <a href="Sound.html" class="nav-link active hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+                <a href="LiveHistory.html" class="nav-link active hidden-on-mobile" data-i18n="previous_replays">往期回放</a>
+                
+                <!-- 设置按钮 -->
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
+                
+                <!-- 1. PC端专用"更多"容器 -->
+                <div class="more-container more-container-pc" style="display: none;">
+                    <button class="more-btn more-btn-pc nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-pc">
+                    <!-- PC端"更多"菜单内容 -->
+                    </div>
+                </div>
+                
+                <!-- 2. 移动端专用"更多"容器 -->
+                <div class="more-container more-container-mobile">
+                    <button class="more-btn more-btn-mobile nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-mobile">
+                    <!-- 移动端"更多"菜单内容（比PC端多） -->
+                    <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言板</a>
+                    <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+                    <a href="LiveHistory.html" class="nav-link active" data-i18n="previous_replays">往期回放</a>
+                    </div>
+                </div>
+            </div>  
+       </div>
+    </header>
+
+    <!-- 游戏中心内容 -->
+    <div class="games-container">
+        <div class="games-header">
+            <h1>游戏中心</h1>
+            <p>发现有趣的游戏，放松心情，享受乐趣</p>
+        </div>
+        
+        <!-- 游戏分类标签 -->
+        <div class="category-tabs">
+            <div class="category-tab active" data-category="all">全部游戏</div>
+            <div class="category-tab" data-category="casual">休闲娱乐</div>
+            <div class="category-tab" data-category="tools">实用工具</div>
+            <!-- 预留未来分类 -->
+        </div>
+        
+        <!-- 游戏网格 -->
+        <div class="games-grid">
+                <!-- SINA跑酷游戏 -->
+                <div class="game-card" data-category="casual">
+                    <div class="game-image" style="background-image: url('../games/pic/dinosaur.png')"></div>
+                    <div class="game-info">
+                        <h3>SINA跑酷游戏</h3>
+                        <p>经典的跑酷游戏，控制角色跳跃躲避障碍物，看看你能跑多远！</p>
+                        <a href="../games/dinosaur.html" target="_blank" class="game-link">开始游戏</a>
+                    </div>
+                </div>
+
+                <!-- 星露谷星星币计算 -->
+                <div class="game-card" data-category="tools">
+                    <div class="game-image" style="background-image: url('../games/pic/StarCalculator.png')"></div>
+                    <div class="game-info">
+                        <h3>星露谷星星币计算</h3>
+                        <p>帮助您在星露谷展览会的转盘游戏中计算星星币下注金额。</p>
+                        <a href="../games/StarCalculator.html" target="_blank" class="game-link">开始使用</a>
+                    </div>
+                </div>
+            
+                <!-- 指针测试游戏 -->
+                <div class="game-card" data-category="tools">
+                    <div class="game-image" style="background-image: url('../games/pic/cursor.png')"></div>
+                    <div class="game-info">
+                        <h3>指针测试</h3>
+                        <p>体验ZAIXI指针。</p>
+                        <a href="../games/cursor.html" target="_blank" class="game-link">开始使用</a>
+                    </div>
+                </div>
+
+            <!-- 预留未来游戏卡片位置 -->
+        </div>        
+    </div>
+
+    <div style="text-align: center; padding: 30px; color: #666;">
+        <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
+        <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
+        <p id="running-time">加载中...</p>
+    </div>
+
+    <script>
+        // 游戏分类筛选功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            const gameCards = document.querySelectorAll('.game-card');
+            
+            categoryTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // 更新激活状态
+                    categoryTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    
+                    // 筛选游戏卡片
+                    gameCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    
+    <script src="../js/star.js"></script>
+    <script src="../js/click.js"></script>
+    <script src="../js/time.js"></script>
+    <script src="../js/fireworks.js"></script>
+    <script src="../js/menu.js"></script>
+</body>
+
+</html>

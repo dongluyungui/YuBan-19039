@@ -40,6 +40,7 @@
                 <!-- 需要在移动端"更多"中显示的链接（PC端正常显示，移动端隐藏） -->
                 <a href="comment.html" class="nav-link active hidden-on-mobile" data-i18n="comment_board">留言板</a>
                 <a href="Sound.html" class="nav-link active hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+                <a href="games.html" class="nav-link active hidden-on-mobile" data-i18n="games">小游戏</a>
                 
                 <!-- 设置按钮 -->
                 <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
@@ -61,14 +62,15 @@
                     <!-- 移动端"更多"菜单内容（比PC端多） -->
                     <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言板</a>
                     <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+                    <a href="games.html" class="nav-link active" data-i18n="games">小游戏</a>
                     </div>
                 </div>
             </div>  
             <div class="search-container">
                 <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
-                <button class="tag-search-btn toggle-tags-btn">标签筛选</button>
+                <button class="tag-search-btn toggle-tags-btn"  data-i18n="search" >标签筛选</button>
                 <div class="tags-list" id="tags-list"></div>
-                <button class="clear-search-btn">清除筛选</button>
+                <button class="clear-search-btn" data-i18n="clear_search" >清除筛选</button>
                 <!-- 在搜索容器内添加筛选面板 -->
                 <div class="filter-panel" id="filterPanel" style="display: none;">
                   <div class="filter-header">
@@ -136,6 +138,7 @@
                                   <label><input type="checkbox" name="game" value="FPS"> FPS</label>
                                   <label><input type="checkbox" name="game" value="沙盒"> 沙盒</label>
                                   <label><input type="checkbox" name="game" value="恐怖"> 恐怖</label>
+                                  <label><input type="checkbox" name="game" value="模拟经营"> 模拟经营</label>
                                 </div>
                               </div>
 
@@ -151,6 +154,7 @@
                                   <label><input type="checkbox" name="game" value="瓦罗兰特"> 瓦罗兰特</label>
                                   <label><input type="checkbox" name="game" value="泰拉瑞亚"> 泰拉瑞亚</label>
                                   <label><input type="checkbox" name="game" value="星穹铁道"> 星穹铁道</label>
+                                  <label><input type="checkbox" name="game" value="杯杯倒满"> 杯杯倒满</label>
                                 </div>
                               </div>
 
@@ -204,12 +208,947 @@
     <!-- 直播记录列表 -->
 
     
+    <div class="live-record" data-tags="2025,烖晞,游戏,FPS,瓦罗兰特">
+      <div class="live-info">
+        <h2>【Zaix1】偷偷背着家里人打瓦！</h2>
+        <p><strong>直播日期：</strong>2025年10月25日</p>
+        <p><strong>直播时间：</strong>23:03 - 02:39</p>
+        <p><strong>直播简介：</strong>打瓦</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1kjxAzbEEQ" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,SINA,杂谈">
+      <div class="live-info">
+        <h2>【SlNA】如何清理c盘这一块</h2>
+        <p><strong>直播日期：</strong>2025年10月18日</p>
+        <p><strong>直播时间：</strong>22:59 - 02:05</p>
+        <p><strong>直播简介：</strong>c盘比SINA先红</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV18GsczhE3N" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,烖晞,游戏,FPS,瓦罗兰特">
+      <div class="live-info">
+        <h2>【Zaix1】偷偷背着家里人打瓦！</h2>
+        <p><strong>直播日期：</strong>2025年10月06日</p>
+        <p><strong>直播时间：</strong>00:08 - 03:01</p>
+        <p><strong>直播简介：</strong>好久不见的烖晞</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1sVx5zcErY" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,SINA,游戏,杯杯倒满">
+      <div class="live-info">
+        <h2>【SlNA】要来一杯折耳根柠檬茶吗！！</h2>
+        <p><strong>直播日期：</strong>2025年10月04日</p>
+        <p><strong>直播时间：</strong>22:49 - 01:51</p>
+        <p><strong>直播简介：</strong>折耳根柠檬茶是什么？读书环节未遂</p>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1HEx5zoEiA" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,SINA,游戏,杯杯倒满">
+      <div class="live-info">
+        <h2>【SlNA】挑战开奶茶店！！</h2>
+        <p><strong>直播日期：</strong>2025年10月03日</p>
+        <p><strong>直播时间：</strong>23:16 - 02:46</p>
+        <p><strong>直播简介：</strong>杯杯倒满</p>
+                    <div class="ai-summary">
+                        <div class="source-link summary-title" onclick="toggleDetails(this)">
+                            御坂19039在SlNA挑战开奶茶店，穿插国庆旅行经历与幽默互动，制作棒打鲜橙、折耳根柠檬茶等饮品，应对订单压力与设备失误，优化流程化解困境，同时分享酥皮月饼自制、乌镇水乡体验及粉丝互动，展现创业挑战与生活日常的趣味结合。 <!-- 点击标题可展开/折叠详情 -->
+                        </div>
+                        <div class="summary-details">
+                            <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline"><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战开奶茶店与桂林游玩分享
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">05:28</span>
+                                </span>
+                                <span class="content">
+                                    电脑移至客厅提升舒适度并计划开奶茶店
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">07:24</span>
+                                </span>
+                                <span class="content">
+                                    补课后快速更新游戏准备参与挑战任务
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">09:02</span>
+                                </span>
+                                <span class="content">
+                                    分享桂林旅行体验及螺蛳粉文化探索
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                直播分享广西旅行与奶茶店挑战
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">13:28</span>
+                                </span>
+                                <span class="content">
+                                    奶茶店经营需依赖供应商进货支持
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">16:52</span>
+                                </span>
+                                <span class="content">
+                                    创意使用吸管或钥匙开瓶饮用白饮
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">19:00</span>
+                                </span>
+                                <span class="content">
+                                    分享趣味法国发音模仿与互动调侃
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战开奶茶店趣味直播
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">21:04</span>
+                                </span>
+                                <span class="content">
+                                    金威奶茶口感极佳，冷藏后更添清爽体验
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">23:55</span>
+                                </span>
+                                <span class="content">
+                                    自信连饮多瓶不醉，混合红白酒无负担
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">25:55</span>
+                                </span>
+                                <span class="content">
+                                    国庆期间辗转老家与直播，作息混乱却坚持上课
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战开奶茶店趣味互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">31:45</span>
+                                </span>
+                                <span class="content">
+                                    山花猫互动活跃引发逗趣对话与角色调侃
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">36:52</span>
+                                </span>
+                                <span class="content">
+                                    分析不同床具与睡眠质量关联性及适配问题
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">38:58</span>
+                                </span>
+                                <span class="content">
+                                    推荐记忆枕并讨论材质与性价比的趣味权衡
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                创意奶茶店挑战与搞笑互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">41:17</span>
+                                </span>
+                                <span class="content">
+                                    利用电脑显卡和电磁炉模拟高温操作奶茶店设备
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">42:35</span>
+                                </span>
+                                <span class="content">
+                                    亲自动手制作爆打柠檬茶锻炼肌肉并调侃筋膜枪替代手法
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">48:45</span>
+                                </span>
+                                <span class="content">
+                                    合作开奶茶店推出折耳根柠檬茶并回顾团建趣事及作息状态
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                制作特色奶茶与互动挑战
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">50:41</span>
+                                </span>
+                                <span class="content">
+                                    提供手打柠檬茶及鲜橙饮品作为招牌饮品
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">51:50</span>
+                                </span>
+                                <span class="content">
+                                    使用当日新鲜橙子制作鲜橙棒茶并加入定制化配料
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">57:55</span>
+                                </span>
+                                <span class="content">
+                                    推广棒打鲜橙饮品并提及会员优惠活动
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                经营奶茶店压力与混乱操作
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:00:19</span>
+                                </span>
+                                <span class="content">
+                                    压力值异常升高导致操作失误频繁
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:03:39</span>
+                                </span>
+                                <span class="content">
+                                    误加椰果引发订单混乱需紧急调整
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:08:49</span>
+                                </span>
+                                <span class="content">
+                                    热橙汁口感争议与配方适配性讨论
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战开奶茶店高效出餐
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:11:13</span>
+                                </span>
+                                <span class="content">
+                                    提供多种特色饮品如折耳根柠檬茶和棒打鲜橙供选择
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:13:43</span>
+                                </span>
+                                <span class="content">
+                                    详细调整饮品配方并快速完成制作流程
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:19:01</span>
+                                </span>
+                                <span class="content">
+                                    突然发现遗漏步骤并及时纠正确保饮品品质
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战制作招牌奶茶饮品
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:20:00</span>
+                                </span>
+                                <span class="content">
+                                    推广招牌折耳根棒打柠檬茶及多种饮品搭配组合
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:21:58</span>
+                                </span>
+                                <span class="content">
+                                    客户反复要求调整饮品配方并强调热柠檬水饮用困惑
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:26:32</span>
+                                </span>
+                                <span class="content">
+                                    快速制作折耳根柠檬茶并应对顾客催促与操作失误
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战开奶茶店忙碌出杯
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:30:47</span>
+                                </span>
+                                <span class="content">
+                                    主角为老李制作100杯金威棒打柠檬茶传递温暖
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:33:30</span>
+                                </span>
+                                <span class="content">
+                                    棒打鲜橙出餐高效但搬运重物仍影响速度
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:37:19</span>
+                                </span>
+                                <span class="content">
+                                    调整奶茶店运营策略提升小费与高压环境收益
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战开奶茶店趣味互动录播
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:40:00</span>
+                                </span>
+                                <span class="content">
+                                    抵制抹去零头规则引发被扣费争议
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:41:46</span>
+                                </span>
+                                <span class="content">
+                                    国庆推出特色饮品不加糖并祝福顾客
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:45:49</span>
+                                </span>
+                                <span class="content">
+                                    因回校需调整饮品订单与时间规划
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战开奶茶店趣味直播
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:50:39</span>
+                                </span>
+                                <span class="content">
+                                    工地实习与订餐需求引发趣味讨论
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:52:33</span>
+                                </span>
+                                <span class="content">
+                                    现制奶茶流程与特色饮品创新尝试
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:56:52</span>
+                                </span>
+                                <span class="content">
+                                    隐藏直播场景与超大杯饮品制作挑战
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                经营奶茶店遇挑战调整策略
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:01:16</span>
+                                </span>
+                                <span class="content">
+                                    奶茶店需合理规划货品摆放与补货量避免短缺
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:04:53</span>
+                                </span>
+                                <span class="content">
+                                    升级设备容量并优化垃圾清理提升运营效率
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:07:25</span>
+                                </span>
+                                <span class="content">
+                                    调整饮品策略取消热橙汁以改善收益负值
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                经营果茶店挑战升级与互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:10:31</span>
+                                </span>
+                                <span class="content">
+                                    顾客赠送特色棒打鲜橙并推荐果茶饮品
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:13:30</span>
+                                </span>
+                                <span class="content">
+                                    明确店铺定位为果茶店并强调无奶制品
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:15:45</span>
+                                </span>
+                                <span class="content">
+                                    优化果糖用量调整经营策略实现盈利
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                奶茶店忙碌应对顾客急单
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:21:01</span>
+                                </span>
+                                <span class="content">
+                                    提供暴打柠檬茶并升级设备以增加额外收入
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:22:30</span>
+                                </span>
+                                <span class="content">
+                                    角色分享失眠与服药副作用，提醒避免热橙汁
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:28:54</span>
+                                </span>
+                                <span class="content">
+                                    连续处理多份饮品订单，强调效率与顾客需求冲突
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战奶茶店制作与应对突发状况
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:32:29</span>
+                                </span>
+                                <span class="content">
+                                    极限出杯操作困难需快速调整库存与配方
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:33:55</span>
+                                </span>
+                                <span class="content">
+                                    柠檬茶与椰果搭配争议引发趣味互动
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:39:02</span>
+                                </span>
+                                <span class="content">
+                                    英国生活趣谈与店铺运营轻松收尾
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战开奶茶店忙碌日常
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:42:31</span>
+                                </span>
+                                <span class="content">
+                                    挑战国庆期间高客流奶茶店运营与忙碌体验
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:43:43</span>
+                                </span>
+                                <span class="content">
+                                    提供无辣无香菜折耳根柠檬茶及特色饮品创新
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:48:58</span>
+                                </span>
+                                <span class="content">
+                                    创意利用塑料瓶回收助力环保并引发趣味互动
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                分享自制酥皮月饼与中秋体验
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:50:35</span>
+                                </span>
+                                <span class="content">
+                                    云腿月饼酥皮独特，甜咸馅料搭配更美味
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:51:57</span>
+                                </span>
+                                <span class="content">
+                                    现制酥皮月饼优于礼盒月饼，适合当餐食用
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:55:34</span>
+                                </span>
+                                <span class="content">
+                                    现烤月饼需趁热吃，咸蛋黄或鲜肉馅更受欢迎
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战开奶茶店与乌镇特色茶饮
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:00:39</span>
+                                </span>
+                                <span class="content">
+                                    推广特色折耳根柠檬茶及季节限定奶茶店体验
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:01:42</span>
+                                </span>
+                                <span class="content">
+                                    阐述鲜肉月饼季节限定销售与地域文化特色
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:06:12</span>
+                                </span>
+                                <span class="content">
+                                    邀请观众拍照分享并提及乌镇江南水乡景观
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战开奶茶店与国庆互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:10:05</span>
+                                </span>
+                                <span class="content">
+                                    讨论古代水网密布与地形改造对气候影响
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:13:28</span>
+                                </span>
+                                <span class="content">
+                                    详细解析深井地下水抽取及村庄井深差异
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:17:28</span>
+                                </span>
+                                <span class="content">
+                                    幽默互动调侃ID命名与被窝放屁自嘲梗
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                挑战开奶茶店趣味互动直播
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:21:32</span>
+                                </span>
+                                <span class="content">
+                                    玩家沉浸于高互动猫猫养成与梦幻场景体验
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:24:17</span>
+                                </span>
+                                <span class="content">
+                                    建设猫猫房并尝试集中管理虚拟宠物互动
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:27:13</span>
+                                </span>
+                                <span class="content">
+                                    计划为观众制作特色柠檬茶并隐藏惊喜食材
+                                </span></div></div></div> <!-- 直接插入outline的HTML，避免重复嵌套 -->
+                        </div>
+                    </div>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1fFx3zGEk2" target="_blank">点击观看</a></p>
+      </div>
+    </div>
+    <div class="live-record" data-tags="2025,SINA,杂谈,节日,国庆,中秋">
+      <div class="live-info">
+        <h2>【SlNA】国庆中秋快乐！！</h2>
+        <p><strong>直播日期：</strong>2025年10月01日</p>
+        <p><strong>直播时间：</strong>23:29 - 02:03</p>
+        <p><strong>直播简介：</strong>国庆快乐</p>
+                    <div class="ai-summary">
+                        <div class="source-link summary-title" onclick="toggleDetails(this)">
+                            御坂19039在国庆中秋期间的轻松杂谈，涵盖节日祝福、粉丝互动、MC皮肤制作、游戏体验（如《小小梦魇》、跑酷游戏）、新显示器使用及生活趣事，穿插技术小插曲与猫猫养成趣闻，展现幽默日常与温馨主播形象。 <!-- 点击标题可展开/折叠详情 -->
+                        </div>
+                        <div class="summary-details">
+                            <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline"><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆中秋祝福与日常互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:45</span>
+                                </span>
+                                <span class="content">
+                                    国庆中秋双节祝福与观众互动问候
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">05:31</span>
+                                </span>
+                                <span class="content">
+                                    早班辛苦工作引发对假期作息的调侃
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">06:59</span>
+                                </span>
+                                <span class="content">
+                                    分享十天假期仅休息三天的忙碌日常
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆假期美食避坑杂谈
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">10:38</span>
+                                </span>
+                                <span class="content">
+                                    手抓饼加芝士创新吃法引发好奇与讨论
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">13:58</span>
+                                </span>
+                                <span class="content">
+                                    北京烤鸭外皮爆油、肉质干柴体验差
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">15:43</span>
+                                </span>
+                                <span class="content">
+                                    鸭肉与鸭皮混杂难辨导致食用体验极差
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆中秋直播互动祝节日快乐
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">20:25</span>
+                                </span>
+                                <span class="content">
+                                    国庆中秋双节祝福与粉丝互动频繁
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">23:13</span>
+                                </span>
+                                <span class="content">
+                                    认出B站UP主并表达对其MC皮肤的喜爱
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">26:50</span>
+                                </span>
+                                <span class="content">
+                                    分享饮酒趣事与酒精过敏担忧幽默互动
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆直播互动与生活分享
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">34:07</span>
+                                </span>
+                                <span class="content">
+                                    国庆祝福致谢粉丝并分享生活趣事
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">35:40</span>
+                                </span>
+                                <span class="content">
+                                    分享近期直播动态及忙碌工作状态
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">39:01</span>
+                                </span>
+                                <span class="content">
+                                    提及未及时发布剪辑内容的遗憾
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆假期直播失误回顾
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">40:39</span>
+                                </span>
+                                <span class="content">
+                                    忘记发布视频因定时设置失误导致错位
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">44:33</span>
+                                </span>
+                                <span class="content">
+                                    误定万圣节日期为11月31日引发调侃
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">49:07</span>
+                                </span>
+                                <span class="content">
+                                    讨论显示器摆放难题与家人意见分歧
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆假期游戏与屏幕选购杂谈
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">51:44</span>
+                                </span>
+                                <span class="content">
+                                    国庆中秋双节祝福与深夜互动频繁
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">52:17</span>
+                                </span>
+                                <span class="content">
+                                    24寸屏幕提升游戏画面清晰度与准星定位
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">56:49</span>
+                                </span>
+                                <span class="content">
+                                    24寸1080P高刷直屏性价比高且适配游戏需求
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                拆笔记本改造便携屏与节日互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:00:46</span>
+                                </span>
+                                <span class="content">
+                                    国庆节日问候与互动交流活跃
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:03:53</span>
+                                </span>
+                                <span class="content">
+                                    分享设备改造与数码区趣味操作技巧
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:07:36</span>
+                                </span>
+                                <span class="content">
+                                    讨论游戏键位调整及联机游戏推荐
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆假期计划与节日祝福
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:12:42</span>
+                                </span>
+                                <span class="content">
+                                    计划国庆7天行程覆盖多个虚拟城市景点
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:14:36</span>
+                                </span>
+                                <span class="content">
+                                    分享出国旅游路线及创意地点攻略细节
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:17:21</span>
+                                </span>
+                                <span class="content">
+                                    祝愿双节并提及中秋与生日双重庆祝计划
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆假期奇幻杂谈与梦境分享
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:20:37</span>
+                                </span>
+                                <span class="content">
+                                    提及远房亲戚如月甜心为魔法少女引发讨论
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:23:49</span>
+                                </span>
+                                <span class="content">
+                                    通过撞钟柱重生回到失眠夜晚并指导逃生方法
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:25:35</span>
+                                </span>
+                                <span class="content">
+                                    以鱼板视角描述鱼缸生存状态与不规律照料
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                直播养猫趣事与节日祝福
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:31:42</span>
+                                </span>
+                                <span class="content">
+                                    国庆中秋双节祝福与深夜互动频繁
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:34:42</span>
+                                </span>
+                                <span class="content">
+                                    猫猫房搭建尝试及下载路径混乱问题
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:36:56</span>
+                                </span>
+                                <span class="content">
+                                    电脑中病毒事件引发意外笑料与调侃
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆假期杂谈与养宠生活
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:41:12</span>
+                                </span>
+                                <span class="content">
+                                    真红尝试用酒精处理指甲被质疑资源不足
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:42:34</span>
+                                </span>
+                                <span class="content">
+                                    推荐体验女神异闻录五实机并提及剧情优势
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:47:29</span>
+                                </span>
+                                <span class="content">
+                                    分享养猫趣事及新加入的橘猫崽互动日常
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆假期直播趣事与猫咪互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:50:52</span>
+                                </span>
+                                <span class="content">
+                                    猫频繁异常叫声引发关注并讨论异色特征
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:51:59</span>
+                                </span>
+                                <span class="content">
+                                    分享游戏隐藏分提升与极速段位老玩家互动
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:57:14</span>
+                                </span>
+                                <span class="content">
+                                    猫突然失踪引发直播互动，提及国庆出行计划
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆杂谈猫猫互动与游戏分享
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:01:57</span>
+                                </span>
+                                <span class="content">
+                                    玩家尝试拖动猫至猫屋但受阻引发操作困惑
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:04:21</span>
+                                </span>
+                                <span class="content">
+                                    观众互动调侃猫不能放置头顶与家庭场景趣味关联
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:07:16</span>
+                                </span>
+                                <span class="content">
+                                    设计猫架子放置方案并强调视觉效果需求
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆夜直播卖猫猫与生活趣谈
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:10:00</span>
+                                </span>
+                                <span class="content">
+                                    新手教程遭遇突发惊吓与恐怖体验
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:12:10</span>
+                                </span>
+                                <span class="content">
+                                    展示可爱猫咪并邀请同人猫猫交易
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:15:22</span>
+                                </span>
+                                <span class="content">
+                                    回家念头被居家舒适与熬夜直播矛盾吸引
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                国庆中秋杂谈与猫猫互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:22:07</span>
+                                </span>
+                                <span class="content">
+                                    创建猫猫房集中安置角色并庆祝中秋国庆双节
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:23:05</span>
+                                </span>
+                                <span class="content">
+                                    寻找并提及蓝色兔子佩可及属性咖啡厅趣味剧情
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:29:14</span>
+                                </span>
+                                <span class="content">
+                                    播出时间受家庭情况影响，探讨三人共同游戏挑战
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                主播因赶火车暂别直播晚安告别
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:30:00</span>
+                                </span>
+                                <span class="content">
+                                    今日因赶火车需提前结束直播，晚间继续更新
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:30:45</span>
+                                </span>
+                                <span class="content">
+                                    互动问候观众并开启晚安祝福环节
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:31:29</span>
+                                </span>
+                                <span class="content">
+                                    表达返场需求与幽默告别，预告晚间回归
+                                </span></div></div></div> <!-- 直接插入outline的HTML，避免重复嵌套 -->
+                        </div>
+                    </div>
+        <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1CpHAzDEt4" target="_blank">点击观看</a></p>
+      </div>
+    </div>
     <div class="live-record" data-tags="2025,SINA,游戏,模拟经营,杯杯倒满">
       <div class="live-info">
         <h2>【SlNA】偷偷背着家里人玩杯杯倒满！</h2>
         <p><strong>直播日期：</strong>2025年09月20日</p>
         <p><strong>直播时间：</strong>23:59 - 02:10</p>
         <p><strong>直播简介：</strong>偷偷背</p>
+                    <div class="ai-summary">
+                        <div class="source-link summary-title" onclick="toggleDetails(this)">
+                            御坂19039深夜直播中，分享偷偷玩杯杯游戏与《贝贝特曼》的趣味经历，穿插电费飙升、道具不足、手速失误等搞笑片段，以幽默互动完成饮品制作与游戏挑战，感谢粉丝支持并预告下周继续欢乐直播。 <!-- 点击标题可展开/折叠详情 -->
+                        </div>
+                        <div class="summary-details">
+                            <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline"><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                主播深夜互动游戏娱乐
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">00:50</span>
+                                </span>
+                                <span class="content">
+                                    主播与粉丝亲切互动问候夜晚好
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">08:14</span>
+                                </span>
+                                <span class="content">
+                                    老爹直播间开播引发观众关注期待
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">09:40</span>
+                                </span>
+                                <span class="content">
+                                    描述桌面杂物及意外触碰场景细节
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                趣味游戏互动与深夜闲聊
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">12:26</span>
+                                </span>
+                                <span class="content">
+                                    推荐尝试贝贝套或Poke猫游戏，玩法有趣多样
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">13:21</span>
+                                </span>
+                                <span class="content">
+                                    高铁皮老师晚安互动，饮品体验引发柠檬量讨论
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">17:45</span>
+                                </span>
+                                <span class="content">
+                                    赞赏小狼角色可爱，提及平摊压力的玩法机制
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                直播互动趣味游戏与日常调侃
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">21:49</span>
+                                </span>
+                                <span class="content">
+                                    Buff机制引发趣味计算与笑料互动
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">24:46</span>
+                                </span>
+                                <span class="content">
+                                    角色获得可爱翅膀并调侃被扣费
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">29:17</span>
+                                </span>
+                                <span class="content">
+                                    隔壁装修压力叠加游戏操作失误引发吐槽
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                御坂直播游戏装修与互动趣事
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">33:43</span>
+                                </span>
+                                <span class="content">
+                                    隐瞒家人偷偷进行游戏挑战以避免干扰
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">35:17</span>
+                                </span>
+                                <span class="content">
+                                    游戏需多人协作推进并可能触发战败CG
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">37:51</span>
+                                </span>
+                                <span class="content">
+                                    通过快速操作完成任务并体验游戏乐趣
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                奶茶店经营与游戏互动日常
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">40:20</span>
+                                </span>
+                                <span class="content">
+                                    对比大杯小杯饮品差异并选择大杯配方
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">43:56</span>
+                                </span>
+                                <span class="content">
+                                    加班奖励机制激活并签订恶魔契约提升收益
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">49:10</span>
+                                </span>
+                                <span class="content">
+                                    优化游戏策略选择提前营业Buff增益
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                直播互动游戏与日常闲聊
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">53:30</span>
+                                </span>
+                                <span class="content">
+                                    玩家计划明日提升至80级并调整饮品配方搭配
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">56:21</span>
+                                </span>
+                                <span class="content">
+                                    意外发现柠檬损坏需临时调整饮品并提醒对方休息
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">59:25</span>
+                                </span>
+                                <span class="content">
+                                    突发游戏进度压力与经济压力需紧急处理任务
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                御坂直播互动与角色挑战
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:00:00</span>
+                                </span>
+                                <span class="content">
+                                    角色能力大幅削弱导致选择困难，向轩轩老师致谢并互动
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:05:44</span>
+                                </span>
+                                <span class="content">
+                                    模拟经营场景手忙脚乱，急需准备柠檬饮品应对顾客
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:07:44</span>
+                                </span>
+                                <span class="content">
+                                    晚间持续直播互动，观众频繁问候并调侃角色挑战玩法
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                夏日夜晚游戏对决与失误
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:10:43</span>
+                                </span>
+                                <span class="content">
+                                    讨论极限储备判定延长及角色小猫可能性猜测
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:12:36</span>
+                                </span>
+                                <span class="content">
+                                    主角尝试操作小猫失败并调侃游戏关机问题
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:16:56</span>
+                                </span>
+                                <span class="content">
+                                    夏夏同学被选为游戏角色，手笨操作导致任务失败
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                深夜游戏互动与搞笑吐槽
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:20:39</span>
+                                </span>
+                                <span class="content">
+                                    主角融合大灰狼与小红帽特质，角色设定独特
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:23:37</span>
+                                </span>
+                                <span class="content">
+                                    多次夜晚问候互动，营造亲切社交氛围
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:27:42</span>
+                                </span>
+                                <span class="content">
+                                    突发意外事件引发紧张情绪，节奏骤变
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                深夜玩贝贝当漫与高峰期挑战
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:30:16</span>
+                                </span>
+                                <span class="content">
+                                    主角深夜玩贝贝特曼并被友人询问游戏进展
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:37:07</span>
+                                </span>
+                                <span class="content">
+                                    成功赚取1500+奖励并规划购买目标物品
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:39:03</span>
+                                </span>
+                                <span class="content">
+                                    高峰期街景拥堵，尝试挑战新关卡与角色切换
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                深夜直播互动与通宵娱乐
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:43:54</span>
+                                </span>
+                                <span class="content">
+                                    主播回顾昨日直播并问候观众久未见面
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:44:37</span>
+                                </span>
+                                <span class="content">
+                                    强调周末通宵放松需合理安排时间
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:47:59</span>
+                                </span>
+                                <span class="content">
+                                    紧张错过加班险情引发观众担忧提醒
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                主播夜晚直播互动 playful片段
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:50:08</span>
+                                </span>
+                                <span class="content">
+                                    主播意外闭眼引发观众互动与调侃
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:52:25</span>
+                                </span>
+                                <span class="content">
+                                    强调“无需缴纳租金”策略并切换睁闭眼状态
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:57:00</span>
+                                </span>
+                                <span class="content">
+                                    以“忘记李春风”等台词制造幽默反差效果
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                熬夜游戏忙手速挑战
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:01:50</span>
+                                </span>
+                                <span class="content">
+                                    忘记支付导致加班，紧急处理任务压力
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:07:57</span>
+                                </span>
+                                <span class="content">
+                                    获得3000元可兑换新物品，声望提升并解锁新功能
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:09:09</span>
+                                </span>
+                                <span class="content">
+                                    游戏操作考验手速，结束直播预告下周互动内容
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                私下与家人聊天放松时刻
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:10:00</span>
+                                </span>
+                                <span class="content">
+                                    计划下周与观众分享轻松交流内容
+                                </span></div></div></div> <!-- 直接插入outline的HTML，避免重复嵌套 -->
+                        </div>
+                    </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1WGWFzmEiq" target="_blank">点击观看</a></p>
       </div>
     </div>
@@ -255,6 +1194,133 @@
         <p><strong>直播日期：</strong>2025年08月20日</p>
         <p><strong>直播时间：</strong>15:58 - 17:00</p>
         <p><strong>直播简介：</strong>在学校练琴</p>
+                    <div class="ai-summary">
+                        <div class="source-link summary-title" onclick="toggleDetails(this)">
+                            御坂19039在录播中幽默自嘲复健练习的艰辛，边吹奏乐器边吐槽作业压力与音量控制，穿插宿舍趣事和观众互动，后因充电宝故障反复调整手机角度仍仅充至50%，最终以坚持直播和对粉丝感谢收尾，展现轻松治愈的生活化日常。 <!-- 点击标题可展开/折叠详情 -->
+                        </div>
+                        <div class="summary-details">
+                            <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline"><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                复健痛苦难熬切片人直播
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:42</span>
+                                </span>
+                                <span class="content">
+                                    复健过程痛苦致困，多次表达身体不适与抗拒
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">04:46</span>
+                                </span>
+                                <span class="content">
+                                    反映学校乐队管理松散，老师缺乏有效指导
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">09:34</span>
+                                </span>
+                                <span class="content">
+                                    专注创作表情包与绘画，坚持练习至六点用餐
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                复健练琴痛苦又搞笑日常
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">10:04</span>
+                                </span>
+                                <span class="content">
+                                    演奏时担忧音量过大伤及听众听力
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">13:39</span>
+                                </span>
+                                <span class="content">
+                                    复健练习导致落枕需频繁歪头调整姿势
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">18:46</span>
+                                </span>
+                                <span class="content">
+                                    新月岛游戏体验引发强烈BGM记忆与主线进度焦虑
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                复健痛苦与搞笑互动日常
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">20:35</span>
+                                </span>
+                                <span class="content">
+                                    复健过程被小猫诱惑引发趣味互动与轻松调侃
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">24:27</span>
+                                </span>
+                                <span class="content">
+                                    回忆离家出走经历并调侃新玉纱更换细节
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">29:14</span>
+                                </span>
+                                <span class="content">
+                                    贵州地区空调稀缺引发对生活条件幽默吐槽
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                复健手酸难忍，宿舍作息受限
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">34:33</span>
+                                </span>
+                                <span class="content">
+                                    复健右手疼痛严重出现咬伤红印需谨慎练习
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">35:43</span>
+                                </span>
+                                <span class="content">
+                                    宿舍作息受限被迫保持安静难以夜间娱乐
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">38:01</span>
+                                </span>
+                                <span class="content">
+                                    强迫复健与音乐会压力导致情绪低落挣扎
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                复健过程艰难与自我调侃
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">40:48</span>
+                                </span>
+                                <span class="content">
+                                    宝宝尝试克服社恐但仍依赖弹幕缓解紧张情绪
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">41:02</span>
+                                </span>
+                                <span class="content">
+                                    复健过程引发新体验，手指操作出现切换困难
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">47:12</span>
+                                </span>
+                                <span class="content">
+                                    对变调段落进行分析并尝试定位问题原因
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                直播中调侃充电与手部复健困难
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">52:24</span>
+                                </span>
+                                <span class="content">
+                                    复健过程充满搞笑互动与自嘲幽默
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">54:00</span>
+                                </span>
+                                <span class="content">
+                                    直播中手部操作频繁导致电量告急需充电
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">59:39</span>
+                                </span>
+                                <span class="content">
+                                    表达对多首歌曲的喜爱并呼吁观众支持
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                手机充电后继续直播
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:00:03</span>
+                                </span>
+                                <span class="content">
+                                    手机需竖立充电因接口位置导致无法正常充电
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:00:27</span>
+                                </span>
+                                <span class="content">
+                                    手机耗电过快需先充至50%再继续使用
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:00:49</span>
+                                </span>
+                                <span class="content">
+                                    因电量不足临时中断播放并调整充电策略
+                                </span></div></div></div> <!-- 直接插入outline的HTML，避免重复嵌套 -->
+                        </div>
+                    </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1qMegz4ESH" target="_blank">点击观看</a></p>
       </div>
     </div>
@@ -310,6 +1376,286 @@
         <p><strong>直播日期：</strong>2025年08月06日</p>
         <p><strong>直播时间：</strong>22:31 - 01:06</p>
         <p><strong>直播简介：</strong>灵感来了（花了两个小时，时间被跳过了</p>
+                    <div class="ai-summary">
+                        <div class="source-link summary-title" onclick="toggleDetails(this)">
+                            御坂19039在绘画回中分享灵感创作过程，涵盖角色设计“暗黑骑士”、汽车内饰细节与甲骨文Logo绘制，穿插幽默自嘲与互动，最终完成动态效果并回顾作品，展现即兴创作热情与观众共鸣。 <!-- 点击标题可展开/折叠详情 -->
+                        </div>
+                        <div class="summary-details">
+                            <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline"><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                尝试人物设计与麦克风调试
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:42</span>
+                                </span>
+                                <span class="content">
+                                    尝试通过可可豆元素捕捉创作灵感与画面感受
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">09:07</span>
+                                </span>
+                                <span class="content">
+                                    发现麦克风音量问题并调整自身思考状态
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">09:27</span>
+                                </span>
+                                <span class="content">
+                                    聚焦人物领子细节设计作为创作切入点
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                灵感爆棚创作绘画回录播
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">11:42</span>
+                                </span>
+                                <span class="content">
+                                    灵感突发频繁，强调放松心态避免急躁
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">13:35</span>
+                                </span>
+                                <span class="content">
+                                    灵感爆棚状态持续，气泡音自然流畅表达兴奋
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">18:44</span>
+                                </span>
+                                <span class="content">
+                                    专注捕捉灵感细节，优先创作需求超越日常事务
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                手部僵硬与互动搞笑片段
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">20:40</span>
+                                </span>
+                                <span class="content">
+                                    手部僵硬问题引发自我调侃与放松心态
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">25:40</span>
+                                </span>
+                                <span class="content">
+                                    通过耸肩效果还原角色动作并确认创意合理性
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">29:51</span>
+                                </span>
+                                <span class="content">
+                                    对画面怪异感产生质疑并果断放弃当前尝试
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                讨论暗黑骑士职业与绘画技巧
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">32:51</span>
+                                </span>
+                                <span class="content">
+                                    回忆剧情关键台词并迅速理清思路
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">36:00</span>
+                                </span>
+                                <span class="content">
+                                    暗黑骑士职业特色与角色互动引发兴奋
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">38:27</span>
+                                </span>
+                                <span class="content">
+                                    描述翘二郎腿动作难点及NPC互动剧情
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                二次元灵感难寻引发笑料
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">40:50</span>
+                                </span>
+                                <span class="content">
+                                    创作者以幽默自嘲表达近期创作灵感匮乏与梗文化互动
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">43:48</span>
+                                </span>
+                                <span class="content">
+                                    讨论游戏圣遗物暴击属性提升及角色扮演对演员演技的赞赏
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">48:06</span>
+                                </span>
+                                <span class="content">
+                                    反思二次元影响生活并提及王传君新角色引发剧情联想
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                手画反了引发自嘲与修车烦恼
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">51:31</span>
+                                </span>
+                                <span class="content">
+                                    手部绘制方向错误导致操作失误被反复纠正
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">56:12</span>
+                                </span>
+                                <span class="content">
+                                    原厂配件维修费用高昂且无高仿替代方案
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">57:32</span>
+                                </span>
+                                <span class="content">
+                                    嗓音异常低沉引发自我怀疑与细节调整尝试
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                仰望U8L定制豪奢与抽象互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:02:23</span>
+                                </span>
+                                <span class="content">
+                                    视频呈现主角活跃幽默的抽象创作状态与轻松互动
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:06:58</span>
+                                </span>
+                                <span class="content">
+                                    仰望U8L鼎盛版被赞豪华定制，含金标、黑科技配置
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:08:35</span>
+                                </span>
+                                <span class="content">
+                                    强调车辆科技高端与奢靡设计，引发赞叹与讨论
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                调整图层与车辆细节解析
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:10:31</span>
+                                </span>
+                                <span class="content">
+                                    分图层处理画面并感谢观众支持
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:13:07</span>
+                                </span>
+                                <span class="content">
+                                    预备录制八小时耐久回并尝试复杂动作分镜
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:18:30</span>
+                                </span>
+                                <span class="content">
+                                    分析车辆顶饰板设计及灯珠配置细节
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                欣赏内饰设计与幽默互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:20:05</span>
+                                </span>
+                                <span class="content">
+                                    内饰设计舒适且灰调紫色调吸引人赞赏
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:21:10</span>
+                                </span>
+                                <span class="content">
+                                    车辆结实可靠，用户主动要求购买推荐
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:23:45</span>
+                                </span>
+                                <span class="content">
+                                    提及水下游泳趣味性及“天神之眼”系统功能
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                灵感迸发与早起困扰交织
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:32:27</span>
+                                </span>
+                                <span class="content">
+                                    首次成功捕捉灵感并顺利创作绘画作品
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:33:55</span>
+                                </span>
+                                <span class="content">
+                                    对自身创作能力高度自信并表达感谢与互动
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:39:20</span>
+                                </span>
+                                <span class="content">
+                                    因环境噪音困扰，计划调整作息以改善睡眠
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                歌声与情感交织的绘画时刻
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:40:31</span>
+                                </span>
+                                <span class="content">
+                                    因剪辑失误未放背景音乐，临时补放歌曲调整氛围
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:46:00</span>
+                                </span>
+                                <span class="content">
+                                    回忆教室时光与情感互动，表达对陪伴的深切渴望
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:47:23</span>
+                                </span>
+                                <span class="content">
+                                    强调依赖对方存在，直白诉说渴望陪伴与情感联结
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                灵感触发美食回忆与情感流露
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:51:28</span>
+                                </span>
+                                <span class="content">
+                                    灵感突然涌现激发创作热情，开启绘画新篇章
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:58:43</span>
+                                </span>
+                                <span class="content">
+                                    麻辣烫引发美食回忆，老板熟识增添用餐趣味
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:59:33</span>
+                                </span>
+                                <span class="content">
+                                    台湾卤肉饭旧店搬迁成遗憾，珍贵体验难再寻
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                回忆台湾卤肉饭老板离开与感伤日常
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:00:00</span>
+                                </span>
+                                <span class="content">
+                                    台湾老板卤肉饭美味却突然搬迁引发失落
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:02:02</span>
+                                </span>
+                                <span class="content">
+                                    现实中罕见遇台湾人，地震担忧与大陆安全对比
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:04:46</span>
+                                </span>
+                                <span class="content">
+                                    上色环节高效流畅，观众对老师技术赞叹连连
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                回忆与思念交织的绘画创作
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:11:56</span>
+                                </span>
+                                <span class="content">
+                                    思念与回忆交织，渴望重逢过去的温暖时光
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:13:19</span>
+                                </span>
+                                <span class="content">
+                                    情感纠葛中坚定追求真爱，愿穿越时空守护对方
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:17:11</span>
+                                </span>
+                                <span class="content">
+                                    跨越时空与距离，珍藏爱的经纬度与独特承诺
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                情感纠葛与绘画创作交织
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:21:30</span>
+                                </span>
+                                <span class="content">
+                                    爱情如记忆循环难释怀 情感反复交织却难圆满
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:25:08</span>
+                                </span>
+                                <span class="content">
+                                    情感受阻心绪难平 自我挣扎中坚定不离不弃
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:29:09</span>
+                                </span>
+                                <span class="content">
+                                    创作过程耗时两小时 画面进度仅完成分镜初稿
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                意外超时两小时绘画过程
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:30:48</span>
+                                </span>
+                                <span class="content">
+                                    耗时两小时半创作灵感被意外打断引发自嘲
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:31:42</span>
+                                </span>
+                                <span class="content">
+                                    成就感爆棚称自身绘画效率远超预期
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:32:13</span>
+                                </span>
+                                <span class="content">
+                                    边结束直播边幽默提醒观众晚安并离场
+                                </span></div></div></div> <!-- 直接插入outline的HTML，避免重复嵌套 -->
+                        </div>
+                    </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV1GotNzoEfE" target="_blank">点击观看</a></p>
       </div>
     </div>
@@ -328,6 +1674,218 @@
         <p><strong>直播日期：</strong>2025年08月03日</p>
         <p><strong>直播时间：</strong>22:40 - 01:34</p>
         <p><strong>直播简介：</strong>卡卡西，又被老登制裁力</p>
+                    <div class="ai-summary">
+                        <div class="source-link summary-title" onclick="toggleDetails(this)">
+                            御坂19039在光遇直播中因设备故障改用手机连线，与观众互动分享游戏日常，穿插跑图任务、美食烹饪及音乐串烧，探索小王子联动地图、云桥、雪隐峰等场景，偶遇角色并传授拍照技巧，最终因网络问题调整计划，预告明日继续深入游戏体验，全程轻松温馨充满生活化乐趣。 <!-- 点击标题可展开/折叠详情 -->
+                        </div>
+                        <div class="summary-details">
+                            <div id="biliscope-ai-summary-outline" class="biliscope-ai-summary-popup-body-outline"><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                光遇直播互动加好友与跑图
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">02:33</span>
+                                </span>
+                                <span class="content">
+                                    主播与观众互动庆祝COSER生日并约定零点祝福
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">03:20</span>
+                                </span>
+                                <span class="content">
+                                    提供好友码邀请观众加好友并确认身份信息
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">08:40</span>
+                                </span>
+                                <span class="content">
+                                    强调今日游戏活动含大蜡烛任务及角色南俊云联动
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                直播中遭遇网络卡顿与互动调侃
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">13:23</span>
+                                </span>
+                                <span class="content">
+                                    视频主角因下载错误版本导致房屋问题并计划自购住所
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">14:10</span>
+                                </span>
+                                <span class="content">
+                                    直播中遭遇网络卡顿与流量使用问题，画面质量受影响
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">15:56</span>
+                                </span>
+                                <span class="content">
+                                    提及直播间卡顿原因归因于网络问题并询问观众体验
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                直播互动与游戏任务分享
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">20:00</span>
+                                </span>
+                                <span class="content">
+                                    直播画面偶发卡顿，计划调整时间重新跑图任务
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">24:58</span>
+                                </span>
+                                <span class="content">
+                                    因设备问题改用手机直播，提及近期被频繁制裁
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">28:01</span>
+                                </span>
+                                <span class="content">
+                                    演唱抒情歌曲，感慨星光不足并提及剪辑作品自赏
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                光遇玩家日常互动与任务分享
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">31:01</span>
+                                </span>
+                                <span class="content">
+                                    主角反思情感纠葛与自我成长，表达学会放手与释然
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">36:22</span>
+                                </span>
+                                <span class="content">
+                                    分享雨林地图玩法技巧，强调能量回复与保护策略
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">38:48</span>
+                                </span>
+                                <span class="content">
+                                    群友送祝福庆生，提及主线任务与副本进度互动
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                分享烹饪趣事与光遇互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">41:46</span>
+                                </span>
+                                <span class="content">
+                                    分享洋芋煮过头变泥被创意为炒洋芋泥趣事
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">43:43</span>
+                                </span>
+                                <span class="content">
+                                    表达对街边铁板洋芋的怀念与烹饪条件限制
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">48:46</span>
+                                </span>
+                                <span class="content">
+                                    计划用筒子骨煲汤并讨论螺蛳粉晚食用后异味问题
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                光遇玩家互动与日常闲聊
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">52:25</span>
+                                </span>
+                                <span class="content">
+                                    任务完成后前往办公室并计划修复车辆传感器
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">54:17</span>
+                                </span>
+                                <span class="content">
+                                    回遇境满员，提议跑图或前往云桥及欧若拉演唱会地点
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">58:28</span>
+                                </span>
+                                <span class="content">
+                                    展示家中装饰并邀请观众参观，提及空间荷载限制
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                光遇玩家互动与游戏探索
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:00:59</span>
+                                </span>
+                                <span class="content">
+                                    嘉宾介绍自身编号并分享偶遇互动与游戏体验
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:02:39</span>
+                                </span>
+                                <span class="content">
+                                    探讨阿努比斯面具缺失原因及表演季游戏特点
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:07:41</span>
+                                </span>
+                                <span class="content">
+                                    展示飞行玩法尝试与对游戏类型偏好分析
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                光遇星球探索与角色互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:11:16</span>
+                                </span>
+                                <span class="content">
+                                    喝醉士兵邀请仰慕者互动并展示玫瑰装饰
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:13:31</span>
+                                </span>
+                                <span class="content">
+                                    点灯人以玫瑰花冠自喻，引发幽默对话
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:16:43</span>
+                                </span>
+                                <span class="content">
+                                    绿色星球呈现猴面包树、火山与日落美景
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                光遇联动地图探秘与点灯体验
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:22:16</span>
+                                </span>
+                                <span class="content">
+                                    冷暖交替中提议披被子缓解炎热不适
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:25:26</span>
+                                </span>
+                                <span class="content">
+                                    发现小王子联动地图并兴奋体验点灯互动
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:29:24</span>
+                                </span>
+                                <span class="content">
+                                    灯塔顶获光翼增添奇幻冒险体验
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                光遇探索与互动游玩记录
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:32:02</span>
+                                </span>
+                                <span class="content">
+                                    视频中发现被卡住的国王与喝醉士兵及光之翼道具互动
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:33:15</span>
+                                </span>
+                                <span class="content">
+                                    描述玫瑰园亭子无光之翼并提及老姐拍照场景与国王专属王座
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:39:06</span>
+                                </span>
+                                <span class="content">
+                                    寻找隐藏地图失败后调整路线尝试定位目标位置
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                探索光遇雪隐峰美景与互动
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:41:48</span>
+                                </span>
+                                <span class="content">
+                                    雪隐峰峰顶风景优美，建议游客前往欣赏独特光影与雪山景观
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:45:44</span>
+                                </span>
+                                <span class="content">
+                                    曾有玫瑰丛与小王子复刻场景，现仅存雪景及欧若拉演唱会地点规划
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:46:55</span>
+                                </span>
+                                <span class="content">
+                                    可滑下滑坡至山腰，体验缆车分段通行的独特玩法与互动乐趣
+                                </span></div></div><div class="ai-summary-section"><div class="ai-summary-section-title">
+                                光遇直播因设备问题暂告段落
+                            </div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:52:28</span>
+                                </span>
+                                <span class="content">
+                                     视频因设备问题今日仅短暂直播，计划明日用电脑延长时长
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:52:59</span>
+                                </span>
+                                <span class="content">
+                                     今日遭遇意外制裁导致心情低落，期待明日恢复三小时连播
+                                </span></div><div class="bullet"><span class="timestamp">
+                                    <span class="timestamp-inner">01:54:04</span>
+                                </span>
+                                <span class="content">
+                                     主播友好告别观众，提醒关注明日直播并保持休息状态
+                                </span></div></div></div> <!-- 直接插入outline的HTML，避免重复嵌套 -->
+                        </div>
+                    </div>
         <p><strong>视频链接：</strong><a class="source-link" href="https://www.bilibili.com/video/BV11ah5z1EuZ" target="_blank">点击观看</a></p>
       </div>
     </div>

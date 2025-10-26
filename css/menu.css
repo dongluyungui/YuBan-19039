@@ -1,7 +1,7 @@
 /* 右键菜单样式 */
 #context-menu {
     display: none;
-    position: absolute;
+    position: fixed;
     background-color: white;
     border: 1px solid #ccc;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);

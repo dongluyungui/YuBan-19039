@@ -24,8 +24,8 @@ document.addEventListener('contextmenu', function (e) {
         const viewportHeight = window.innerHeight;
         
         // 计算位置，防止溢出
-        let left = e.pageX;
-        let top = e.pageY;
+        let left = e.clientX; // 改为 clientX
+        let top = e.clientY;  // 改为 clientY
         
         if (left + menuWidth > viewportWidth) {
             left = viewportWidth - menuWidth;
