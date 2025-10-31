@@ -1,0 +1,236 @@
+/* 音乐卡片样式 */
+.music-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-left: 5px solid #4a90e2;
+  position: relative;
+  overflow: hidden;
+}
+
+.music-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-left-color: #ff6b6b;
+}
+
+.music-card.playing {
+  background: linear-gradient(135deg, #f0f8ff 0%, #fff 100%);
+  border-left-color: #ff6b6b;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(255, 107, 107, 0.5); }
+  100% { box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3); }
+}
+
+.music-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.music-left {
+  flex: 1;
+  min-width: 0; /* 防止文本溢出 */
+}
+
+.music-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.music-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-artist {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.music-text {
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
+}
+
+.music-time {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--secondary-color);
+  min-width: 50px;
+  text-align: center;
+}
+
+.music-date {
+  font-size: 12px;
+  color: #999;
+  min-width: 80px;
+  text-align: center;
+}
+
+.music-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.music-tag {
+  background: #e3f2fd;
+  color: var(--secondary-color);
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+}
+
+.music-tag:hover {
+  background: #bbdefb;
+  transform: scale(1.05);
+}
+
+.music-tag.selected {
+  background: var(--secondary-color);
+  color: white;
+}
+
+.play-btn {
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.play-btn:hover {
+  background: var(--hover-color);
+  transform: scale(1.1);
+}
+
+.play-btn.playing {
+  background: #ff6b6b;
+  animation: pulse 2s infinite;
+}
+
+.play-btn.loading {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* 音乐卡片状态指示器 */
+.music-status {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4caf50;
+}
+
+.music-card.playing .music-status {
+  background: #ff6b6b;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0.3; }
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .music-card {
+    padding: 15px;
+    margin: 10px 0;
+  }
+  
+  .music-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .music-right {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .music-title {
+    font-size: 16px;
+  }
+  
+  .music-time, .music-date {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .music-card {
+    padding: 12px;
+  }
+  
+  .music-right {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .play-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 10px;
+  }
+}
+
+/* 音乐卡片网格布局（可选） */
+.music-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.music-grid .music-card {
+  margin: 0;
+  height: 100%;
+}
+
+/* 空状态样式 */
+.music-empty {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+.music-empty .icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}

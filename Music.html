@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>这里写标题</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/music.css">
+    <link rel="stylesheet" href="../css/pages.css">
+    <link rel="stylesheet" href="../css/tagsearch.css">
+    <link rel="stylesheet" href="../css/setting.css"/>
+    <link rel="stylesheet" href="../css/responsive-nav.css"/>
+    <script src = "../js/responsive-nav.js"></script>
+    <script src = "../js/setting.js"></script>
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <style>
+    </style>
+</head>
+
+<body>
+    <div id="fireworks-container"></div>
+    <!-- 右键菜单 -->
+    <ul id="context-menu">
+        <li>彩蛋</li>
+        <li>当前时间</li>
+    </ul>
+    <header class="header">
+        <div class="header-content">
+            <div> 
+                <a href="index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="About.html" class="nav-link" data-i18n="about">关于</a>
+                <a href="gallery.html" class="nav-link active" data-i18n="gallery">画廊</a>
+                <a href="time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
+                
+                <!-- 需要在PC端"更多"中显示的链接（默认显示，超出时隐藏） -->
+                
+                <!-- 需要在移动端"更多"中显示的链接（PC端正常显示，移动端隐藏） -->
+                <a href="comment.html" class="nav-link active hidden-on-mobile" data-i18n="comment_board">留言板</a>
+                <a href="Sound.html" class="nav-link active hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+                <a href="LiveHistory.html" class="nav-link active hidden-on-mobile" data-i18n="previous_replays">往期回放</a>
+                <a href="games.html" class="nav-link active hidden-on-mobile" data-i18n="games">小游戏</a>
+                
+                <!-- 设置按钮 -->
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
+                
+                <!-- 1. PC端专用"更多"容器 -->
+                <div class="more-container more-container-pc" style="display: none;">
+                    <button class="more-btn more-btn-pc nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-pc">
+                    <!-- PC端"更多"菜单内容 -->
+                    </div>
+                </div>
+                
+                <!-- 2. 移动端专用"更多"容器 -->
+                <div class="more-container more-container-mobile">
+                    <button class="more-btn more-btn-mobile nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-mobile">
+                    <!-- 移动端"更多"菜单内容（比PC端多） -->
+                    <a href="comment.html" class="nav-link active" data-i18n="comment_board">留言板</a>
+                    <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+                    <a href="LiveHistory.html" class="nav-link active" data-i18n="previous_replays">往期回放</a>
+                    <a href="games.html" class="nav-link active" data-i18n="games">小游戏</a>
+                    </div>
+                </div>
+            </div>  
+            <div class="search-container">
+                <input type="text" id="search-box" class="search-box" placeholder="搜索标签...">
+                <button class="tag-search-btn toggle-tags-btn"  data-i18n="search" >标签筛选</button>
+                <div class="tags-list" id="tags-list"></div>
+                <button class="clear-search-btn" data-i18n="clear_search" >清除筛选</button>
+                <!-- 在搜索容器内添加筛选面板 -->
+                <div class="filter-panel" id="filterPanel" style="display: none;">
+                  <div class="filter-header">
+                    <h3>筛选条件</h3>
+                    <button class="close-filter">×</button>
+                  </div>
+                  
+                  <div class="filter-content">
+                    <h10>可多选tag，滑到底部应用筛选（可更改筛选模式）</h10>
+                    <div class="filter-groups">
+                        <div class="filter-left-groups" >
+                            <!-- 时间筛选组 -->
+                            <div class="filter-group">
+                              <h4>直播时间</h4>
+                              <div class="filter-options" id="timeOptions">
+                                <label><input type="checkbox" name="year" value="2025"> 2025年</label>
+                                <label><input type="checkbox" name="year" value="2024"> 2024年</label>
+                              </div>
+                            </div>
+                            
+                            <!-- 主播筛选组 -->
+                            <div class="filter-group">
+                              <h4>主播</h4>
+                              <div class="filter-options" id="hostOptions">
+                                <label><input type="checkbox" name="host" value="SINA"> SINA</label>
+                                <label><input type="checkbox" name="host" value="烖晞"> 烖晞</label>
+                                <label><input type="checkbox" name="host" value="御坂19039"> 御坂19039</label>
+                              </div>
+                            </div>
+
+                        </div>
+                        <div class="filter-right-groups">
+                            <div class="filter-group">
+                            <h4>原曲作者</h4>
+                            <div class="filter-options" id="originalSingerOptions">
+                                <label><input type="checkbox" name="originalSinger" value="周杰伦"> 周杰伦</label>
+                                <label><input type="checkbox" name="originalSinger" value="任素汐"> 任素汐</label>
+                            </div>
+                            </div>
+                            
+                            <div class="filter-group">
+                            <h4>歌曲名</h4>
+                            <div class="filter-options multi-column" id="songOptions">
+                                <label><input type="checkbox" name="song" value="稻香"> 稻香</label>
+                                <label><input type="checkbox" name="song" value="简单爱"> 简单爱</label>
+                                <label><input type="checkbox" name="song" value="我要你"> 我要你</label>
+                            </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!-- 其他标签筛选组 -->
+                    <div class="filter-group">
+                      <h4>其他标签</h4>
+                      <div class="filter-options multi-column" id="otherTagOptions">
+                        <!-- 其他标签将通过JS动态添加 -->
+                      </div>
+                    </div>
+                  
+                  <div class="filter-footer">
+                    <div class="filter-mode">
+                      <span>筛选模式：</span>
+                      <label>
+                        <input type="radio" name="filterMode" value="any" checked>
+                        宽松(包含任意标签)
+                      </label>
+                      <label>
+                        <input type="radio" name="filterMode" value="all">
+                        严格(包含所有标签)
+                      </label>
+                    </div>
+                    <div class="filter-buttons">
+                      <button class="reset-filter">重置</button>
+                      <button class="apply-filter">应用筛选</button>
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+        </div>
+  </header>
+    
+
+  <div class="container">
+        <h1 style="text-align: center; color: var(--primary-color); margin-bottom: 30px;">御坂19039の音乐</h1>
+
+
+        <div class="music-card" data-tags="2025,烖晞,周杰伦,稻香"data-music-url="Musics/烖晞_稻香_原曲哼唱.wav">
+            <div class="music-info">
+                <div class="music-left">
+                <div class="music-title">
+                    <span class="music-title-text">稻香</span>
+                    <span class="music-text">烖晞_稻香_原曲哼唱</span>
+                </div>
+                <div class="music-artist">周杰伦</div>
+                </div>
+                <div class="music-right">
+                <div class="music-date">2024-08-15</div>
+                <button class="play-btn">▶</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="music-card" data-tags="2025,烖晞,周杰伦,简单爱"data-music-url="Musics/烖晞_简单爱_原曲哼唱.mp3">
+            <div class="music-info">
+                <div class="music-left">
+                <div class="music-title">
+                    <span class="music-title-text">简单爱</span>
+                    <span class="music-text">烖晞_简单爱_原曲哼唱</span>
+                </div>
+                <div class="music-artist">周杰伦</div>
+                </div>
+                <div class="music-right">
+                <div class="music-date">2024-08-16</div>
+                <button class="play-btn">▶</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="music-card" data-tags="2025,烖晞,任素汐,我要你"data-music-url="Musics/烖晞_我要你_原曲哼唱.mp3">
+            <div class="music-info">
+                <div class="music-left">
+                <div class="music-title">
+                    <span class="music-title-text">我要你</span>
+                    <span class="music-text">烖晞_我要你_原曲哼唱</span>
+                </div>
+                <div class="music-artist">任素汐</div>
+                </div>
+                <div class="music-right">
+                <div class="music-date">2024-08-17</div>
+                <button class="play-btn">▶</button>
+                </div>
+            </div>
+        </div>
+
+
+    <div class="pagination-container">
+                <div class="page-info">共<span id="total-count">0</span>个记录，当前第<span id="current-page">1</span>页/共<span id="total-pages">1</span>页</div>
+                <div class="page-buttons" id="page-buttons"></div>
+                <div class="jump-to">
+                    跳转到第<input type="number" id="jump-page" min="1">页
+                    <button onclick="jumpToPage()">跳转</button>
+                </div>
+            </div>
+
+        <div style="text-align: center; padding: 30px; color: #666;">
+            <p>© 2024 御坂19039 应援站 | 粉丝群：769271000</p>
+            <p>本站为粉丝自制，与哔哩哔哩官方无关</p>
+            <p id="running-time">加载中...</p>
+        </div>
+    </div>
+    <script>
+    </script>
+    
+    <script src="../js/star.js"></script>
+    <script src="../js/click.js"></script>
+    <script src="../js/time.js"></script>
+    <script src="../js/fireworks.js"></script>
+    <script src="../js/menu.js"></script>
+    <script src="../js/pages.js"></script>
+    <script src="../js/music.js"></script>
+    <script src="../js/tagsearch.js"></script>
+</body>
+
+</html>    

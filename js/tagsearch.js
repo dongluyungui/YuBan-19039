@@ -37,6 +37,10 @@ function triggerSearch() {
   if (typeof initPagination === 'function') {
     setTimeout(initPagination, 10); 
   }
+  // 更新音乐播放器的筛选结果
+  if (window.musicPlayer && window.musicPlayer.updateFilteredMusic) {
+    window.musicPlayer.updateFilteredMusic();
+  }
 }
 
 // 更新筛选按钮状态
@@ -58,6 +62,9 @@ function updateFilterButtonState() {
 
 // 获取可搜索的元素（适配不同页面）
 function getSearchableElements() {
+  let musicCards = document.querySelectorAll('.music-card');
+  if (musicCards.length > 0) return musicCards;
+  
   let soundRecords = document.querySelectorAll('.category-box');
   if (soundRecords.length > 0) return soundRecords;
   
@@ -69,10 +76,13 @@ function getSearchableElements() {
 
 // 获取标签元素（适配不同页面）
 function getTagElements() {
+  let musicTags = document.querySelectorAll('.music-tag');
+  if (musicTags.length > 0) return musicTags;
+  
   let soundTags = document.querySelectorAll('.category-title');
   if (soundTags.length > 0) return soundTags;
   
-  let liveTags = document.querySelectorAll('.tag');
+  let liveTags = document.querySelectorAll('.live-tag');
   if (liveTags.length > 0) return liveTags;
   
   return document.querySelectorAll('.art-tag');
@@ -136,7 +146,7 @@ function filterByTag(tag, shouldCloseList = false) {
   searchBox.value = tag; // 同步到搜索框
   
   // 2. 清除所有标签的选中样式（统一视觉状态）
-  document.querySelectorAll('.tags-list span.selected, .art-tag.selected, .live-tag.selected').forEach(span => {
+  document.querySelectorAll('.tags-list span.selected, .music-tag.selected, .art-tag.selected, .live-tag.selected').forEach(span => {
     span.classList.remove('selected');
   });
   
@@ -153,6 +163,7 @@ function filterByTag(tag, shouldCloseList = false) {
 function autoGenerateTags() {
   // 处理所有需要生成标签的容器（按类型区分）
   const containers = [
+    ...document.querySelectorAll('.music-card'),
     ...document.querySelectorAll('.live-record'),
     ...document.querySelectorAll('.art-card'),
     ...document.querySelectorAll('.category-box') // 仍保留该类型容器，但后续会跳过处理
@@ -164,33 +175,46 @@ function autoGenerateTags() {
       return; // 终止当前容器的处理，继续下一个
     }
 
-    // 1. 判断容器类型（区分.live-record和.art-card）
+    // 1. 判断容器类型
+    const isMusicCard = container.classList.contains('music-card');
     const isLiveRecord = container.classList.contains('live-record');
     const isArtCard = container.classList.contains('art-card');
 
     // 2. 根据容器类型确定标签容器的位置和样式
     let tagsContainer;
-    if (isLiveRecord) {
-      // 对于.live-record：优先在.live-info内生成标签容器
-      tagsContainer = container.querySelector('.live-info .tags');
+    if (isMusicCard) {
+      // 对于.music-card：在.music-info内生成标签容器
+      tagsContainer = container.querySelector('.music-info .music-tags');
       if (!tagsContainer) {
         tagsContainer = document.createElement('div');
-        tagsContainer.className = 'tags live-tags'; // 添加专属类便于样式区分
-        // 插入到直播信息的末尾（如简介之后）
-        const liveInfo = container.querySelector('.live-info');
-        if (liveInfo) {
-          liveInfo.appendChild(tagsContainer);
+        tagsContainer.className = 'music-tags';
+        // 插入到音乐信息的末尾
+        const musicInfo = container.querySelector('.music-left');
+        if (musicInfo) {
+          musicInfo.appendChild(tagsContainer);
         } else {
           container.appendChild(tagsContainer); // 降级方案
         }
       }
-    } else if (isArtCard) {
-      // 对于.art-card：使用已有的.tags容器（如果存在则复用）
-      tagsContainer = container.querySelector('.art-info .tags');
+    } else if (isLiveRecord) {
+      // 对于.live-record：优先在.live-info内生成标签容器
+      tagsContainer = container.querySelector('.live-info .live-tags');
       if (!tagsContainer) {
         tagsContainer = document.createElement('div');
-        tagsContainer.className = 'tags art-tags'; // 艺术卡片专属类
-        // 插入到.art-details之后（保持原有结构）
+        tagsContainer.className = 'live-tags';
+        const liveInfo = container.querySelector('.live-info');
+        if (liveInfo) {
+          liveInfo.appendChild(tagsContainer);
+        } else {
+          container.appendChild(tagsContainer);
+        }
+      }
+    } else if (isArtCard) {
+      // 对于.art-card：使用已有的.tags容器
+      tagsContainer = container.querySelector('.art-info .art-tags');
+      if (!tagsContainer) {
+        tagsContainer = document.createElement('div');
+        tagsContainer.className = 'art-tags';
         const artDetails = container.querySelector('.art-details');
         if (artDetails) {
           artDetails.after(tagsContainer);
@@ -201,21 +225,21 @@ function autoGenerateTags() {
     }
 
     // 3. 清空现有标签（避免重复生成）
-    if (tagsContainer) { // 确保标签容器存在才执行后续操作
+    if (tagsContainer) {
       tagsContainer.innerHTML = '';
       
-          // 生成卡片上的tag按钮
-    const tags = container.dataset.tags?.split(/[,，]\s*/) || [];
-    tags.forEach(tag => {
-      const tagElement = document.createElement('span');
-      tagElement.className = `tag ${isLiveRecord ? 'live-tag' : 'art-tag'}`;
-      tagElement.textContent = tag;
-      
-      // 卡片tag的点击事件：调用统一筛选逻辑，无需关闭列表（无弹窗）
-      tagElement.addEventListener('click', () => filterByTag(tag));
-      
-      tagsContainer.appendChild(tagElement);
-    });
+      // 生成卡片上的tag按钮
+      const tags = container.dataset.tags?.split(/[,，]\s*/) || [];
+      tags.forEach(tag => {
+        const tagElement = document.createElement('span');
+        tagElement.className = `tag ${isMusicCard ? 'music-tag' : isLiveRecord ? 'live-tag' : 'art-tag'}`;
+        tagElement.textContent = tag;
+        
+        // 卡片tag的点击事件：调用统一筛选逻辑，无需关闭列表（无弹窗）
+        tagElement.addEventListener('click', () => filterByTag(tag));
+        
+        tagsContainer.appendChild(tagElement);
+      });
     }
   });
 }
@@ -282,8 +306,13 @@ function populateOtherTagOptions() {
   const allTags = new Set();
   const existingTags = new Set();
   
-  // 同时收集.live-record和.art-card的标签
-  const records = [...document.querySelectorAll('.live-record'), ...document.querySelectorAll('.art-card')];
+  // 同时收集所有类型的标签
+  const records = [
+    ...document.querySelectorAll('.music-card'),
+    ...document.querySelectorAll('.live-record'), 
+    ...document.querySelectorAll('.art-card')
+  ];
+  
   records.forEach(record => {
     // 支持中文逗号和英文逗号分割
     const tags = record.dataset.tags.split(/[,，]\s*/);
@@ -291,7 +320,7 @@ function populateOtherTagOptions() {
   });
   
   // 收集已存在的标签（在预定义分类中，需要跳过的部分，自定义）
-  const predefinedGroups = ['timeOptions', 'hostOptions', 'themeOptions', 'gameTitleOptions', 'gameOptions', 'bookOptions', 'festival', 'character'];
+  const predefinedGroups = ['timeOptions', 'hostOptions', 'themeOptions', 'gameTitleOptions', 'gameOptions', 'bookOptions', 'festival', 'character', 'originalSingerOptions', 'songOptions'];
   predefinedGroups.forEach(groupId => {
     const group = document.getElementById(groupId);
     if (group) {
@@ -332,8 +361,12 @@ function populateOtherTagOptions() {
 // 应用筛选逻辑
 function applyFilters() {
   const filterPanel = document.getElementById('filterPanel');
-  // 同时处理.live-record和.art-card
-  const records = [...document.querySelectorAll('.live-record'), ...document.querySelectorAll('.art-card')];
+  // 同时处理所有类型的卡片
+  const records = [
+    ...document.querySelectorAll('.music-card'),
+    ...document.querySelectorAll('.live-record'),
+    ...document.querySelectorAll('.art-card')
+  ];
   
   // 获取所有选中的筛选条件
   const panelSelectedTags = Array.from(filterPanel.querySelectorAll('input[type="checkbox"]:checked'))
@@ -383,6 +416,10 @@ function applyFilters() {
   // 更新分页
   if (typeof initPagination === 'function') {
     initPagination();
+  }
+  // 更新音乐播放器的筛选结果
+  if (window.musicPlayer && window.musicPlayer.updateFilteredMusic) {
+    window.musicPlayer.updateFilteredMusic();
   }
 }
 
