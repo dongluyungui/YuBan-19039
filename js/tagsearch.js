@@ -8,23 +8,21 @@ function triggerSearch() {
   const searchValue = document.getElementById('search-box').value.toLowerCase();
   const records = getSearchableElements();
   
+  // 将搜索框的值分割为关键词
+  const keywords = searchValue.trim() ? searchValue.trim().split(/\s+/) : [];
+  
   records.forEach(record => {
-    // 支持中文逗号和英文逗号分割
     const tags = record.dataset.tags.split(/[,，]\s*/).map(t => t.toLowerCase());
     let hasMatch = false;
 
-    // 优先处理多选标签筛选
-    if (selectedTags.length > 0) {
-      const lowerSelected = selectedTags.map(t => t.toLowerCase());
-      hasMatch = lowerSelected.some(t => tags.includes(t));
-    } 
-    // 处理搜索框单标签搜索
-    else if (searchValue) {
-      hasMatch = tags.some(t => t.includes(searchValue));
-    } 
-    // 无筛选条件时全部显示
-    else {
+    // 如果没有关键词，则显示所有
+    if (keywords.length === 0) {
       hasMatch = true;
+    } else {
+      // 要求每一个关键词都匹配
+      hasMatch = keywords.every(keyword => 
+          tags.some(t => t.includes(keyword))
+      );
     }
 
     record.style.display = hasMatch ? '' : 'none';
@@ -33,7 +31,7 @@ function triggerSearch() {
   // 更新筛选状态和按钮样式
   updateFilterButtonState();
 
-  // 筛选后重新初始化分页改后：延迟10ms确保DOM更新
+  // 筛选后重新初始化分页
   if (typeof initPagination === 'function') {
     setTimeout(initPagination, 10); 
   }

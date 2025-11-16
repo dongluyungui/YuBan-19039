@@ -344,6 +344,7 @@
                 <a href="Sound.html" class="nav-link active hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
                 <a href="LiveHistory.html" class="nav-link active hidden-on-mobile" data-i18n="previous_replays">往期回放</a>
                 <a href="games.html" class="nav-link active hidden-on-mobile" data-i18n="games">小游戏</a>
+                <a href="Music.html" class="nav-link active hidden-on-mobile" data-i18n="music">音乐</a>
                 
                 <!-- 设置按钮 -->
                 <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
@@ -366,6 +367,7 @@
                     <a href="Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
                     <a href="LiveHistory.html" class="nav-link active" data-i18n="previous_replays">往期回放</a>
                     <a href="games.html" class="nav-link active" data-i18n="games">小游戏</a>
+                    <a href="Music.html" class="nav-link active" data-i18n="music">音乐</a>
                     </div>
                 </div>
             </div>  
@@ -499,31 +501,37 @@
                 hideLoading();
             }
         });
-
         // 加载留言
         async function loadMessages() {
             if (abortController) abortController.abort(); // 防止重复加载时内存泄漏
             
             try {
                 showLoading();
+                // 修改这里：移除 method: 'GET'，因为 GET 请求不需要指定 method
                 const response = await fetch(API_URL, {
-                    signal: abortController.signal, // 添加取消信号
-                    method: 'GET'
+                    signal: abortController.signal // 添加取消信号
+                    // 删除 method: 'GET' 这一行
                 });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const messages = await response.json();
                 const grouped = buildCommentTree(messages);
                 renderMessages(grouped);
                 initPagination();
             } catch (error) {
-                // 区分主动取消和真实错误
+                // 修改错误处理
                 if (error.name === 'AbortError') {
                     console.log('用户取消加载');
                 } else {
-                    showError('加载失败，请检查网络后重试'); // 优化后的提示
+                    console.error('加载失败:', error);
+                    showError('加载失败，请检查网络后重试');
                 }
             } finally {
                 hideLoading();
-                abortController = null; // 重置控制器
+                abortController = null;
             }
         }
 
