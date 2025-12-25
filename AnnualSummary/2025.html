@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入样式文件 -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/setting.css"/>
+    <link rel="stylesheet" href="../css/responsive-nav.css"/>
+    <!-- 引入头部脚本 -->
+    <script src="../js/responsive-nav.js"></script>
+    <script src="../js/setting.js"></script>
+    <!-- 页面图标 -->
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <title>2025直播年终总结</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        
+        body {
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 800px;
+            background: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #e63946;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+            border-bottom: 2px solid #e63946;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        /* 核心修改：choose容器默认显示（不再隐藏），仅隐藏按钮 */
+        .choose {
+            /* 移除display: none，改为默认flex布局 */
+            display: flex;
+            flex-direction: row; /* 明确横向排列 */
+            justify-content: center;
+            align-items: center;
+            gap: 20px; /* 按钮之间的间距 */
+            margin-top: 30px;
+            opacity: 1; /* 始终显示 */
+            transition: none; /* 无需过渡 */
+        }
+
+        /* choose内按钮默认隐藏（核心修改） */
+        .choose-btn {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1.5s ease, transform 1.5s ease;
+            /* 新增：默认不可点击，避免误触 */
+            pointer-events: none;
+        }
+
+        /* 按钮显示时恢复可点击 */
+        .choose-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .section {
+            padding: 25px;
+            border-radius: 10px;
+            display: none; /* 默认隐藏所有板块 */
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .section h2 {
+            color: #457b9d;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .stat-item {
+            margin: 12px 0;
+            font-size: 1.1rem;
+            color: #444;
+        }
+
+        .number {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #e63946;
+            display: inline-block;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .tip {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            color: #777;
+        }
+
+        .tag {
+            background: #a8dadc;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: #2d6a8e;
+            text-decoration: none;
+            opacity: 0;
+            transform: rotateY(90deg);
+            transform-origin: center; 
+            transition: all 0.5s ease; /* tag动画时长0.5s */
+            display: inline-block;
+        }
+
+        /* tag激活显示的类 */
+        .tag.show {
+            opacity: 1;
+            transform: rotateY(0); 
+        }
+        
+        .tag:hover {
+            background: #fff0f3;
+            transform: rotateY(0) translateY(-2px); 
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        /* 按钮样式 */
+        .btn {
+            display: inline-block; /* 保留原有值，choose内按钮需要这个值实现并列 */
+            width: 200px;
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+            background: #457b9d;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        /* 新增：startBtn 居中样式（核心修改） */
+        #startBtn {
+            display: block; /* 改为block才能让margin: auto生效 */
+            margin: 20px auto; /* 上下20px间距，左右自动居中 */
+        }
+
+        .btn:hover {
+            background: #2d6a8e;
+        }
+
+        .final-tip {
+            text-align: center;
+            color: #e63946;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff5f5;
+            border-radius: 10px;
+            display: none;
+            opacity: 0;
+        }
+
+        .final-tip.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* 最终提示内的打字机文本容器 */
+        .final-text {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        /* 打字机光标（通用） */
+        .type-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.2em;
+            background-color: #e63946;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* 重温按钮特殊样式 */
+        .restart-btn {
+            background: #e63946;
+        }
+
+        .restart-btn:hover {
+            background: #c92a36;
+        }
+
+        /* MVP提示动画样式 - 变大变小+金色闪烁 */
+        @keyframes pulse-glow {
+        0% { transform: scale(1); color: gold; opacity: 1; }
+        50% { transform: scale(1.2); color: #ffd700; opacity: 0.8; }
+        100% { transform: scale(1); color: gold; opacity: 1; }
+        }
+
+        .mvp-tip {
+        display: none; /* 默认隐藏 */
+        font-size: 0.9rem;
+        color: gold;
+        animation: pulse-glow 2s infinite; /* 无限循环动画 */
+        margin-top: 5px;
+        text-align: center;
+        font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px 15px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .section h2 {
+                font-size: 1.3rem;
+            }
+            .btn {
+                width: 180px;
+                height: 40px;
+                line-height: 40px;
+                font-size: 0.95rem;
+            }
+            
+            /* 移动端choose按钮改为垂直排列（容器始终显示） */
+            .choose {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="fireworks-container"></div>
+    <!-- 右键菜单 -->
+    <ul id="context-menu">
+        <li>彩蛋</li>
+        <li>当前时间</li>
+    </ul>
+    <header class="header">
+        <div class="header-content">
+            <div> 
+                <a href="../index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="../About.html" class="nav-link" data-i18n="about">关于</a>
+                <a href="../gallery.html" class="nav-link active" data-i18n="gallery">画廊</a>
+                <a href="../time.html" class="nav-link active" data-i18n="timeline">时间轴</a>
+                
+                <!-- 需要在PC端"更多"中显示的链接（默认显示，超出时隐藏） -->
+                
+                <!-- 需要在移动端"更多"中显示的链接（PC端正常显示，移动端隐藏） -->
+                <a href="../comment.html" class="nav-link active hidden-on-mobile" data-i18n="comment_board">留言板</a>
+                <a href="../Sound.html" class="nav-link active hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+                <a href="../LiveHistory.html" class="nav-link active hidden-on-mobile" data-i18n="previous_replays">往期回放</a>
+                <a href="../games.html" class="nav-link active hidden-on-mobile" data-i18n="games">小游戏</a>
+                <a href="../Music.html" class="nav-link active hidden-on-mobile" data-i18n="music">音乐</a>
+                
+                <!-- 设置按钮 -->
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
+                
+                <!-- 1. PC端专用"更多"容器 -->
+                <div class="more-container more-container-pc" style="display: none;">
+                    <button class="more-btn more-btn-pc nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-pc">
+                    <!-- PC端"更多"菜单内容 -->
+                    </div>
+                </div>
+                
+                <!-- 2. 移动端专用"更多"容器 -->
+                <div class="more-container more-container-mobile">
+                    <button class="more-btn more-btn-mobile nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-mobile">
+                    <!-- 移动端"更多"菜单内容（比PC端多） -->
+                    <a href="../comment.html" class="nav-link active" data-i18n="comment_board">留言板</a>
+                    <a href="../Sound.html" class="nav-link active" data-i18n="voice_button">语音按钮</a>
+                    <a href="../LiveHistory.html" class="nav-link active" data-i18n="previous_replays">往期回放</a>
+                    <a href="../games.html" class="nav-link active" data-i18n="games">小游戏</a>
+                    <a href="../Music.html" class="nav-link active" data-i18n="music">音乐</a>
+                    </div>
+                </div>
+            </div>  
+       </div>
+    </header>
+    <div class="container">
+            <h1>2025，我们一起走过的直播时光</h1>
+            <div class="intro">
+                嘿～SINA、烖唏、御坂的小伙伴们<br>
+                按下按钮，解锁属于我们的2025温暖回忆吧 💛
+            </div>
+            
+            <!-- 开始按钮 -->
+            <button class="btn" id="startBtn">开启2025温暖回顾</button>
+
+            <!-- 1. 直播场次统计 -->
+            <div class="section" id="section1">
+                <h2>✨ 我们的2025直播足迹</h2>
+                <div class="stat-item">2025年，御坂19039这个温暖的小窝，我们一共度过了<span class="number" data-target="106">？</span>场直播呀～</div>
+                <div class="stat-item">每一场直播，都离不开各位的陪伴：</div>
+                <div class="stat-item">❤️ SINA 2025年陪我们经历了<span class="number" data-target="43">？</span>场直播</div>
+                <div class="stat-item">💙 烖唏 2025年陪我们经历了<span class="number" data-target="21">？</span>场直播</div>
+                <div class="stat-item">💚 大坂 2025年陪我们经历了<span class="number" data-target="44">？</span>场直播</div>
+                <div class="mvp-tip">老大🐖是mvp</div>
+                <div class="choose">
+                    <button class="btn nextBtn choose-btn">解锁下一段回忆</button>
+                </div>
+            </div>
+
+            <!-- 2. 游玩游戏汇总 -->
+            <div class="section" id="section2">
+                <h2>🎮 那些一起玩过的快乐游戏</h2>
+                <div class="stat-item">2025年，我们一起解锁了这么多好玩的游戏，每一款都藏着欢声笑语～</div>
+                <div class="tag-list">
+                    <a href="https://www.bilibili.com/video/BV17tbGz9Eg4" class="tag" target="_blank">csgo</a>
+                    <a href="https://www.bilibili.com/video/BV1SZTUzpE52" class="tag" target="_blank">米塔</a>
+                    <a href="https://www.bilibili.com/video/BV1ASkBBQEyM" class="tag" target="_blank">原神</a>
+                    <a href="https://www.bilibili.com/video/BV1MgRZY9E3w" class="tag" target="_blank">光遇</a>
+                    <a href="https://www.bilibili.com/video/BV1LqNRz5E3G" class="tag" target="_blank">qq14</a>
+                    <a href="https://www.bilibili.com/video/BV1cuF2eWEq4" class="tag" target="_blank">我的世界</a>
+                    <a href="https://www.bilibili.com/video/BV1dyNAeMEpf" class="tag" target="_blank">瓦罗兰特</a>
+                    <a href="https://www.bilibili.com/video/BV1E4yoBTEwz" class="tag" target="_blank">小小梦魇</a>
+                    <a href="https://www.bilibili.com/video/BV12TfZY8En1" class="tag" target="_blank">泰拉瑞亚</a>
+                    <a href="https://www.bilibili.com/video/BV1JguAz1Erz" class="tag" target="_blank">星穹铁道</a>
+                    <a href="https://www.bilibili.com/video/BV1ifHfzYEZ2" class="tag" target="_blank">杯杯倒满</a>
+                </div>
+                <div class="tip">点击可以跳转到初见视频！</div>
+                <div class="choose">
+                    <button class="btn prevBtn choose-btn">回忆上一段回忆</button>
+                    <button class="btn nextBtn choose-btn">解锁下一段回忆</button>
+                </div>
+            </div>
+
+            <!-- 3. 朗读作品回顾 -->
+            <div class="section" id="section3">
+                <h2>📖 那些温柔的朗读时光</h2>
+                <div class="stat-item">2025年，感谢SINA用温柔的声音，为我们朗读了这些治愈的作品～</div>
+                <div class="tag-list">
+                    <a href="https://www.bilibili.com/video/BV1c2guzuELx" class="tag" target="_blank">《小王子》</a>
+                    <a href="https://www.bilibili.com/video/BV1sx8Lz1Ehp" class="tag" target="_blank">《生命是一树花开》</a>
+                    <a href="https://www.bilibili.com/video/BV1XtbBzUEGG" class="tag" target="_blank">《水孩子》</a>
+                </div>
+                <div class="tip">点击可以跳转到对应视频！</div>
+                <div class="choose">
+                    <button class="btn prevBtn choose-btn">回忆上一段回忆</button>
+                    <button class="btn nextBtn choose-btn">解锁下一段回忆</button>
+                </div>
+            </div>
+
+            <!-- 4. 共同度过的时光 -->
+            <div class="section" id="section4">
+                <h2>🎊 那些一起度过的珍贵时刻</h2>
+                <div class="stat-item">2025年，我们一起走过了这些特别的日子，每一个都值得珍藏～</div>
+                <div class="tag-list">
+                    <a href="https://www.bilibili.com/video/BV1G669Y2EHQ" class="tag" target="_blank">跨年</a>
+                    <a href="https://www.bilibili.com/video/BV1nJG8zNEjz" class="tag" target="_blank">生日</a>
+                    <a href="https://www.bilibili.com/video/BV15ijfzDEiu" class="tag" target="_blank">周年</a>
+                    <a href="https://www.bilibili.com/video/BV15ijfzDEiu" class="tag" target="_blank">端午</a>
+                    <a href="https://www.bilibili.com/video/BV1uK7MzAEuY" class="tag" target="_blank">六一</a>
+                    <a href="https://www.bilibili.com/video/BV1CpHAzDEt4" class="tag" target="_blank">中秋</a>
+                    <a href="https://www.bilibili.com/video/BV1CpHAzDEt4" class="tag" target="_blank">国庆</a>
+                    <a href="https://www.bilibili.com/video/BV1E4yoBTEwz" class="tag" target="_blank">万圣节</a>
+                </div>
+                <div class="tip">点击可以跳转到对应视频！</div>
+                <div class="choose">
+                    <button class="btn prevBtn choose-btn">回忆上一段回忆</button>
+                    <button class="btn nextBtn choose-btn">解锁下一段回忆</button>
+                </div>
+            </div>
+
+            <!-- 5. 直播主题统计 -->
+            <div class="section" id="section5">
+                <h2>📝 我们的直播小日常</h2>
+                <div class="stat-item">2025年，"游戏"是我们最常相伴的主题，一共播了<span class="number" data-target="45">？</span>场～</div>
+                <div class="stat-item">其中：SINA<span class="number" data-target="19">？</span>场，烖唏<span class="number" data-target="15">？</span>场，大坂<span class="number" data-target="11">？</span>场</div>
+                <div class="stat-item">大坂的摸鱼静音直播有<span class="number" data-target="28">？</span>场</div>
+                <div class="stat-item">轻松的杂谈时刻也有<span class="number" data-target="25">？</span>场呀</div>
+                <div class="tip">不知道你印象最深刻的是哪一场呢？</div>
+                <div class="choose">
+                    <button class="btn prevBtn choose-btn">回忆上一段回忆</button>
+                    <button class="btn nextBtn choose-btn">解锁下一段回忆</button>
+                </div>
+            </div>
+
+            <!-- 6. 直播时间之最 -->
+            <div class="section" id="section6">
+                <h2>⏰ 那些难忘的直播瞬间</h2>
+                <div class="stat-item">2025年，我们起得最早的一次直播是<span class="highlight">07月09日</span>的《老师，我们家烖唏好像热的快熟了》～早上04:59就开播啦！😝</div>
+                <div class="stat-item">2025年，我们熬得最晚的一次直播是<span class="highlight">07月03日</span>的《想画一点不一样的》，04:22才下播从03:18开播，安安静静画了整整一小时～</div>
+                <div class="stat-item">2025年，单日最长陪伴是<span class="highlight">06月18日</span>的《画米塔》～一天播了6小时多：上午场播了03:26:45，下午场播了03:28:44，只为画出超美的米塔封面～</div>
+                <div class="stat-item">2025年，单次直播最久的是<span class="highlight">12月01日</span>《我练不动琴了我要玩酸角粥！》～足足打了05:37:24的三角洲，太拼啦！</div>
+                <div class="choose">
+                    <button class="btn prevBtn choose-btn">回忆上一段回忆</button>
+                    <button class="btn choose-btn" id="finalBtn">看完所有回忆啦</button>
+                </div>
+            </div>
+
+            <!-- 最终提示 -->
+            <div class="final-tip" id="finalTip">
+                <div class="final-text" id="finalText">2025的回忆就到这里啦 🥰<br>感谢SINA、烖唏、御坂的陪伴，2026我们继续温暖同行～</div>
+                <button class="btn restart-btn" id="restartBtn" style="display: none; opacity: 0;">重温2025温暖回忆</button>
+                <a href="../comment.html" class="btn" id="commentBtn" style="display: none; opacity: 0;">去留言板说点什么吧</a>
+            </div>
+
+            <!-- 独立音效标签（可单独改src） -->
+            <audio id="numberSound" src="typing.wav"></audio>   <!-- 数字变化音效 -->
+            <audio id="tagSound" src="typing.wav"></audio>         <!-- Tag旋转音效 -->
+            <audio id="typewriterSound" src="typing.wav"></audio> <!-- 打字机音效 -->
+            <audio id="bgmAudio" src="../Musics/烖晞_我要你_原曲哼唱.mp3" loop>
+
+        </div>
+    </div>
+
+    <script>
+        // 获取元素
+        const startBtn = document.getElementById('startBtn');
+        const prevBtns = document.querySelectorAll('.prevBtn'); 
+        const nextBtns = document.querySelectorAll('.nextBtn');
+        const finalBtn = document.getElementById('finalBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const finalTip = document.getElementById('finalTip');
+        const finalText = document.getElementById('finalText');
+        const commentBtn = document.getElementById('commentBtn');
+        const sections = [
+            document.getElementById('section1'),
+            document.getElementById('section2'),
+            document.getElementById('section3'),
+            document.getElementById('section4'),
+            document.getElementById('section5'),
+            document.getElementById('section6')
+        ];
+
+        // 获取intro元素
+        const intro = document.querySelector('.intro');
+
+        // 独立音效变量
+        const numberSound = document.getElementById('numberSound');   // 数字音效
+        const tagSound = document.getElementById('tagSound');         // Tag音效
+        const typewriterSound = document.getElementById('typewriterSound'); // 打字机音效
+        const bgmAudio = document.getElementById('bgmAudio');
+        let isBgmPlaying = false;
+        // ========== 新增：BGM状态监听 - 暂停/结束同步标记 ==========
+        if(bgmAudio){
+            // 暂停时标记为false
+            bgmAudio.addEventListener('pause', () => {
+                isBgmPlaying = false;
+            });
+            // 播放结束时标记为false（你的BGM是loop，这里防意外）
+            bgmAudio.addEventListener('ended', () => {
+                isBgmPlaying = false;
+            });
+            // 继续播放时标记为true
+            bgmAudio.addEventListener('play', () => {
+                isBgmPlaying = true;
+            });
+        }
+
+        // 当前激活的板块索引
+        let currentSectionIndex = -1;
+
+        // 核心修改：仅显示choose内的按钮（容器已默认显示）
+        function showchooseWithAnimation(section, delay = 0) {
+            const choose = section.querySelector('.choose');
+            if (!choose) return;
+            
+            // 仅延迟显示按钮（无需处理容器）
+            setTimeout(() => {
+                // 依次显示choose内的按钮
+                const chooseBtns = choose.querySelectorAll('.choose-btn');
+                chooseBtns.forEach((btn, index) => {
+                    setTimeout(() => {
+                        btn.classList.add('show');
+                    }, index * 200); // 每个按钮间隔200ms显示
+                });
+            }, delay);
+        }
+
+        // 数字滚动动画函数（所有数字速度统一）
+        function animateNumbers(section, onComplete) {
+            const numberElements = Array.from(section.querySelectorAll('.number'));
+            // 统一数字动画时长（所有数字速度一致）
+            const UNIFORM_DURATION = 1500; // 统一1.5秒完成动画
+            
+            // 重置MVP提示为隐藏（兼容重温功能）
+            const mvpTip = section.querySelector('.mvp-tip');
+            if (mvpTip) {
+                mvpTip.style.display = 'none';
+            }
+            
+            // 递归逐个执行数字动画
+            function animateNextNumber(index) {
+                // 递归终止条件：所有数字处理完毕
+                if (index >= numberElements.length) {
+                    // 数字动画完成后，执行Tag动画
+                    const tags = section.querySelectorAll('.tag');
+                    const totalTags = tags.length;
+                    let completedTags = 0;
+                    
+                    // 执行Tag动画（等待每个tag动画完成）
+                    tags.forEach((tag, tagIndex) => {
+                        setTimeout(() => {
+                            tag.classList.add('show');
+        
+                            // ========== 修改：播放Tag专属音效（替换原有typingSound） ==========
+                            if (tagSound) {
+                                tagSound.currentTime = 0;
+                                tagSound.play().catch(err => console.log('Tag音效播放失败:', err));
+                            }
+                            // 等待tag的transition动画完成（0.5s）后标记完成
+                            setTimeout(() => {
+                                completedTags++;
+                                // 所有tag完全显示（含动画）后才处理choose
+                                if (completedTags === totalTags) {
+                                    handlechooseDisplay();
+                                }
+                            }, 500); // 等待tag的0.5s动画完成
+                        }, 200 * tagIndex); // 逐个显示tag
+                    });
+                    
+                    // 兼容没有Tag的场景
+                    if (totalTags === 0) {
+                        handlechooseDisplay();
+                    }
+                    
+                    // 处理choose显示的逻辑
+                    function handlechooseDisplay() {
+                        // 对于section1，需要等待MVP提示显示后再显示按钮
+                        if (section.id === 'section1' && mvpTip) {
+                            // 显示MVP提示
+                            mvpTip.style.display = 'block';
+                            // MVP提示显示500ms后显示按钮
+                            showchooseWithAnimation(section, 500);
+                        } else {
+                            // 其他section直接显示按钮
+                            showchooseWithAnimation(section);
+                        }
+                        if (onComplete) onComplete();
+                    }
+                    
+                    return;
+                }
+                
+                const element = numberElements[index];
+                // 重置数字为问号（用于重温功能）
+                element.textContent = '？';
+                const target = parseInt(element.dataset.target);
+                let current = 0;
+                const step = target / (UNIFORM_DURATION / 16); // 按60fps计算步长，速度统一
+                
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                        // 当前数字动画完成后，执行下一个数字的动画
+                        animateNextNumber(index + 1);
+                    }
+                    element.textContent = Math.floor(current);
+    
+                // ========== 修改：播放数字专属音效（替换原有typingSound） ==========
+                if (numberSound && current % 1 === 0) { // 每5个数字播放一次（可调整频率）
+                    numberSound.currentTime = 0;
+                    numberSound.play().catch(err => console.log('数字音效播放失败:', err));
+                }
+                }, 16);
+            }
+            
+            // 启动第一个数字的动画
+            animateNextNumber(0);
+        }
+
+        // 通用打字机动画函数（带光标、支持换行/HTML标签）
+        function typeWriterEffect(element, callback) {
+            // 使用打字机专属音效变量
+            const sound = typewriterSound;
+            
+            // 保存原始文本（防止重复执行丢失）
+            const originalContent = element.innerHTML;
+            element.innerHTML = ''; // 先清空元素内容
+            let index = 0;
+            const speed = 80; // 打字速度（可调整）
+            
+            // ========== 新增：字符计数器（控制音效频率） ==========
+            let charCount = 0;
+            const playSoundEvery = 3; // 每2个字符播放一次音效（可改为3/4等）
+            
+            const cursor = document.createElement('span');
+            cursor.className = 'type-cursor';
+            element.appendChild(cursor);
+            
+            function type() {
+                if (index < originalContent.length) {
+                    const char = originalContent.charAt(index);
+                    if (char === '<') {
+                        // 原有HTML标签处理逻辑（不变）
+                        const tagEnd = originalContent.indexOf('>', index);
+                        if (tagEnd !== -1) {
+                            const tag = originalContent.substring(index, tagEnd + 1);
+                            cursor.insertAdjacentHTML('beforebegin', tag);
+                            index = tagEnd + 1;
+                        } else {
+                            cursor.insertAdjacentText('beforebegin', char);
+                            index++;
+                        }
+                    } else {
+                        cursor.insertAdjacentText('beforebegin', char);
+                        index++;
+                        
+                        // ========== 修改：按计数播放音效（每N个字符一次） ==========
+                        if (char !== '\n' && sound) {
+                            charCount++; // 有效字符计数+1
+                            // 每playSoundEvery个字符播放一次音效
+                            if (charCount === playSoundEvery) {
+                                sound.currentTime = 0;
+                                sound.play().catch(err => console.log('打字机音效播放失败:', err));
+                                charCount = 0; // 重置计数器
+                            }
+                        }
+                    }
+                    setTimeout(type, speed);
+                } else {
+                    cursor.remove();
+                    if (callback) callback();
+                }
+            }
+            type();
+        }
+
+        // 显示指定板块
+        function showSection(index) {
+            // 重置所有choose按钮为隐藏（兼容重温功能）
+            document.querySelectorAll('.choose-btn').forEach(btn => {
+                btn.classList.remove('show');
+            });
+    
+            // 重置所有数字为问号
+            document.querySelectorAll('.number').forEach(el => el.textContent = '？');
+            
+            // 隐藏所有板块 + 重置tag状态（兼容重温）
+            sections.forEach(section => {
+                section.classList.remove('active');
+                // 重置tag：强制恢复初始状态
+                const tags = section.querySelectorAll('.tag');
+                tags.forEach(tag => {
+                    tag.classList.remove('show');
+                });
+                
+                // 重置section6的stat-item文字（兼容重温功能）
+                if (section.id === 'section6') {
+                    const statItems = section.querySelectorAll('.stat-item');
+                    statItems.forEach(item => {
+                        if (!item.dataset.originalText) {
+                            item.dataset.originalText = item.textContent;
+                        }
+                        item.textContent = '';
+                    });
+                }
+            });
+            
+            // 重置MVP提示
+            const mvpTip = sections[0]?.querySelector('.mvp-tip');
+            if (mvpTip) {
+                mvpTip.style.display = 'none';
+            }
+            
+            // 显示目标板块
+            if (index >= 0 && index < sections.length) {
+                sections[index].classList.add('active');
+                
+                // 区分处理：section1-5执行数字动画，section6执行打字机动画
+                if (index !== 5) { // 不是section6（索引5）
+                    animateNumbers(sections[index]);
+                } else { // 是section6，执行打字机动画
+                    const statItems = sections[index].querySelectorAll('.stat-item');
+                    let itemIndex = 0;
+                    const totalItems = statItems.length;
+
+                    function processNextItem() {
+                        if (itemIndex < statItems.length) {
+                            const currentItem = statItems[itemIndex];
+                            currentItem.textContent = currentItem.dataset.originalText;
+                            // 使用通用打字机函数（带光标）
+                            typeWriterEffect(currentItem, () => {
+                                // ========== 核心修改：新增500ms延迟后再处理下一个item ==========
+                                setTimeout(() => {
+                                    itemIndex++;
+                                    processNextItem();
+                                    
+                                    // 所有打字机动画完成后：显示section6的按钮
+                                    if (itemIndex === totalItems) {
+                                        showchooseWithAnimation(sections[index], 500);
+                                    }
+                                }, 500); // 单个stat-item打完后等待0.5秒
+                            });
+                        }
+                    }
+                    processNextItem();
+                }
+
+                currentSectionIndex = index;
+            } else if (index === sections.length) {
+                // 显示最终提示
+                finalTip.classList.add('active');
+                
+                // ========== 新增：启动烟花定时器（每4秒放一次） ==========
+                fireworkTimer = setInterval(() => {
+                    const numFireworks = Math.floor(Math.random() * 31) + 20;
+                    for (let i = 0; i < numFireworks; i++) {
+                        window.fireworks.push(new window.Firework());
+                    }
+                }, 4000); // 4秒间隔，可改为3000（3秒）/5000（5秒）
+                
+                // 执行最终提示的打字机动画
+                typeWriterEffect(finalText, () => {
+                    // （原有代码不变）
+                    setTimeout(() => {
+                        commentBtn.style.display = 'inline-block';
+                        restartBtn.style.display = 'inline-block';
+                        setTimeout(() => {
+                            commentBtn.style.opacity = 1;
+                            restartBtn.style.opacity = 1;
+                        }, 50);
+                    }, 500);
+                });
+            }
+        }
+
+        // 开始按钮点击事件
+        startBtn.addEventListener('click', () => {
+            startBtn.style.display = 'none';
+            showSection(0);
+            intro.style.display = 'none';
+            
+            // ========== 修改：BGM播放加状态判断，播过不重放 ==========
+            if (bgmAudio && !isBgmPlaying) { // 只有BGM存在且未播放时才执行
+                bgmAudio.currentTime = 0;
+                bgmAudio.play().catch(err => {
+                    console.log('BGM自动播放失败，点击页面任意位置即可播放');
+                    document.addEventListener('click', () => {
+                        bgmAudio.play();
+                        isBgmPlaying = true; // 点击播放成功后标记
+                    }, { once: true });
+                });
+                // 播放成功直接标记（非自动播放失败场景）
+                isBgmPlaying = true;
+            }
+        });
+
+        // 上一段按钮点击事件
+        prevBtns.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                // 确保索引≥1时才回退（避免到-1）
+                if (currentSectionIndex > 0) {
+                    showSection(currentSectionIndex - 1);
+                }
+            });
+        });
+
+        // 下一个按钮点击事件
+        nextBtns.forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                showSection(index + 1);
+            });
+        });
+
+        // 最终按钮点击事件
+        finalBtn.addEventListener('click', () => {
+            showSection(sections.length);
+        });
+
+        // 重温按钮点击事件
+        restartBtn.addEventListener('click', () => {
+            // ========== 新增：清除烟花定时器，停止放烟花 ==========
+            if (fireworkTimer) {
+                clearInterval(fireworkTimer);
+                fireworkTimer = null;
+            }
+            // 隐藏最终提示
+            finalTip.classList.remove('active');
+            // 隐藏最终提示内的按钮
+            commentBtn.style.display = 'none';
+            restartBtn.style.display = 'none';
+            commentBtn.style.opacity = 0;
+            restartBtn.style.opacity = 0;
+            
+            // 重置所有数字为问号
+            document.querySelectorAll('.number').forEach(el => el.textContent = '？');
+            
+            // 显示开始按钮
+            startBtn.style.display = 'block';
+            
+            // 重置当前索引
+            currentSectionIndex = -1;
+            
+            // 重新显示intro区域
+            intro.style.display = 'block';
+        });
+    </script>
+    <script src="../js/star.js"></script>
+    <script src="../js/click.js"></script>
+    <script src="../js/time.js"></script>
+    <script src="../js/menu.js"></script>
+    <script>
+    // ========== 内嵌烟花效果完整代码（原fireworks.js） ==========
+    !(function () {
+        // 创建画布  <div id="fireworks-container"></div>
+        var canvas = document.createElement("canvas");
+        document.body.appendChild(canvas);
+
+        // 设置画布样式
+        canvas.style.position = "fixed";
+        canvas.style.left = "0";
+        canvas.style.top = "0";
+        canvas.style.zIndex = 9999; 
+        canvas.style.pointerEvents = "none";
+
+        // 获取画布上下文
+        var context = canvas.getContext("2d");
+
+        // 调整画布大小的函数
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        // 初始化画布大小
+        resizeCanvas();
+        window.addEventListener("resize", resizeCanvas);
+
+        // 粒子数组 + 烟花数组
+        var particles = [];
+        window.fireworks = [];
+
+        var launchSound = new Audio('../Sounds/fireworks/lunch.mp3');
+        var explosionSound = new Audio('../Sounds/fireworks/twinkle.mp3');
+        // 暴露全局变量（供HTML内其他逻辑调用）
+        window.launchSound = launchSound;
+        window.explosionSound = explosionSound;
+
+        // 烟花类
+        window.Firework = class Firework {
+            constructor() {
+                launchSound.play();
+                this.x = Math.random() * canvas.width;
+                const offset = 300;
+                this.y = canvas.height + offset;
+                const maxAngleOffset = 15;
+                const angleOffset = (Math.random() * 2 - 1) * maxAngleOffset;
+                this.angle = 90 + angleOffset;
+                this.radians = this.angle * Math.PI / 180;
+
+                const minExplodeHeight = canvas.height * 1 / 10;
+                const maxExplodeHeight = canvas.height * 9 / 10;
+                this.explodeHeight = Math.random() * (maxExplodeHeight - minExplodeHeight) + minExplodeHeight;
+
+                const distance = this.y - this.explodeHeight;
+                if (distance < canvas.height * 0.2) {
+                    this.speed = Math.random() * 3 + 2;
+                } else if (distance < canvas.height * 0.6) {
+                    this.speed = Math.random() * 3 + 5;
+                } else {
+                    this.speed = Math.random() * 3 + 8;
+                }
+
+                this.size = Math.random() * 4 + 3;
+                this.exploded = false;
+                this.hue = Math.random() * 360;
+                this.hueVariance = 30;
+            }
+
+            update() {
+                this.x += Math.cos(this.radians) * this.speed;
+                this.y -= Math.sin(this.radians) * this.speed;
+                if (!this.exploded && this.y <= this.explodeHeight) {
+                    this.explode();
+                }
+            }
+
+            explode() {
+                this.exploded = true;
+                explosionSound.play();
+                var count = 100;
+                for (var i = 0; i < count; i++) {
+                    var p = {};
+                    var angle = 360 / count * i;
+                    var radians = angle * Math.PI / 180;
+                    p.x = this.x;
+                    p.y = this.y;
+                    p.radians = radians;
+                    p.size = Math.random() * 2 + 1;
+                    p.speed = Math.random() * 5 + 0.4;
+                    p.radius = Math.random() * 81 + 50;
+                    p.fx = this.x + Math.cos(radians) * p.radius;
+                    p.fy = this.y + Math.sin(radians) * p.radius;
+                    this.setupColors(p);
+                    particles.push(p);
+                }
+            }
+
+            setupColors(p) {
+                p.hue = Math.floor(Math.random() * ((this.hue + this.hueVariance) - (this.hue - this.hueVariance))) + (this.hue - this.hueVariance);
+                p.brightness = Math.floor(Math.random() * 21) + 50;
+                p.alpha = (Math.floor(Math.random() * 61) + 40) / 100;
+            }
+
+            draw() {
+                context.beginPath();
+                context.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+                context.closePath();
+                context.fillStyle = 'hsla(' + this.hue + ',100%,' + 50 + '%,' + 1 + ')';
+                context.fill();
+            }
+        }
+
+        // 绘制烟花粒子
+        function drawFireworks() {
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                p.x += (p.fx - p.x) / 10;
+                p.y += (p.fy - p.y) / 10 - (p.alpha - 1) * p.speed;
+                p.alpha -= 0.006;
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                    continue;
+                }
+                context.beginPath();
+                context.arc(p.x, p.y, p.size, 0, Math.PI * 2, false);
+                context.closePath();
+                context.fillStyle = 'hsla(' + p.hue + ',100%,' + p.brightness + '%,' + p.alpha + ')';
+                context.fill();
+            }
+
+            for (var i = 0; i < window.fireworks.length; i++) {
+                var firework = window.fireworks[i];
+                firework.update();
+                if (!firework.exploded) {
+                    firework.draw();
+                } else {
+                    window.fireworks.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        // 动画循环
+        function tick() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            drawFireworks();
+            requestAnimationFrame(tick);
+        }
+        tick();
+
+        // 原有按钮触发逻辑（保留，不影响）
+        var fireworkTrigger = document.getElementById('firework-trigger');
+        if (fireworkTrigger) {
+            fireworkTrigger.addEventListener('click', function (e) {
+                var numFireworks = Math.floor(Math.random() * 31) + 20;
+                for (var i = 0; i < numFireworks; i++) {
+                    window.fireworks.push(new window.Firework());
+                }
+            });
+        }
+    })();
+    // 1. 声明烟花定时器（全局）
+    let fireworkTimer = null;
+
+    // ========== 新增：标签页切换监听 - 切走停烟花，切回续（仅最终页） ==========
+    document.addEventListener('visibilitychange', () => {
+        // 标签页隐藏（切走了）：清除定时器，停止放烟花
+        if(document.hidden){
+            if(fireworkTimer){
+                clearInterval(fireworkTimer);
+                fireworkTimer = null;
+            }
+        }else{
+            // 标签页显示（切回来）：只有最终提示页激活时，才重启烟花
+            if(finalTip.classList.contains('active') && !fireworkTimer){
+                fireworkTimer = setInterval(() => {
+                    const numFireworks = Math.floor(Math.random() * 31) + 20;
+                    for (let i = 0; i < numFireworks; i++) {
+                        window.fireworks.push(new window.Firework());
+                    }
+                }, 4000);
+            }
+        }
+    });
+    </script>
+</body>
+</html>
