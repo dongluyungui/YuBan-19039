@@ -10,6 +10,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 插入所有动态内容
     
+      // 动态ID: 1223622726530367488
+      container.insertAdjacentHTML('beforeend', '\n        <div class=\"dynamic-item\">\n          <div class=\"dynamic-time\">📅 2026年07月11日</div>\n          <div class=\"dynamic-style\">图文动态</div>\n          <div class=\"dynamic-content\">\n            <a class=\"source-link\" href=\"https://t.bilibili.com/1223622726530367488\" target=\"_blank\">变色龙躲猫猫！！！<br>找完你的找你的，找完你的找你的*%￥&amp;<br>布什戈门，你们躲哪了！！？？！！<br>⭐ 7月18日星期六下午2点！一起来dor猫猫😋</a>\n          </div>\n        </div>');
+
+      // 动态ID: 1213287016611971075
+      container.insertAdjacentHTML('beforeend', '\n        <div class=\"dynamic-item\">\n          <div class=\"dynamic-time\">📅 2026年06月13日</div>\n          <div class=\"dynamic-style\">图文动态</div>\n          <div class=\"dynamic-content\">\n            <a class=\"source-link\" href=\"https://t.bilibili.com/1213287016611971075\" target=\"_blank\">我已失去理智！！！！！<br>哼哼啊啊啊啊啊啊啊啊啊啊啊啊啊</a>\n          </div>\n        </div>');
+
+      // 动态ID: 1212948641908523013
+      container.insertAdjacentHTML('beforeend', '\n        <div class=\"dynamic-item\">\n          <div class=\"dynamic-time\">📅 2026年06月12日</div>\n          <div class=\"dynamic-style\">图文动态</div>\n          <div class=\"dynamic-content\">\n            <a class=\"source-link\" href=\"https://t.bilibili.com/1212948641908523013\" target=\"_blank\">每次看佐佐木都有种老年成步堂的既视感（）<br>每次看都有点代入感 好好笑啊救(๑´∀`๑)记得以前还看过漫画，当时还在想这么好看的漫画怎么不动画化，也是圆梦了好叭ヾ(´∀｀。ヾ)山田简直就是我老婆一般的存在啊喂</a>\n          </div>\n        </div>');
+
+      // 动态ID: 1208237518017789953
+      container.insertAdjacentHTML('beforeend', '\n        <div class=\"dynamic-item\">\n          <div class=\"dynamic-time\">📅 2026年05月30日</div>\n          <div class=\"dynamic-style\">图文动态</div>\n          <div class=\"dynamic-content\">\n            <a class=\"source-link\" href=\"https://t.bilibili.com/1208237518017789953\" target=\"_blank\">呜呜呜呜牢大我回来噜<br>对不起大家哦，因为我自身的原因，处理毕业的事情还有找工作的事情所以落了很长一段时间没有播，b站也没有怎么关注了，所以我决定等我处理完学校和工作的事情会继续播播哦！sina和zaixi也很好，就是新衣服的日程要推后了，第三年没有和大家一起度过真的很抱歉哦，在之后会把时间的问题给处理好，当然因为工作原因，播播的时间会有所改变，以后可能很少会有凌晨档噜QAQ，往后会更多更新视频！谢谢大家的陪伴！等我哦！</a>\n          </div>\n        </div>');
+
       // 动态ID: 1179626425880150102
       container.insertAdjacentHTML('beforeend', '\n        <div class=\"dynamic-item\">\n          <div class=\"dynamic-time\">📅 2026年03月14日</div>\n          <div class=\"dynamic-style\">图文动态</div>\n          <div class=\"dynamic-content\">\n            <a class=\"source-link\" href=\"https://t.bilibili.com/1179626425880150102\" target=\"_blank\">论文你别杀我了<br>为什么修改的题目一直没改过去啊啊啊啊啊求指导老师看了他怎么不管啊啊啊啊为什么说好20号截止突然变成明天截止啊啊啊啊啊别杀我了别杀我了哪有人一边上班一边求指导老师改题目的啊啊啊啊啊啊</a>\n          </div>\n        </div>');
 
