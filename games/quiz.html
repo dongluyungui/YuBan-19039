@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>御坂知识问答 - 御坂19039应援站</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/setting.css"/>
+    <link rel="stylesheet" href="../css/responsive-nav.css"/>
+    <script src="../js/responsive-nav.js"></script>
+    <script src="../js/setting.js"></script>
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <style>
+        .game-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 70px 20px 20px;
+            user-select: none;
+        }
+
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            margin-top: 10px;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .game-header h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .header p {
+            color: #888;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        /* 进度条 */
+        .progress-section {
+            margin-bottom: 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #f0f0f0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff9eb5, var(--primary-color));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* 得分 */
+        .score-display {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .score-display .score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .score-display .score-label {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* 问题区域 */
+        .question-area {
+            margin-bottom: 25px;
+        }
+
+        .question-number {
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            color: #333;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+
+        /* 选项 */
+        .options {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            padding: 14px 20px;
+            background: #f8f8f8;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #444;
+            transition: all 0.3s;
+            font-family: inherit;
+            text-align: left;
+        }
+
+        .option:hover:not(.disabled) {
+            background: #fff5f8;
+            border-color: #ff9eb5;
+        }
+
+        .option.selected {
+            border-color: var(--primary-color);
+            background: #fff5f8;
+        }
+
+        .option.correct {
+            border-color: #4caf50;
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .option.wrong {
+            border-color: #f44336;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .option.disabled {
+            cursor: default;
+            opacity: 0.7;
+        }
+
+        .option.disabled:hover {
+            background: #f8f8f8;
+            border-color: #eee;
+        }
+
+        .option.correct.disabled {
+            opacity: 1;
+        }
+
+        /* 反馈 */
+        .feedback {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-left: 4px solid #4caf50;
+        }
+
+        .feedback.wrong {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #f44336;
+        }
+
+        .feedback .source {
+            display: block;
+            margin-top: 6px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* 下一题按钮 */
+        .next-btn {
+            display: none;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+            font-family: inherit;
+            font-weight: bold;
+            margin: 0 auto;
+        }
+
+        .next-btn.show {
+            display: block;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+        }
+
+        /* 结果页面 */
+        .result {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result .big-icon {
+            font-size: 5rem;
+            margin-bottom: 10px;
+        }
+
+        .result h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .result .rank {
+            font-size: 1.5rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .result .detail {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .result .detail span {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .result .message {
+            background: #fff5f8;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        .result .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: bold;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: #fff5f8;
+        }
+
+        .back-link {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-top: 20px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover { color: var(--primary-color); }
+
+        /* 开始页面 */
+        .start-screen {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .start-screen .mascot {
+            font-size: 5rem;
+            margin-bottom: 15px;
+        }
+
+        .start-screen h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .start-screen p {
+            color: #888;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .start-screen .rules {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 15px 20px;
+            text-align: left;
+            margin: 15px 0 25px;
+        }
+
+        .start-screen .rules li {
+            color: #666;
+            margin: 6px 0;
+            font-size: 0.9rem;
+            list-style: none;
+        }
+
+        .start-screen .rules li::before {
+            content: '✦ ';
+            color: var(--primary-color);
+        }
+
+        .btn-start {
+            padding: 14px 45px;
+            font-size: 1.2rem;
+        }
+
+        .question-area.hidden {
+            display: none;
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 20px; }
+            .game-header h1 { font-size: 1.4rem; }
+            .question-text { font-size: 1.05rem; }
+            .option { padding: 12px 15px; font-size: 0.95rem; }
+            .result .big-icon { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div id="fireworks-container"></div>
+    <ul id="context-menu">
+        <li>彩蛋</li>
+        <li>当前时间</li>
+    </ul>
+
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <a href="../index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="../About.html" class="nav-link" data-i18n="about">关于</a>
+                <a href="../gallery.html" class="nav-link" data-i18n="gallery">画廊</a>
+                <a href="../time.html" class="nav-link" data-i18n="timeline">时间轴</a>
+                <a href="../comment.html" class="nav-link hidden-on-mobile" data-i18n="comment_board">留言板</a>
+                <a href="../Sound.html" class="nav-link hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+                <a href="../LiveHistory.html" class="nav-link hidden-on-mobile" data-i18n="previous_replays">往期回放</a>
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
+
+                <div class="more-container more-container-pc" style="display: none;">
+                    <button class="more-btn more-btn-pc nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-pc"></div>
+                </div>
+
+                <div class="more-container more-container-mobile">
+                    <button class="more-btn more-btn-mobile nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-mobile">
+                        <a href="../comment.html" class="nav-link" data-i18n="comment_board">留言板</a>
+                        <a href="../Sound.html" class="nav-link" data-i18n="voice_button">语音按钮</a>
+                        <a href="../LiveHistory.html" class="nav-link" data-i18n="previous_replays">往期回放</a>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </header>
+
+    <div class="game-page">
+    <div class="container">
+        <div class="game-header">
+            <h1>知识问答</h1>
+            <p>测测你对御坂19039的了解程度！</p>
+        </div>
+
+        <!-- 开始页 -->
+        <div class="start-screen" id="startScreen">
+            <img src="../img/gallery/web/a7c12ddd564d675df40f533cda2f48e812136555.webp" alt="御坂19039" style="width:70%;height:auto;">
+            <h2>欢迎来到粉丝测验！</h2>
+            <p>一共 12 道题，答对越多等级越高</p>
+            <div class="rules">
+                <li>每题限选一次，提交后不可更改</li>
+                <li>答对得 1 分，答错不扣分</li>
+                <li>根据得分评定你的粉丝等级</li>
+            </div>
+            <button class="btn btn-primary btn-start" onclick="startQuiz()">开始答题</button>
+        </div>
+
+        <!-- 进度 -->
+        <div class="progress-section" id="progressSection" style="display:none;">
+            <div class="progress-info">
+                <span id="currentQ">1</span> / <span id="totalQ">12</span>
+                <span>得分：<strong id="liveScore" style="color:var(--primary-color);">0</strong></span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+
+        <!-- 问题区域 -->
+        <div class="question-area hidden" id="questionArea">
+            <div class="question-number" id="qNumber">第 1 题</div>
+            <div class="question-text" id="qText"></div>
+        </div>
+
+        <div class="options" id="optionsContainer"></div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">下一题 →</button>
+
+        <!-- 结果 -->
+        <div class="result" id="resultArea">
+            <div class="big-icon" id="resultIcon">🏆</div>
+            <h2 id="resultTitle">太棒了！</h2>
+            <div class="rank" id="resultRank">铁杆粉丝</div>
+            <div class="detail">答对 <span id="correctCount">0</span> / 10 题</div>
+            <div class="detail">正确率 <span id="accuracy">0%</span></div>
+            <div class="message" id="resultMessage">继续加油哦~</div>
+            <div class="btn-group">
+                <a href="../games.html" class="btn btn-secondary" style="text-decoration:none;display:inline-flex;align-items:center;">← 游戏中心</a>
+                <button class="btn btn-primary" onclick="startQuiz()">再来一次</button>
+            </div>
+        </div>
+    </div>
+
+    <a href="../games.html" class="back-link">← 返回游戏中心</a>
+
+    </div>  <!-- /.game-page -->
+
+    <script src="../js/star.js"></script>
+    <script src="../js/click.js"></script>
+    <script src="../js/time.js"></script>
+    <script src="../js/fireworks.js"></script>
+    <script src="../js/menu.js"></script>
+
+    <script>
+        const QUESTIONS = [
+            {
+                q: '御坂19039的粉丝叫什么？',
+                options: ['御坂军团', '电磁炮队', '呱太A', '御坂卫队'],
+                answer: 2,
+                explain: '御坂19039的粉丝叫「呱太A」哦~',
+                source: '来源：B站直播间'
+            },
+            {
+                q: 'SINA的首播日期（出道日期）是哪一天？',
+                options: ['2024年5月1日', '2024年5月31日', '2024年6月1日', '2023年12月31日'],
+                answer: 1,
+                explain: 'SINA于2024年5月31日正式出道',
+                source: '来源：主页倒计时'
+            },
+            {
+                q: '烖晞的首播日期（出道日期）是哪一天？',
+                options: ['2025年5月1日', '2025年5月31日', '2025年6月1日', '2025年12月31日'],
+                answer: 1,
+                explain: '烖晞于2025年5月31日正式出道',
+                source: '来源：主页倒计时'
+            },
+            {
+                q: '御坂19039通常会在什么时间段直播？',
+                options: ['上午', '下午', '晚上', '凌晨'],
+                answer: 2,
+                explain: '御坂19039一般在晚上直播，具体时间不固定，以动态通知为准。',
+                source: '来源：直播规律'
+            },
+            {
+                q: 'SINA和烖晞的关系是？',
+                options: ['主仆', '姐妹', '兄弟', '单相思'],
+                answer: 1,
+                explain: 'SINA和烖晞是姐妹关系',
+                source: '来源：自我介绍'
+            },
+            {
+                q: '御坂19039的应援站中，“时间轴”页面主要记录什么？',
+                options: ['直播回放记录', '重要事件时间线', '粉丝投稿', '歌单记录'],
+                answer: 1,
+                explain: '时间轴用于记录御坂19039的重要事件，如首播、特别活动等。',
+                source: '来源：时间轴页面'
+            },
+            {
+                q: '御坂19039最喜欢的游戏类型是什么？',
+                options: ['FPS射击', '角色扮演RPG', '休闲解谜', '音乐节奏'],
+                answer: 0,
+                explain: '战斗爽。',
+                source: '来源：直播观察'
+            },
+            {
+                q: '御坂19039的B站UID是什么？',
+                options: ['145239', '19039', '493190', '39019'],
+                answer: 0,
+                explain: '御坂19039的B站UID是145239，房间号是19039。',
+                source: '来源：B站'
+            },
+            {
+                q: '御坂19039的直播间房号是多少？',
+                options: ['145239', '8414339', '19039', '39019'],
+                answer: 1,
+                explain: '直播间房号就是8414339',
+                source: '来源：B站直播间'
+            },
+            {
+                q: '御坂19039的形象原型出自哪部作品？',
+                options: ['某科学的超电磁炮', '魔法禁书目录', '你的名字', '命运之夜'],
+                answer: 0,
+                explain: '御坂19039的形象原型来自《某科学的超电磁炮》中的御坂美琴（Misaka Mikoto）。',
+                source: '来源：作品设定'
+            },
+            {
+                q: '以下哪个是御坂19039的主要直播分区？',
+                options: ['娱乐', '游戏', '学习', '电台'],
+                answer: 1,
+                explain: '御坂19039主要活跃在游戏分区，偶尔也会进行其他内容的直播。',
+                source: '来源：B站直播间'
+            },
+            {
+                q: '御坂19039通常在哪个平台直播？',
+                options: ['斗鱼', '虎牙', 'B站', '抖音'],
+                answer: 2,
+                explain: '御坂19039在B站（哔哩哔哩）进行直播。',
+                source: '来源：B站直播间'
+            },
+            {
+                q: '御坂19039的粉丝群号是多少？',
+                options: ['769271000', '190390000', '145239000', '493190000'],
+                answer: 0,
+                explain: '粉丝群号是 769271000，欢迎加入！',
+                source: '来源：应援站主页'
+            },
+            {
+                q: '以下哪个不是御坂19039直播中常见的元素？',
+                options: ['唱歌', '画画', '游戏', '烹饪'],
+                answer: 3,
+                explain: '御坂19039主要以游戏直播为主，也会唱歌、杂谈等，但烹饪并非直播常驻内容。',
+                source: '来源：直播内容观察'
+            },
+            {
+                q: '御坂19039的B站直播间头衔/勋章名称与什么相关？',
+                options: ['超电磁炮', '御坂妹妹', '呱太A', '学园都市'],
+                answer: 2,
+                explain: '粉丝勋章与「呱太A」相关，成为粉丝团成员后可以佩戴。',
+                source: '来源：B站直播间'
+            },
+            {
+                q: '这个应援站的主题色是什么？',
+                options: ['蓝色', '粉色', '紫色', '黄色'],
+                answer: 1,
+                explain: '网站以粉色为主题色',
+                source: '来源：应援站设计'
+            },
+            {
+                q: '应援站中哪个功能可以查看御坂的最后直播时间？',
+                options: ['时间轴', '往期回放', '语音按钮', '首页倒计时'],
+                answer: 1,
+                explain: '可通过应援站的「往期回放」功能，可以查看距离上次直播结束已经过去多久。',
+                source: '来源：应援站首页'
+            },
+            {
+                q: '御坂19039的性格特点最接近以下哪个描述？',
+                options: ['高冷御姐', '元气少女', '腹黑深沉', '温柔知性'],
+                answer: 1,
+                explain: '御坂19039以元气、活泼的性格为主，直播氛围轻松愉快。',
+                source: '来源：直播风格'
+            }
+        ];
+
+        // ===== 音效加载 =====
+        const SOUND_PATH = 'quiz/sounds/';
+        const correctSound = new Audio(SOUND_PATH + 'correct.ogg');
+        const wrongSound = new Audio(SOUND_PATH + 'wrong.ogg');
+        const completeSound = new Audio(SOUND_PATH + 'complete.ogg');
+
+        let currentIndex = 0;
+        let score = 0;
+        let answered = false;
+        let currentQuestions = [];  // 当前使用的题目列表（10道）
+
+        // ===== 洗牌函数 =====
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // 从题库中随机抽取 N 道题
+        function pickQuestions(count) {
+            const shuffled = shuffle([...QUESTIONS]);
+            return shuffled.slice(0, count);
+        }
+
+        // 处理单道题：打乱选项顺序，记录正确答案的新位置
+        function shuffleOptions(question) {
+            const options = question.options.map((text, idx) => ({ text, isCorrect: idx === question.answer }));
+            const shuffled = shuffle([...options]);
+            const newAnswer = shuffled.findIndex(opt => opt.isCorrect);
+            return {
+                ...question,
+                options: shuffled.map(opt => opt.text),
+                answer: newAnswer
+            };
+        }
+
+        function startQuiz() {
+            // 随机抽取10道题，并打乱选项
+            const picked = pickQuestions(10);
+            currentQuestions = picked.map(q => shuffleOptions(q));
+
+            currentIndex = 0;
+            score = 0;
+            answered = false;
+
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('progressSection').style.display = 'block';
+
+            const questionArea = document.getElementById('questionArea');
+            questionArea.classList.remove('hidden');
+
+            document.getElementById('resultArea').classList.remove('show');
+            document.getElementById('totalQ').textContent = currentQuestions.length;
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            answered = false;
+            const q = currentQuestions[currentIndex];
+
+            document.getElementById('currentQ').textContent = currentIndex + 1;
+            document.getElementById('liveScore').textContent = score;
+            document.getElementById('qNumber').textContent = `第 ${currentIndex + 1} 题`;
+            document.getElementById('qText').textContent = q.q;
+
+            // 进度条
+            const progress = ((currentIndex) / currentQuestions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            // 选项
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option';
+                btn.textContent = opt;
+                btn.dataset.index = i;
+                btn.onclick = () => selectOption(i);
+                container.appendChild(btn);
+            });
+
+            // 反馈隐藏
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('show', 'correct', 'wrong');
+
+            // 下一题隐藏
+            document.getElementById('nextBtn').classList.remove('show');
+        }
+
+        function selectOption(index) {
+            if (answered) return;
+            answered = true;
+
+            const q = currentQuestions[currentIndex];
+            const options = document.querySelectorAll('.option');
+
+            options.forEach(opt => opt.classList.add('disabled'));
+            options[index].classList.add('selected');
+
+            const feedback = document.getElementById('feedback');
+
+            if (index === q.answer) {
+                score++;
+                document.getElementById('liveScore').textContent = score;
+                options[index].classList.add('correct');
+                // 播放正确音效
+                correctSound.currentTime = 0;
+                correctSound.play().catch(() => {});
+
+                feedback.className = 'feedback show correct';
+                feedback.innerHTML = `✅ 回答正确！${q.explain}`;
+            } else {
+                options[index].classList.add('wrong');
+                options[q.answer].classList.add('correct');
+                // 播放错误音效
+                wrongSound.currentTime = 0;
+                wrongSound.play().catch(() => {});
+
+                feedback.className = 'feedback show wrong';
+                feedback.innerHTML = `❌ 答案不对哦~<br>${q.explain}`;
+            }
+
+            if (q.source) {
+                feedback.innerHTML += `<span class="source">${q.source}</span>`;
+            }
+
+            const isLast = currentIndex >= currentQuestions.length - 1;
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.textContent = isLast ? '查看成绩 🏆' : '下一题 →';
+            nextBtn.classList.add('show');
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex >= currentQuestions.length) {
+                showResult();
+            } else {
+                showQuestion();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('progressFill').style.width = '100%';
+
+            // 播放完成音效
+            completeSound.currentTime = 0;
+            completeSound.play().catch(() => {});
+
+            const questionArea = document.getElementById('questionArea');
+            questionArea.classList.add('hidden');
+            document.getElementById('optionsContainer').innerHTML = '';
+            document.getElementById('feedback').classList.remove('show');
+            document.getElementById('nextBtn').classList.remove('show');
+
+            const total = currentQuestions.length;
+            const accuracy = Math.round((score / total) * 100);
+
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('accuracy').textContent = accuracy + '%';
+
+            let icon, title, rank, message;
+
+            if (score >= 9) {
+                icon = '👑';
+                title = '传说中的铁粉！';
+                rank = '🏅 硬核级·呱太A长老';
+                message = '你太厉害了！御坂19039的一切你都了如指掌，绝对是铁杆中的铁杆！';
+            } else if (score >= 7) {
+                icon = '🌟';
+                title = '优秀粉丝！';
+                rank = '🥈 进阶级·忠实呱太A';
+                message = '你对御坂19039的了解已经很深入了，继续加油争取满分吧！';
+            } else if (score >= 5) {
+                icon = '💪';
+                title = '不错的成绩！';
+                rank = '🥉 普通级·呱太A成员';
+                message = '还算了解御坂19039，不过还有提升空间哦，多看看直播吧~';
+            } else {
+                icon = '📖';
+                title = '需要补课哦~';
+                rank = '🌱 萌新级·新加入呱太A';
+                message = '看来你对御坂19039还不太了解，快去B站关注一波，多看看直播和动态吧！';
+            }
+
+            document.getElementById('resultIcon').textContent = icon;
+            document.getElementById('resultTitle').textContent = title;
+            document.getElementById('resultRank').textContent = rank;
+            document.getElementById('resultMessage').textContent = message;
+
+            document.getElementById('resultArea').classList.add('show');
+        }
+    </script>
+</body>
+</html>

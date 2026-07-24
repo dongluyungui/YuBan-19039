@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>御坂翻牌记忆 - 御坂19039应援站</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/setting.css"/>
+    <link rel="stylesheet" href="../css/responsive-nav.css"/>
+    <script src="../js/responsive-nav.js"></script>
+    <script src="../js/setting.js"></script>
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <style>
+        .game-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 70px 20px 20px;
+            user-select: none;
+        }
+
+        /* 游戏标题 */
+        .game-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .game-header h1 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            text-shadow: 0 2px 10px rgba(233, 30, 99, 0.2);
+        }
+
+        .game-header p {
+            color: #888;
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        /* 状态栏 */
+        .status-bar {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .status-item {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            font-size: 1rem;
+            color: #555;
+        }
+
+        .status-item span {
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* 游戏网格 */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            max-width: 520px;
+            width: 100%;
+            margin-bottom: 20px;
+            perspective: 1000px;
+        }
+
+        /* 卡片 */
+        .card {
+            aspect-ratio: 1;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 12px;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card.matched {
+            transform: rotateY(180deg);
+        }
+
+        .card.matched .card-face.front {
+            box-shadow: 0 0 20px rgba(233, 30, 99, 0.4);
+        }
+
+        .card-face {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        .card-face.back {
+            background: linear-gradient(145deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-size: 1.8rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .card-face.back::after {
+            content: '?';
+            font-weight: bold;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-face.front {
+            background: white;
+            transform: rotateY(180deg);
+            border: 3px solid #f0f0f0;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .card:not(.flipped):not(.matched):hover .card-face.back {
+            background: linear-gradient(145deg, var(--hover-color), var(--secondary-color));
+            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.3);
+        }
+
+        .card:not(.flipped):not(.matched):active {
+            transform: scale(0.96);
+        }
+
+        /* 完成动画卡片 */
+        .card.matched .card-face.front {
+            animation: matchPulse 0.5s ease;
+        }
+
+        @keyframes matchPulse {
+            0% { transform: rotateY(180deg) scale(1); }
+            50% { transform: rotateY(180deg) scale(1.1); }
+            100% { transform: rotateY(180deg) scale(1); }
+        }
+
+        /* 按钮 */
+        .btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: inherit;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: #fff5f8;
+            box-shadow: none;
+        }
+
+        /* 完成弹窗 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(3px);
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: modalPop 0.4s ease;
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal h2 {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .modal .trophy {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+
+        .modal p {
+            color: #666;
+            margin: 8px 0;
+            font-size: 1.1rem;
+        }
+
+        .modal .best-score {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .modal .btn {
+            margin-top: 20px;
+        }
+
+        /* 难度选择 */
+        .difficulty {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .diff-btn {
+            padding: 6px 18px;
+            border-radius: 15px;
+            border: 2px solid #ddd;
+            background: white;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .diff-btn.active {
+            border-color: var(--primary-color);
+            background: #fff5f8;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .diff-btn:hover {
+            border-color: var(--primary-color);
+        }
+
+        /* 响应式 */
+        @media (max-width: 480px) {
+            .header h1 { font-size: 1.5rem; }
+            .game-grid { gap: 8px; }
+            .card-face { font-size: 2rem; }
+            .card-face.front { font-size: 2.2rem; }
+            .status-bar { gap: 15px; }
+            .status-item { padding: 8px 15px; font-size: 0.9rem; }
+        }
+
+        /* 五彩纸屑 */
+        .confetti-piece {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            z-index: 999;
+            pointer-events: none;
+            animation: confettiFall var(--duration) ease-in forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(var(--rotation)); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="fireworks-container"></div>
+    <ul id="context-menu">
+        <li>彩蛋</li>
+        <li>当前时间</li>
+    </ul>
+
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <a href="../index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="../About.html" class="nav-link" data-i18n="about">关于</a>
+                <a href="../gallery.html" class="nav-link" data-i18n="gallery">画廊</a>
+                <a href="../time.html" class="nav-link" data-i18n="timeline">时间轴</a>
+                <a href="../comment.html" class="nav-link hidden-on-mobile" data-i18n="comment_board">留言板</a>
+                <a href="../Sound.html" class="nav-link hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+                <a href="../LiveHistory.html" class="nav-link hidden-on-mobile" data-i18n="previous_replays">往期回放</a>
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
+
+                <div class="more-container more-container-pc" style="display: none;">
+                    <button class="more-btn more-btn-pc nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-pc"></div>
+                </div>
+
+                <div class="more-container more-container-mobile">
+                    <button class="more-btn more-btn-mobile nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-mobile">
+                        <a href="../comment.html" class="nav-link" data-i18n="comment_board">留言板</a>
+                        <a href="../Sound.html" class="nav-link" data-i18n="voice_button">语音按钮</a>
+                        <a href="../LiveHistory.html" class="nav-link" data-i18n="previous_replays">往期回放</a>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </header>
+
+    <div class="game-page">
+    <div class="game-header">
+        <h1>翻牌记忆</h1>
+        <p>翻出所有配对卡片，考验你的记忆力！</p>
+    </div>
+
+    <div class="difficulty">
+        <button class="diff-btn active" data-size="4">简单 4×4</button>
+        <button class="diff-btn" data-size="6">困难 4×6</button>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-item">⏱️ 用时 <span id="timer">0</span> 秒</div>
+        <div class="status-item">👆 步数 <span id="moves">0</span></div>
+        <div class="status-item">✅ 配对 <span id="pairs">0</span> / <span id="totalPairs">8</span></div>
+    </div>
+
+    <div class="game-grid" id="gameGrid"></div>
+
+    <button class="btn" id="restartBtn">重新开始</button>
+    <a href="../games.html" class="back-link">← 返回游戏中心</a>
+
+    <!-- 完成弹窗 -->
+    <div class="modal-overlay" id="winModal">
+        <div class="modal">
+            <div class="trophy">🏆</div>
+            <h2>恭喜通关！</h2>
+            <p>你用 <strong id="finalMoves">0</strong> 步完成了 <strong id="finalTime">0</strong> 秒</p>
+            <p id="bestRecord" class="best-score"></p>
+            <button class="btn" id="playAgainBtn">再来一局</button>
+        </div>
+    </div>
+
+    </div>  <!-- /.game-page -->
+
+    <script src="../js/star.js"></script>
+    <script src="../js/click.js"></script>
+    <script src="../js/time.js"></script>
+    <script src="../js/fireworks.js"></script>
+    <script src="../js/menu.js"></script>
+
+    <script>
+        // 使用 img/gallery/web/ 中的御坂图片
+        const IMAGES = [
+            'a910d782290e4e8f32eae88b9040f30112136555.webp',
+            '25f0c608cdd7302b9c85adffa1337c1612136555.webp',
+            'cff6182bce7be259ed0459cf5b1bee8f12136555.webp',
+            '2660c8bc520c7257ad2b6706b330e23e12136555.webp',
+            'ceea529e787ab1663ce569086dbbe86512136555.webp',
+            'a7c12ddd564d675df40f533cda2f48e812136555.webp',
+            '20b8d58f0c8c7bea7dcfb5aa8ffc825a12136555.webp',
+            'a273948466979c704f2040c2748c4aa012136555.webp',
+            'f995280bf26a8e51d7357761cd93c74412136555.webp',
+            '4156bc49b46deab108bb95a97c25248e12136555.webp',
+            'dc5bbc3a710525ed8e113d16c082eb6f12136555.webp',
+            '65c3819c35be945a798f605db1cf7d8d12136555.webp',
+            '9c541e944419f842ccf8ae3d3fa3819a12136555.webp',
+            '8416f54200235473598c5310a8c8043312136555.webp',
+            '232593204e45c0ef8339414a888691b112136555.webp',
+            'ded4243719ca2d0ecb0d95a9546cc58112136555.webp',
+            'dba29a7aefaab82503ad808b49ee668212136555.webp',
+            '8d7a22226538c1d418a231049f76008d12136555.webp',
+        ];
+        const IMG_PATH = '../img/gallery/web/';
+        // ===== 音效加载 =====
+        const SOUND_PATH = 'memory/sounds/';
+        const flipSound = new Audio(SOUND_PATH + 'flip.ogg');
+        const matchSound = new Audio(SOUND_PATH + 'match.ogg');
+        const wrongSound = new Audio(SOUND_PATH + 'wrong.ogg');
+        const winSound = new Audio(SOUND_PATH + 'win.ogg');
+
+        let gridSize = 4;
+        let cards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let moves = 0;
+        let timer = 0;
+        let timerInterval = null;
+        let isLocked = false;
+        let isStarted = false;
+
+        const grid = document.getElementById('gameGrid');
+        const movesEl = document.getElementById('moves');
+        const timerEl = document.getElementById('timer');
+        const pairsEl = document.getElementById('pairs');
+        const totalPairsEl = document.getElementById('totalPairs');
+        const winModal = document.getElementById('winModal');
+        const finalMovesEl = document.getElementById('finalMoves');
+        const finalTimeEl = document.getElementById('finalTime');
+        const bestRecordEl = document.getElementById('bestRecord');
+
+        function getBestScore(size) {
+            const key = `memory_best_${size}`;
+            const saved = localStorage.getItem(key);
+            return saved ? JSON.parse(saved) : null;
+        }
+
+        function saveBestScore(size, moves, time) {
+            const key = `memory_best_${size}`;
+            const current = getBestScore(size);
+            if (!current || moves < current.moves || (moves === current.moves && time < current.time)) {
+                localStorage.setItem(key, JSON.stringify({ moves, time }));
+                return true;
+            }
+            return false;
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function initGame() {
+            const totalCards = gridSize * gridSize;
+            const pairCount = totalCards / 2;
+
+            matchedPairs = 0;
+            moves = 0;
+            flippedCards = [];
+            isLocked = false;
+            isStarted = false;
+
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            timer = 0;
+
+            movesEl.textContent = '0';
+            timerEl.textContent = '0';
+            pairsEl.textContent = '0';
+            totalPairsEl.textContent = pairCount;
+
+            winModal.classList.remove('show');
+            document.querySelectorAll('.confetti-piece').forEach(el => el.remove());
+
+            // 生成配对 — 使用 gallery 图片
+            const selectedImages = shuffle(IMAGES).slice(0, pairCount);
+            let cardData = [];
+            selectedImages.forEach((img, index) => {
+                cardData.push({ id: index, img: img, matched: false });
+                cardData.push({ id: index, img: img, matched: false });
+            });
+            cards = shuffle(cardData);
+
+            // 计算网格列数
+            const cols = gridSize;
+            grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+            grid.innerHTML = '';
+
+            cards.forEach((card, index) => {
+                const cardEl = document.createElement('div');
+                cardEl.className = 'card';
+                cardEl.dataset.index = index;
+                cardEl.innerHTML = `
+                    <div class="card-face back"></div>
+                    <div class="card-face front" style="background-image: url('${IMG_PATH}${card.img}')"></div>
+                `;
+                cardEl.addEventListener('click', () => flipCard(index));
+                grid.appendChild(cardEl);
+            });
+        }
+
+        function flipCard(index) {
+            if (isLocked) return;
+
+            const cardEl = grid.children[index];
+            if (cardEl.classList.contains('flipped') || cardEl.classList.contains('matched')) return;
+            if (flippedCards.length >= 2) return;
+
+            // 首次点击开始计时
+            if (!isStarted) {
+                isStarted = true;
+                timerInterval = setInterval(() => {
+                    timer++;
+                    timerEl.textContent = timer;
+                }, 1000);
+            }
+
+            cardEl.classList.add('flipped');
+            //播放翻牌音效
+            flipSound.currentTime = 0;
+            flipSound.play().catch(() => {});
+            
+            flippedCards.push(index);
+
+            if (flippedCards.length === 2) {
+                moves++;
+                movesEl.textContent = moves;
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            isLocked = true;
+            const idx1 = flippedCards[0];
+            const idx2 = flippedCards[1];
+            const card1 = cards[idx1];
+            const card2 = cards[idx2];
+
+            if (card1.id === card2.id) {
+                // 配对成功
+                matchSound.currentTime = 0;
+                matchSound.play().catch(() => {});
+                setTimeout(() => {
+                    grid.children[idx1].classList.add('matched');
+                    grid.children[idx2].classList.add('matched');
+                    matchedPairs++;
+                    pairsEl.textContent = matchedPairs;
+                    flippedCards = [];
+                    isLocked = false;
+
+                    if (matchedPairs === cards.length / 2) {
+                        gameWin();
+                    }
+                }, 400);
+            } else {
+                // 配对失败
+                wrongSound.currentTime = 0;
+                wrongSound.play().catch(() => {});
+                setTimeout(() => {
+                    grid.children[idx1].classList.remove('flipped');
+                    grid.children[idx2].classList.remove('flipped');
+                    flippedCards = [];
+                    isLocked = false;
+                }, 800);
+            }
+        }
+
+        function gameWin() {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            
+            winSound.currentTime = 0;
+            winSound.play().catch(() => {});
+
+            const isBest = saveBestScore(gridSize, moves, timer);
+            const best = getBestScore(gridSize);
+
+            finalMovesEl.textContent = moves;
+            finalTimeEl.textContent = timer;
+
+            if (isBest) {
+                bestRecordEl.textContent = '🎉 新纪录！太棒了！';
+            } else if (best) {
+                bestRecordEl.textContent = `🏅 最佳记录：${best.moves} 步 / ${best.time} 秒`;
+            } else {
+                bestRecordEl.textContent = '';
+            }
+
+            setTimeout(() => {
+                winModal.classList.add('show');
+                createConfetti();
+            }, 500);
+        }
+
+        function createConfetti() {
+            const colors = ['var(--primary-color)', 'var(--secondary-color)', '#ffb3c6', '#ffd6e0', '#ff9eb5', '#c2185b', '#f06292'];
+            for (let i = 0; i < 60; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.width = (Math.random() * 8 + 5) + 'px';
+                piece.style.height = (Math.random() * 8 + 5) + 'px';
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                piece.style.setProperty('--duration', (Math.random() * 2 + 2) + 's');
+                piece.style.setProperty('--rotation', (Math.random() * 720 + 360) + 'deg');
+                piece.style.animationDelay = (Math.random() * 0.5) + 's';
+                document.body.appendChild(piece);
+            }
+            setTimeout(() => {
+                document.querySelectorAll('.confetti-piece').forEach(el => el.remove());
+            }, 4000);
+        }
+
+        // 难度切换
+        document.querySelectorAll('.diff-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                gridSize = parseInt(this.dataset.size);
+                initGame();
+            });
+        });
+
+        document.getElementById('restartBtn').addEventListener('click', initGame);
+        document.getElementById('playAgainBtn').addEventListener('click', initGame);
+
+        initGame();
+    </script>
+</body>
+</html>

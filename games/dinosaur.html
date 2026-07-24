@@ -3,91 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-    <title>SINA跑酷游戏</title>
+    <title>SINA跑酷游戏 - 御坂19039应援站</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/setting.css"/>
+    <link rel="stylesheet" href="../css/responsive-nav.css"/>
+    <script src="../js/responsive-nav.js"></script>
+    <script src="../js/setting.js"></script>
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
+        .game-page {
+            background: linear-gradient(180deg, #fff5f8 0%, #ffe0ec 50%, #ffd6e4 100%);
+            overflow: hidden;
+            user-select: none;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            background-color: #f1f1f1;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
+            min-height: 100vh;
+            line-height: 1.4;
         }
-        
-        .game-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            border: 2px solid #333;
-            background-color: #fff;
-            overflow: hidden;
+
+        /* 游戏标题 */
+        .game-header {
+            text-align: center;
+            margin-bottom: 8px;
+            z-index: 1;
         }
-        
-        #gameCanvas {
-            width: 100%;
-            height: 200px;
-            display: block;
+
+        .game-header h1 {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            text-shadow: 0 2px 10px rgba(233,30,99,0.2);
+            margin: 0;
         }
-        
+
+        .game-header p {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        /* 游戏信息栏 */
         .game-info {
             display: flex;
             justify-content: space-between;
-            padding: 10px;
+            align-items: center;
             width: 100%;
             max-width: 800px;
+            padding: 8px 15px;
+            background: rgba(255,255,255,0.85);
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
         }
-        
-        .score, .high-score {
-            font-size: 1.2rem;
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .info-item .value {
+            color: var(--primary-color);
             font-weight: bold;
+            font-size: 1.1rem;
+            min-width: 30px;
         }
-        
-        .game-over {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            display: none;
+
+        /* 速度指示器 */
+        .speed-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        
-        .game-over h2 {
-            margin-bottom: 10px;
+
+        .speed-bar {
+            width: 60px;
+            height: 6px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            overflow: hidden;
         }
-        
-        .start-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+
+        .speed-fill {
             height: 100%;
-            background-color: rgba(255, 255, 255, 0.9);
+            width: 0%;
+            background: linear-gradient(90deg, #4caf50, #ffeb3b, #f44336);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        /* 游戏容器 */
+        .game-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            border-radius: 0 0 12px 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(233,30,99,0.15);
+            border: 2px solid rgba(233,30,99,0.2);
+        }
+
+        .game-container {
+            position: relative;
+            width: 100%;
+            background: linear-gradient(180deg, #B0E0FF 0%, #D4EFFF 40%, #E8F5E9 70%, #A5D6A7 100%);
+            overflow: hidden;
+        }
+
+        #gameCanvas {
+            width: 100%;
+            height: 250px;
+            display: block;
+            background: transparent;
+        }
+
+        /* 装饰云朵 */
+        .cloud {
+            position: absolute;
+            background: rgba(255,255,255,0.6);
+            border-radius: 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: inherit;
+            border-radius: 50%;
+        }
+        .cloud-1 { width: 80px; height: 25px; top: 20px; left: -100px; animation: cloudMove 18s linear infinite; }
+        .cloud-1::before { width: 35px; height: 35px; top: -18px; left: 15px; }
+        .cloud-1::after { width: 25px; height: 25px; top: -12px; left: 40px; }
+        .cloud-2 { width: 60px; height: 20px; top: 50px; left: -80px; animation: cloudMove 25s linear infinite; animation-delay: -8s; }
+        .cloud-2::before { width: 28px; height: 28px; top: -14px; left: 12px; }
+        .cloud-2::after { width: 20px; height: 20px; top: -10px; left: 32px; }
+        .cloud-3 { width: 100px; height: 30px; top: 15px; left: -120px; animation: cloudMove 22s linear infinite; animation-delay: -15s; }
+        .cloud-3::before { width: 40px; height: 40px; top: -20px; left: 20px; }
+        .cloud-3::after { width: 30px; height: 30px; top: -15px; left: 50px; }
+
+        @keyframes cloudMove {
+            0% { transform: translateX(-120px); }
+            100% { transform: translateX(calc(800px + 120px)); }
+        }
+
+        /* 分数弹出 */
+        .score-popup {
+            position: absolute;
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            pointer-events: none;
+            z-index: 10;
+            animation: scoreFloat 0.9s ease-out forwards;
+        }
+
+        @keyframes scoreFloat {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-70px) scale(1.3); }
+        }
+
+        /* 覆盖层 (开始/结束) */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(3px);
+            z-index: 1000;
+        }
+        .overlay.hidden { display: none; }
+
+        .overlay-content {
+            background: white;
+            padding: 30px 35px;
+            border-radius: 20px;
             text-align: center;
+            max-width: 340px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            animation: popIn 0.35s ease;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .overlay-content .big-icon { font-size: 3.5rem; margin-bottom: 8px; }
+        .overlay-content h2 { color: var(--primary-color); font-size: 1.5rem; margin-bottom: 6px; }
+        .overlay-content p { color: #666; margin: 4px 0; font-size: 0.95rem; }
+        .overlay-content .highlight {
+            font-size: 2.2rem; font-weight: bold; color: var(--primary-color); margin: 8px 0;
+        }
+
+        .controls-hint {
+            flex-direction: column;    /* 改为纵向排列 */
+            align-items: center;       /* 让两行文字水平居中（可选） */
+            display: flex;justify-content: center; margin: 10px 0; flex-wrap: wrap;
         }
         
-        .start-screen h1 {
-            margin-bottom: 20px;
-        }
-        
-        .controls {
-            margin-top: 20px;
-            text-align: center;
-        }
         
         .key {
             display: inline-block;
@@ -97,38 +217,59 @@
             border-radius: 5px;
             background-color: #eee;
         }
-        
-        button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
+
+        .key-hint {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: #f5f5f5; padding: 4px 12px; border-radius: 8px;
+            font-size: 0.8rem; color: #666;
         }
-        
-        button:hover {
-            background-color: #45a049;
+        .key-hint kbd {
+            background: #ddd; padding: 2px 8px; border-radius: 4px;
+            font-size: 0.75rem; font-weight: bold; color: #333;
         }
 
-        /* 隐藏图片预加载元素 */
-        .preload {
+        /* 移动端跳跃按钮 */
+        .mobile-controls {
             display: none;
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 15;
+            gap: 10px;
         }
 
-        /* 横屏提示 - 只在移动端显示 */
+        .jump-btn {
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            background: rgba(233,30,99,0.7);
+            color: white;
+            border: 3px solid rgba(255,255,255,0.5);
+            font-size: 1.8rem;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s;
+            box-shadow: 0 4px 15px rgba(233,30,99,0.3);
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .jump-btn:active {
+            transform: scale(0.9);
+            background: rgba(233,30,99,0.9);
+        }
+
+        .jump-btn .label { font-size: 0.55rem; display: block; margin-top: -2px; }
+
+        .preload { display: none; }
+
+        /* 横屏提示 */
         .landscape-prompt {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
             color: white;
-            z-index: 1000;
+            z-index: 2000;
             flex-direction: column;
             align-items: center;
             justify-content: center;
@@ -137,18 +278,19 @@
         }
 
         .landscape-prompt h2 {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            color: white;
         }
 
         .landscape-prompt p {
-            margin-bottom: 30px;
-            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
         }
 
         .landscape-prompt .rotate-icon {
             font-size: 4rem;
             margin-bottom: 20px;
-            animation: rotate 2s infinite ease-in-out;
+            animation: rotateHint 2s infinite ease-in-out;
         }
 
         .landscape-prompt .button-group {
@@ -162,610 +304,664 @@
             margin: 0;
         }
 
-        @keyframes rotate {
+        @keyframes rotateHint {
             0% { transform: rotate(0deg); }
             50% { transform: rotate(90deg); }
             100% { transform: rotate(90deg); }
         }
 
-        /* 横屏按钮 - 只在移动端显示 */
         .landscape-btn {
             display: none;
             position: fixed;
             bottom: 20px;
             right: 20px;
             z-index: 100;
-            background-color: #2196F3;
+            background: rgba(233,30,99,0.8);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
+            width: 56px;
+            height: 56px;
+            font-size: 1.4rem;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(233,30,99,0.4);
+            transition: transform 0.2s;
+            line-height: 1;
         }
 
-        /* 媒体查询 - 只在移动设备显示横屏相关元素 */
+        .landscape-btn:hover { transform: scale(1.1); }
+        .landscape-btn:active { transform: scale(0.95); }
+
         @media (max-width: 768px) and (orientation: portrait) {
-            .landscape-prompt {
-                display: flex;
-            }
+            .landscape-prompt { display: flex; }
         }
 
         @media (max-width: 768px) {
-            .landscape-btn {
-                display: block;
+            .landscape-btn { display: block; }
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            #gameCanvas { height: 180px; }
+            .game-header h1 { font-size: 1.2rem; }
+            .game-header p { display: none; }
+            .game-info { padding: 6px 10px; flex-wrap: wrap; gap: 4px; }
+            .info-item { font-size: 0.8rem; }
+            .speed-bar { width: 40px; }
+            .mobile-controls { display: flex; }
+            .overlay-content { padding: 20px; }
+            .overlay-content .highlight { font-size: 1.8rem; }
+            .controls-hint .key-hint { font-size: 0.7rem; }
+        }
+
+        @media (max-width: 480px) {
+            #gameCanvas { height: 150px; }
+            .jump-btn { width: 60px; height: 60px; font-size: 1.5rem; }
+        }
+
+        /* 小屏设备时 header 占位 */
+        @media (max-width: 769px) {
+            body { padding-top: 0; }
+            .bilibili-btn {
+                display: block; /* 隐藏元素 */
             }
         }
     </style>
 </head>
 <body>
-    <!-- 预加载图片和音频 -->
-    <div class="preload">
-        <img id="sina1" src="dinosaur/SINA/SINA_1.png" alt="SINA1">
-        <img id="sina2" src="dinosaur/SINA/SINA_2.png" alt="SINA2">
-        <img id="sina3" src="dinosaur/SINA/SINA_3.png" alt="SINA3">
-        <img id="sina4" src="dinosaur/SINA/SINA_4.png" alt="SINA4">
-        <img id="sina5" src="dinosaur/SINA/SINA_5.png" alt="SINA5">
-        <img id="sina6" src="dinosaur/SINA/SINA_6.png" alt="SINA6">
-        <img id="sina7" src="dinosaur/SINA/SINA_7.png" alt="SINA7">
-        <img id="sina8" src="dinosaur/SINA/SINA_8.png" alt="SINA8">
-        <img id="sina9" src="dinosaur/SINA/SINA_9.png" alt="SINA9">
-        <img id="sina10" src="dinosaur/SINA/SINA_10.png" alt="SINA10">
-        <img id="sina11" src="dinosaur/SINA/SINA_11.png" alt="SINA11">
-        <img id="sina12" src="dinosaur/SINA/SINA_12.png" alt="SINA12">
-        <img id="hulusi" src="dinosaur/葫芦丝.png" alt="葫芦丝">
-        <!-- 添加音频元素 -->
-        <audio id="jumpSound" src="dinosaur/CiaLo.wav" preload="auto"></audio>
-    </div>
+    <div id="fireworks-container"></div>
+
+    <!-- 右键菜单 -->
+    <ul id="context-menu">
+        <li>彩蛋</li>
+        <li>当前时间</li>
+    </ul>
+
+    <!-- 头部导航 -->
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <a href="../index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="../About.html" class="nav-link" data-i18n="about">关于</a>
+                <a href="../gallery.html" class="nav-link" data-i18n="gallery">画廊</a>
+                <a href="../time.html" class="nav-link" data-i18n="timeline">时间轴</a>
+                <a href="../comment.html" class="nav-link hidden-on-mobile" data-i18n="comment_board">留言板</a>
+                <a href="../Sound.html" class="nav-link hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+                <a href="../LiveHistory.html" class="nav-link hidden-on-mobile" data-i18n="previous_replays">往期回放</a>
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
+
+                <div class="more-container more-container-pc" style="display: none;">
+                    <button class="more-btn more-btn-pc nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-pc"></div>
+                </div>
+
+                <div class="more-container more-container-mobile">
+                    <button class="more-btn more-btn-mobile nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-mobile">
+                        <a href="../comment.html" class="nav-link" data-i18n="comment_board">留言板</a>
+                        <a href="../Sound.html" class="nav-link" data-i18n="voice_button">语音按钮</a>
+                        <a href="../LiveHistory.html" class="nav-link" data-i18n="previous_replays">往期回放</a>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </header>
 
     <!-- 横屏提示 -->
-    <div class="landscape-prompt">
+    <div class="landscape-prompt" id="landscapePrompt">
         <div class="rotate-icon">↻</div>
         <h2>请横屏游玩</h2>
         <p>为了更好的游戏体验，请将设备旋转至横屏模式</p>
         <div class="button-group">
-            <button id="forceLandscapeBtn">强制横屏</button>
-            <button id="portraitPlayBtn" style="background-color: #FF9800;">竖屏游玩</button>
+            <button class="bilibili-btn" id="forceLandscapeBtn" style="border:none;">强制横屏</button>
+            <button class="bilibili-btn" id="portraitPlayBtn" style="border:none;background:#ff9800;">竖屏游玩</button>
         </div>
     </div>
 
     <!-- 横屏按钮 -->
     <button class="landscape-btn" id="landscapeBtn">↻</button>
 
+    <!-- 预加载图片和音频 -->
+    <div class="preload">
+        <img id="sina1" src="dinosaur/SINA/SINA_1.png" alt="S1"><img id="sina2" src="dinosaur/SINA/SINA_2.png" alt="S2">
+        <img id="sina3" src="dinosaur/SINA/SINA_3.png" alt="S3"><img id="sina4" src="dinosaur/SINA/SINA_4.png" alt="S4">
+        <img id="sina5" src="dinosaur/SINA/SINA_5.png" alt="S5"><img id="sina6" src="dinosaur/SINA/SINA_6.png" alt="S6">
+        <img id="sina7" src="dinosaur/SINA/SINA_7.png" alt="S7"><img id="sina8" src="dinosaur/SINA/SINA_8.png" alt="S8">
+        <img id="sina9" src="dinosaur/SINA/SINA_9.png" alt="S9"><img id="sina10" src="dinosaur/SINA/SINA_10.png" alt="S10">
+        <img id="sina11" src="dinosaur/SINA/SINA_11.png" alt="S11"><img id="sina12" src="dinosaur/SINA/SINA_12.png" alt="S12">
+        <img id="hulusi" src="dinosaur/葫芦丝.png" alt="葫芦丝">
+        <audio id="jumpSound" src="dinosaur/sounds/jump.wav" preload="auto"></audio>
+        <audio id="orbSound" src="dinosaur/sounds/score.ogg" preload="auto"></audio>
+    </div>
+
+    <div class="game-page">
+    <div class="game-header">
+        <h1>🏃 SINA跑酷</h1>
+        <p>轻按轻跳 · 长按大跳</p>
+    </div>
+
+    <!-- 游戏信息栏 -->
     <div class="game-info">
-        <div class="score">分数: 0</div>
-        <div class="high-score">最高分: 0</div>
-    </div>
-    <div class="game-container">
-        <canvas id="gameCanvas"></canvas>
-        <div class="start-screen">
-            <h1>SINA跑酷</h1>
-            <p>按空格键开始游戏</p>
-            <p>空格/上键/点击/触摸：轻按轻跳，长按大跳</p>
-            <button id="startBtn">开始游戏</button>
+        <div class="info-item">🏆 <span class="value" id="scoreDisplay">0</span></div>
+        <div class="info-item speed-indicator">
+            🚀 速度
+            <div class="speed-bar"><div class="speed-fill" id="speedFill"></div></div>
         </div>
-        <div class="game-over">
-            <h2>游戏结束</h2>
-            <p>最终得分: <span id="finalScore">0</span></p>
-            <button id="restartBtn">重新开始</button>
+        <div class="info-item">👑 最高 <span class="value" id="highScoreDisplay">0</span></div>
+    </div>
+
+    <!-- 游戏容器 -->
+    <div class="game-wrapper">
+        <div class="game-container" id="gameContainer">
+            <div class="cloud cloud-1"></div>
+            <div class="cloud cloud-2"></div>
+            <div class="cloud cloud-3"></div>
+            <canvas id="gameCanvas"></canvas>
+
+            <div class="mobile-controls" id="mobileControls">
+                <div class="jump-btn" id="jumpBtn">⬆<span class="label">跳</span></div>
+            </div>
+
+            <!-- 开始界面 -->
+            <div class="overlay" id="startOverlay">
+                <div class="overlay-content">
+                    <div class="big-icon">🏃</div>
+                    <h2>SINA 跑酷</h2>
+                    <p>控制 SINA 跳跃躲避葫芦丝障碍！</p>
+                    <div class="controls-hint">
+                        <span class="key-hint">使用<kbd>空格</kbd> / <kbd>↑</kbd>跳跃</span>
+                        <span class="key-hint">长按可蓄力大跳</span>
+                        <button class="bilibili-btn" id="startBtn" style="border: none;">开始游戏</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 结束界面 -->
+            <div class="overlay hidden" id="endOverlay">
+                <div class="overlay-content">
+                    <div class="big-icon" id="endIcon">💥</div>
+                    <h2 id="endTitle">游戏结束</h2>
+                    <div class="highlight" id="finalScore">0</div>
+                    <p id="endComment"></p>
+                    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                        <a href="../games.html" class="bilibili-btn" style="font-size: 12px;"> 返回游戏中心</a>
+                        <button class="bilibili-btn" id="restartBtn" style="border: none;">再来一次 </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
     <div class="controls">
         <p>控制: <span class="key">↑</span> / <span class="key">空格</span> / 点击/触摸（轻按轻跳，长按大跳）</p>
     </div>
+    <a href="../games.html" class="back-link">← 返回游戏中心</a>
+
+    </div>
+
+    <script src="../js/star.js"></script>
+    <script src="../js/click.js"></script>
+    <script src="../js/time.js"></script>
+    <script src="../js/fireworks.js"></script>
+    <script src="../js/menu.js"></script>
 
     <script>
-        // 游戏主类
         class SinaGame {
             constructor() {
                 this.canvas = document.getElementById('gameCanvas');
                 this.ctx = this.canvas.getContext('2d');
-                this.scoreElement = document.querySelector('.score');
-                this.highScoreElement = document.querySelector('.high-score');
-                this.finalScoreElement = document.getElementById('finalScore');
-                this.startScreen = document.querySelector('.start-screen');
-                this.gameOverScreen = document.querySelector('.game-over');
+                this.container = document.getElementById('gameContainer');
+
+                this.scoreEl = document.getElementById('scoreDisplay');
+                this.highScoreEl = document.getElementById('highScoreDisplay');
+                this.finalScoreEl = document.getElementById('finalScore');
+                this.speedFill = document.getElementById('speedFill');
+                this.endIcon = document.getElementById('endIcon');
+                this.endTitle = document.getElementById('endTitle');
+                this.endComment = document.getElementById('endComment');
+                this.startOverlay = document.getElementById('startOverlay');
+                this.endOverlay = document.getElementById('endOverlay');
                 this.startBtn = document.getElementById('startBtn');
                 this.restartBtn = document.getElementById('restartBtn');
-                this.landscapePrompt = document.querySelector('.landscape-prompt');
+                this.jumpBtn = document.getElementById('jumpBtn');
+
+                // 横屏相关
+                this.landscapePrompt = document.getElementById('landscapePrompt');
                 this.landscapeBtn = document.getElementById('landscapeBtn');
                 this.forceLandscapeBtn = document.getElementById('forceLandscapeBtn');
                 this.portraitPlayBtn = document.getElementById('portraitPlayBtn');
-                
-                // 设置画布尺寸
+
                 this.canvas.width = 800;
-                this.canvas.height = 200;
-                
-                // 游戏状态
+                this.canvas.height = 250;
+
                 this.isRunning = false;
                 this.score = 0;
-                this.highScore = localStorage.getItem('sinaHighScore') || 0;
-                this.highScoreElement.textContent = `最高分: ${this.highScore}`;
+                this.highScore = parseInt(localStorage.getItem('sinaHighScore')) || 0;
+                this.highScoreEl.textContent = this.highScore;
                 this.gameOverTime = 0;
-                this.restartDelay = 1000;
-                
-                // 轻重跳配置
+                this.restartDelay = 800;
+                this.milestone = 0;
+
                 this.jumpConfig = {
-                    lightForce: -14,    // 轻跳力度
-                    heavyForce: -17,    // 大跳力度
-                    threshold: 300,     // 轻重跳时间阈值（毫秒）
-                    maxPressTime: 1000  // 最大按下时间
+                    lightForce: -13,
+                    heavyForce: -16.5,
+                    threshold: 250,
+                    maxPressTime: 800
                 };
-                
-                // SINA 统一 y 轴偏移量
-                this.sinaYOffset = 20; 
-                
-                // 加载SINA图片资源
+
+                this.sinaYOffset = 20;
+
                 this.sinaImages = [];
-                for (let i = 1; i <= 12; i++) {
-                    this.sinaImages.push(document.getElementById(`sina${i}`));
-                }
-                
-                // 加载障碍物图片
+                for (let i = 1; i <= 12; i++) this.sinaImages.push(document.getElementById(`sina${i}`));
                 this.hulusiImage = document.getElementById('hulusi');
-                
-                // 加载跳跃音效
                 this.jumpSound = document.getElementById('jumpSound');
+                this.orbSound = new Audio('./dinosaur/sounds/score.ogg');
+                this.bgMusic = new Audio('dinosaur/sounds/bgm.ogg');
+                this.bgMusic.loop = true;          // 循环播放
+                this.bgMusic.volume = 0.6;         // 背景音量调小一点，不抢戏
                 
-                // SINA角色属性
+                this.gameOverSound = new Audio('dinosaur/sounds/gameover.ogg');
                 this.sina = {
-                    x: 50,
-                    y: 0,
-                    width: 60,
-                    height: 60,
-                    velocityY: 0,
-                    jumping: false,
-                    frameCount: 0,
-                    animationSpeed: 5,
-                    currentFrame: 0,
-                    hitbox: {
-                        offsetX: 10,
-                        offsetY: 10,
-                        scaleX: 0.7,
-                        scaleY: 0.8
-                    },
-                    // 轻重跳相关状态
-                    pressStartTime: null,
-                    isPressing: false
+                    x: 50, y: 0, width: 60, height: 60,
+                    velocityY: 0, jumping: false,
+                    frameCount: 0, animationSpeed: 5, currentFrame: 0,
+                    hitbox: { offsetX: 10, offsetY: 10, scaleX: 0.7, scaleY: 0.8 },
+                    pressStartTime: null, isPressing: false
                 };
-                
-                // 重力
+
                 this.gravity = 0.6;
-                
-                // 障碍物
                 this.obstacles = [];
-                this.obstacleSpeed = 6;
-                this.obstacleSpawnRate = 120; // 每多少帧生成一个障碍物
+                this.obstacleSpeed = 5;
+                this.obstacleSpawnRate = 130;
                 this.frameCount = 0;
                 this.lastObstacleTime = 0;
-                this.minObstacleInterval = 60; // 最小障碍物间隔帧数
-                
-                // 地面位置
-                this.groundY = this.canvas.height - 20;
+                this.baseSpeed = 5;
+
+                this.groundY = this.canvas.height - 25;
                 this.sina.y = this.groundY - this.sina.height + this.sinaYOffset;
-                
-                // 检查图片加载状态
+
+                this.groundDecorations = [];
+                for (let i = 0; i < 20; i++) {
+                    this.groundDecorations.push({
+                        x: Math.random() * this.canvas.width,
+                        height: 2 + Math.random() * 6,
+                        width: 3 + Math.random() * 5,
+                        color: Math.random() > 0.5 ? '#66BB6A' : '#81C784'
+                    });
+                }
+
                 this.checkImagesLoaded();
-                
-                // 绑定事件
                 this.bindEvents();
-                
-                // 初始化横屏检测
                 this.initLandscapeDetection();
             }
-            
-            // 初始化横屏检测
-            initLandscapeDetection() {
-                // 检查当前方向
-                this.checkOrientation();
-                
-                // 监听方向变化
-                window.addEventListener('orientationchange', () => {
-                    this.checkOrientation();
-                });
-                
-                // 监听窗口大小变化（某些设备方向变化不会触发orientationchange）
-                window.addEventListener('resize', () => {
-                    setTimeout(() => this.checkOrientation(), 100);
-                });
-                
-                // 强制横屏按钮点击事件
-                this.forceLandscapeBtn.addEventListener('click', () => {
-                    this.enterFullscreen();
-                });
-                
-                // 竖屏游玩按钮点击事件
-                this.portraitPlayBtn.addEventListener('click', () => {
-                    this.landscapePrompt.style.display = 'none';
-                });
-                
-                // 横屏按钮点击事件
-                this.landscapeBtn.addEventListener('click', () => {
-                    this.enterFullscreen();
+
+            checkImagesLoaded() {
+                const images = [...this.sinaImages, this.hulusiImage];
+                let loaded = 0;
+                const check = () => { loaded++; if (loaded === images.length) this.updateSizes(); };
+                images.forEach(img => {
+                    if (img.complete) check(); else { img.onload = check; img.onerror = check; }
                 });
             }
-            
-            // 检查屏幕方向
+
+            updateSizes() {
+                const scale = 0.8;
+                this.sina.width = this.sinaImages[0].width * scale;
+                this.sina.height = this.sinaImages[0].height * scale;
+                this.sina.y = this.groundY - this.sina.height + this.sinaYOffset;
+            }
+
+            playJumpSound() {
+                if (this.jumpSound) {
+                    this.jumpSound.currentTime = 0;
+                    this.jumpSound.play().catch(() => {});
+                }
+            }
+
+            showScorePopup(x, y, text) {
+                if (!this.isRunning) return;
+                const containerRect = this.container.getBoundingClientRect();
+                const canvasRect = this.canvas.getBoundingClientRect();
+                const scaleX = canvasRect.width / this.canvas.width;
+                const popup = document.createElement('div');
+                popup.className = 'score-popup';
+                popup.textContent = text;
+                popup.style.left = (canvasRect.left - containerRect.left + x * scaleX) + 'px';
+                popup.style.top = (y * scaleX) + 'px';
+                this.container.appendChild(popup);
+                setTimeout(() => popup.remove(), 1000);
+            }
+
+            bindEvents() {
+                document.addEventListener('keydown', (e) => {
+                    if ((e.code === 'Space' || e.code === 'ArrowUp') && !this.isRunning) {
+                        e.preventDefault();
+                        const now = Date.now();
+                        if (now - this.gameOverTime < this.restartDelay) return;
+                        if (this.endOverlay.classList.contains('hidden')) this.startGame();
+                        else this.restartGame();
+                        return;
+                    }
+                    if ((e.code === 'Space' || e.code === 'ArrowUp') && this.isRunning && !this.sina.jumping && !this.sina.isPressing) {
+                        e.preventDefault();
+                        this.sina.pressStartTime = Date.now();
+                        this.sina.isPressing = true;
+                    }
+                });
+
+                document.addEventListener('keyup', (e) => {
+                    if ((e.code === 'Space' || e.code === 'ArrowUp') && this.isRunning && this.sina.isPressing) {
+                        e.preventDefault();
+                        this.doJump();
+                    }
+                });
+
+                document.addEventListener('mousedown', (e) => {
+                    if (this.isRunning && !this.sina.jumping && !this.sina.isPressing &&
+                        e.target !== this.restartBtn && e.target !== this.startBtn && !e.target.closest('.jump-btn')) {
+                        this.sina.pressStartTime = Date.now();
+                        this.sina.isPressing = true;
+                    }
+                });
+                document.addEventListener('mouseup', (e) => {
+                    if (this.isRunning && this.sina.isPressing) this.doJump();
+                });
+
+                document.addEventListener('touchstart', (e) => {
+                    if (this.isRunning && !this.sina.jumping && !this.sina.isPressing) {
+                        this.sina.pressStartTime = Date.now();
+                        this.sina.isPressing = true;
+                    }
+                }, { passive: true });
+                document.addEventListener('touchend', (e) => {
+                    if (this.isRunning && this.sina.isPressing) this.doJump();
+                }, { passive: true });
+
+                let btnPressTime = null;
+                this.jumpBtn.addEventListener('touchstart', (e) => {
+                    e.stopPropagation();
+                    if (this.isRunning && !this.sina.jumping && !this.sina.isPressing) {
+                        btnPressTime = Date.now();
+                        this.sina.pressStartTime = Date.now();
+                        this.sina.isPressing = true;
+                    }
+                }, { passive: true });
+                this.jumpBtn.addEventListener('touchend', (e) => {
+                    e.stopPropagation();
+                    if (this.isRunning && this.sina.isPressing) {
+                        this.doJump();
+                        btnPressTime = null;
+                    }
+                }, { passive: true });
+                this.jumpBtn.addEventListener('mousedown', (e) => {
+                    e.stopPropagation();
+                    if (this.isRunning && !this.sina.jumping && !this.sina.isPressing) {
+                        this.sina.pressStartTime = Date.now();
+                        this.sina.isPressing = true;
+                    }
+                });
+                this.jumpBtn.addEventListener('mouseup', (e) => {
+                    e.stopPropagation();
+                    if (this.isRunning && this.sina.isPressing) this.doJump();
+                });
+
+                this.startBtn.addEventListener('click', () => this.startGame());
+                this.restartBtn.addEventListener('click', () => this.restartGame());
+            }
+
+            // ========== 横屏检测 ==========
+            initLandscapeDetection() {
+                this.checkOrientation();
+                window.addEventListener('orientationchange', () => { this.checkOrientation(); });
+                window.addEventListener('resize', () => { setTimeout(() => this.checkOrientation(), 100); });
+
+                this.forceLandscapeBtn.addEventListener('click', () => { this.enterFullscreen(); });
+                this.portraitPlayBtn.addEventListener('click', () => {
+                    this.landscapePrompt.style.display = 'none';
+                    this.isPortraitMode = true;
+                });
+                this.landscapeBtn.addEventListener('click', () => { this.enterFullscreen(); });
+            }
+
             checkOrientation() {
                 const isPortrait = window.innerHeight > window.innerWidth;
-                
-                // 如果是移动设备且处于竖屏状态，显示横屏提示
                 if (this.isMobileDevice() && isPortrait) {
                     this.landscapePrompt.style.display = 'flex';
                 } else {
                     this.landscapePrompt.style.display = 'none';
                 }
             }
-            
-            // 检测是否为移动设备
+
             isMobileDevice() {
                 return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             }
-            
-            // 进入全屏模式（模拟横屏）
+
             enterFullscreen() {
-                const element = document.documentElement;
-                
-                if (element.requestFullscreen) {
-                    element.requestFullscreen();
-                } else if (element.mozRequestFullScreen) {
-                    element.mozRequestFullScreen();
-                } else if (element.webkitRequestFullscreen) {
-                    element.webkitRequestFullscreen();
-                } else if (element.msRequestFullscreen) {
-                    element.msRequestFullscreen();
-                }
-                
-                // 尝试锁定屏幕方向为横屏
+                const el = document.documentElement;
+                if (el.requestFullscreen) { el.requestFullscreen(); }
+                else if (el.mozRequestFullScreen) { el.mozRequestFullScreen(); }
+                else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
+                else if (el.msRequestFullscreen) { el.msRequestFullscreen(); }
+
                 if (screen.orientation && screen.orientation.lock) {
-                    screen.orientation.lock('landscape').catch(() => {
-                        console.log('屏幕方向锁定失败');
-                    });
+                    screen.orientation.lock('landscape').catch(() => {});
                 }
-                
-                // 隐藏横屏提示
                 this.landscapePrompt.style.display = 'none';
             }
-            
-            // 检查图片是否加载完成
-            checkImagesLoaded() {
-                const images = [...this.sinaImages, this.hulusiImage];
-                let loadedCount = 0;
-                
-                images.forEach(img => {
-                    if (img.complete) {
-                        loadedCount++;
-                    } else {
-                        img.onload = () => {
-                            loadedCount++;
-                            if (loadedCount === images.length) {
-                                this.updateOriginalSizes();
-                            }
-                        };
-                        
-                        img.onerror = () => {
-                            console.error(`图片加载失败: ${img.src}`);
-                            loadedCount++;
-                            if (loadedCount === images.length) {
-                                this.updateOriginalSizes();
-                            }
-                        };
-                    }
-                });
-                
-                if (loadedCount === images.length) {
-                    this.updateOriginalSizes();
-                }
+
+            doJump() {
+                const duration = Math.min(Date.now() - this.sina.pressStartTime, this.jumpConfig.maxPressTime);
+                const force = duration < this.jumpConfig.threshold ? this.jumpConfig.lightForce : this.jumpConfig.heavyForce;
+                this.sina.jumping = true;
+                this.sina.velocityY = force;
+                this.sina.pressStartTime = null;
+                this.sina.isPressing = false;
+                this.playJumpSound();
             }
-            
-            // 更新图片原始尺寸
-            updateOriginalSizes() {
-                const sinaScale = 0.8;
-                this.sina.width = this.sinaImages[0].width * sinaScale;
-                this.sina.height = this.sinaImages[0].height * sinaScale;
-                this.sina.y = this.groundY - this.sina.height + this.sinaYOffset;
-            }
-            
-            // 播放跳跃音效
-            playJumpSound() {
-                if (this.jumpSound) {
-                    // 重置音频到开始位置
-                    this.jumpSound.currentTime = 0;
-                    // 播放音频
-                    this.jumpSound.play().catch(e => {
-                        console.log("音频播放失败:", e);
-                    });
-                }
-            }
-            
-            // 绑定控制事件
-            bindEvents() {
-                // 键盘空格键/上键按下事件
-                document.addEventListener('keydown', (e) => {
-                    // 游戏启动/重启 - 仅在按下时触发一次
-                    if ((e.code === 'Space' || e.code === 'ArrowUp') && !this.isRunning) {
-                        const now = Date.now();
-                        if (now - this.gameOverTime < this.restartDelay) return;
-                        
-                        // 防止长按空格导致连续重启
-                        if (this.gameOverScreen.style.display === 'block') {
-                            this.restartGame();
-                        } else {
-                            this.startGame();
-                        }
-                        return; // 启动游戏后不执行后续跳跃逻辑
-                    }
-                    
-                    // 游戏中跳跃按下 - 记录开始时间
-                    if ((e.code === 'Space' || e.code === 'ArrowUp') && this.isRunning && !this.sina.jumping && !this.sina.isPressing) {
-                        this.sina.pressStartTime = Date.now();
-                        this.sina.isPressing = true;
-                    }
-                });
 
-                // 键盘空格键/上键抬起事件 - 判断轻重跳
-                document.addEventListener('keyup', (e) => {
-                    if ((e.code === 'Space' || e.code === 'ArrowUp') && this.isRunning && this.sina.isPressing) {
-                        const pressDuration = Math.min(Date.now() - this.sina.pressStartTime, this.jumpConfig.maxPressTime);
-                        const jumpForce = pressDuration < this.jumpConfig.threshold ? this.jumpConfig.lightForce : this.jumpConfig.heavyForce;
-                        
-                        this.sina.jumping = true;
-                        this.sina.velocityY = jumpForce;
-                        this.sina.pressStartTime = null;
-                        this.sina.isPressing = false;
-                        
-                        // 播放跳跃音效
-                        this.playJumpSound();
-                    }
-                });
-
-                // 鼠标点击按下事件
-                document.addEventListener('mousedown', (e) => {
-                    if (this.isRunning && !this.sina.jumping && !this.sina.isPressing && 
-                        e.target !== this.startBtn && e.target !== this.restartBtn) {
-                        this.sina.pressStartTime = Date.now();
-                        this.sina.isPressing = true;
-                    }
-                });
-
-                // 鼠标点击抬起事件
-                document.addEventListener('mouseup', (e) => {
-                    if (this.isRunning && this.sina.isPressing && 
-                        e.target !== this.startBtn && e.target !== this.restartBtn) {
-                        const pressDuration = Math.min(Date.now() - this.sina.pressStartTime, this.jumpConfig.maxPressTime);
-                        const jumpForce = pressDuration < this.jumpConfig.threshold ? this.jumpConfig.lightForce : this.jumpConfig.heavyForce;
-                        
-                        this.sina.jumping = true;
-                        this.sina.velocityY = jumpForce;
-                        this.sina.pressStartTime = null;
-                        this.sina.isPressing = false;
-                        
-                        // 播放跳跃音效
-                        this.playJumpSound();
-                    }
-                });
-
-                // 移动端触摸开始事件
-                document.addEventListener('touchstart', (e) => {
-                    if (this.isRunning && !this.sina.jumping && !this.sina.isPressing) {
-                        e.preventDefault(); // 防止页面滚动
-                        this.sina.pressStartTime = Date.now();
-                        this.sina.isPressing = true;
-                    }
-                }, { passive: false });
-
-                // 移动端触摸结束事件
-                document.addEventListener('touchend', (e) => {
-                    if (this.isRunning && this.sina.isPressing) {
-                        e.preventDefault();
-                        const pressDuration = Math.min(Date.now() - this.sina.pressStartTime, this.jumpConfig.maxPressTime);
-                        const jumpForce = pressDuration < this.jumpConfig.threshold ? this.jumpConfig.lightForce : this.jumpConfig.heavyForce;
-                        
-                        this.sina.jumping = true;
-                        this.sina.velocityY = jumpForce;
-                        this.sina.pressStartTime = null;
-                        this.sina.isPressing = false;
-                        
-                        // 播放跳跃音效
-                        this.playJumpSound();
-                    }
-                }, { passive: false });
-
-                // 按钮控制
-                this.startBtn.addEventListener('click', () => this.startGame());
-                this.restartBtn.addEventListener('click', () => this.restartGame());
-            }
-            
-            // 开始游戏
             startGame() {
                 this.isRunning = true;
-                this.startScreen.style.display = 'none';
+                this.bgMusic.currentTime = 0;
+                this.bgMusic.play().catch(() => {});
                 this.score = 0;
                 this.obstacles = [];
-                this.obstacleSpeed = 6;
+                this.obstacleSpeed = this.baseSpeed;
                 this.frameCount = 0;
                 this.lastObstacleTime = 0;
-                this.scoreElement.textContent = `分数: ${this.score}`;
+                this.milestone = 0;
+                this.sina.y = this.groundY - this.sina.height + this.sinaYOffset;
+                this.sina.velocityY = 0;
+                this.sina.jumping = false;
+                this.scoreEl.textContent = '0';
+                this.speedFill.style.width = '0%';
+                this.startOverlay.classList.add('hidden');
+                this.endOverlay.classList.add('hidden');
                 this.animate();
             }
-            
-            // 重新开始游戏
+
             restartGame() {
-                this.gameOverScreen.style.display = 'none';
+                this.endOverlay.classList.add('hidden');
                 this.startGame();
             }
-            
-            // 游戏结束
+
             gameOver() {
+                // 🆕 停止背景音乐 ↓
+                this.bgMusic.pause();
+                this.bgMusic.currentTime = 0;
+                // 🆕 播放结束音效 ↓
+                this.gameOverSound.currentTime = 0;
+                this.gameOverSound.play().catch(() => {});
+                // 🆕 音效处理结束 ↑
                 this.isRunning = false;
-                this.gameOverScreen.style.display = 'block';
-                this.finalScoreElement.textContent = this.score;
-                this.gameOverTime = Date.now();
-                
-                // 更新最高分
+
+                let isNewRecord = false;
                 if (this.score > this.highScore) {
                     this.highScore = this.score;
                     localStorage.setItem('sinaHighScore', this.highScore);
-                    this.highScoreElement.textContent = `最高分: ${this.highScore}`;
+                    this.highScoreEl.textContent = this.highScore;
+                    isNewRecord = true;
                 }
+
+                let icon, title, comment;
+                if (isNewRecord) {
+                    icon = '🏆'; title = '新纪录！'; comment = `太强了！跑出了 ${this.score} 分的新纪录！`;
+                } else if (this.score >= 500) {
+                    icon = '👑'; title = '跑酷大师！'; comment = '无人能敌！SINA 被你驯服了！';
+                } else if (this.score >= 300) {
+                    icon = '🌟'; title = '身手不凡！'; comment = '反应超快，继续挑战更高分吧！';
+                } else if (this.score >= 100) {
+                    icon = '👍'; title = '表现不错！'; comment = `跑了 ${this.score} 分，继续加油~`;
+                } else {
+                    icon = '💪'; title = '再接再厉！'; comment = '多练习就能越跑越远！';
+                }
+
+                this.endIcon.textContent = icon;
+                this.endTitle.textContent = title;
+                this.endComment.textContent = comment;
+                this.finalScoreEl.textContent = this.score;
+                this.gameOverTime = Date.now();
+
+                setTimeout(() => { this.endOverlay.classList.remove('hidden'); }, 300);
             }
-            
-            // 生成障碍物
+
             spawnObstacle() {
                 this.frameCount++;
-                
+                const minGap = Math.max(50, 130 - Math.floor(this.score / 80) * 5);
                 if (this.frameCount - this.lastObstacleTime > this.obstacleSpawnRate) {
-                    const minScale = 0.07;
-                    const maxScale = 0.19;
+                    const minScale = 0.06, maxScale = 0.17;
                     const scale = minScale + Math.random() * (maxScale - minScale);
-                    
-                    const width = this.hulusiImage.width * scale;
-                    const height = this.hulusiImage.height * scale;
-                    
-                    const obstacle = {
-                        x: this.canvas.width,
-                        y: this.groundY - height,
-                        width: width,
-                        height: height,
-                        scale: scale
-                    };
-                    
-                    this.obstacles.push(obstacle);
+                    const w = this.hulusiImage.width * scale;
+                    const h = this.hulusiImage.height * scale;
+                    this.obstacles.push({
+                        x: this.canvas.width, y: this.groundY - h,
+                        width: w, height: h, scale: scale, passed: false
+                    });
                     this.lastObstacleTime = this.frameCount;
-                    
-                    // 动态调整生成速率
-                    this.obstacleSpawnRate = Math.max(40, 120 - Math.floor(this.score / 100) * 10);
+                    this.obstacleSpawnRate = Math.max(40, 130 - Math.floor(this.score / 80) * 5);
                 }
             }
-            
-            // 更新游戏状态
+
             update() {
-                // 更新SINA位置
                 this.sina.velocityY += this.gravity;
                 this.sina.y += this.sina.velocityY;
-                
-                // 确保SINA不会穿过地面
                 if (this.sina.y >= this.groundY - this.sina.height + this.sinaYOffset) {
                     this.sina.y = this.groundY - this.sina.height + this.sinaYOffset;
                     this.sina.velocityY = 0;
                     this.sina.jumping = false;
                 }
-                
-                // 更新SINA动画帧
+
                 this.sina.frameCount++;
                 if (this.sina.frameCount % this.sina.animationSpeed === 0) {
-                    if (!this.sina.jumping) {
-                        this.sina.currentFrame = (this.sina.currentFrame + 1) % this.sinaImages.length;
-                    } else {
-                        this.sina.currentFrame = 0;
-                    }
+                    this.sina.currentFrame = this.sina.jumping ? 0 : (this.sina.currentFrame + 1) % this.sinaImages.length;
                 }
-                
-                // 生成障碍物
+
                 this.spawnObstacle();
-                
-                // 更新障碍物位置
+
                 for (let i = this.obstacles.length - 1; i >= 0; i--) {
-                    const obstacle = this.obstacles[i];
-                    obstacle.x -= this.obstacleSpeed;
-                    
-                    // 移除超出屏幕的障碍物
-                    if (obstacle.x + obstacle.width < 0) {
-                        this.obstacles.splice(i, 1);
-                        // 每避开一个障碍物增加分数
+                    const obs = this.obstacles[i];
+                    obs.x -= this.obstacleSpeed;
+
+                    if (!obs.passed && obs.x + obs.width < this.sina.x) {
+                        obs.passed = true;
                         this.score += 10;
-                        this.scoreElement.textContent = `分数: ${this.score}`;
-                        
-                        // 随着分数增加提高速度
-                        if (this.score % 100 === 0) {
-                            this.obstacleSpeed += 0.5;
+                        this.orbSound.currentTime = 0;
+                        this.orbSound.play().catch(() => {});
+                        this.scoreEl.textContent = this.score;
+
+                        if (this.score % 100 === 0 && this.score > 0) {
+                            this.obstacleSpeed = this.baseSpeed + Math.floor(this.score / 100) * 0.8;
+                            this.showScorePopup(this.sina.x, this.sina.y - 20, `💨 ${this.obstacleSpeed.toFixed(1)}速!`);
+                        } else {
+                            this.showScorePopup(this.sina.x + 30, this.sina.y - 10, '+10');
                         }
                     }
+
+                    if (obs.x + obs.width < 0) this.obstacles.splice(i, 1);
                 }
-                
-                // 碰撞检测
+
+                const speedPercent = Math.min(100, ((this.obstacleSpeed - this.baseSpeed) / 5) * 100);
+                this.speedFill.style.width = speedPercent + '%';
+
+                this.groundDecorations.forEach(d => {
+                    d.x -= this.obstacleSpeed * 0.5;
+                    if (d.x + d.width < 0) {
+                        d.x = this.canvas.width + Math.random() * 50;
+                        d.height = 2 + Math.random() * 6;
+                    }
+                });
+
                 this.checkCollision();
             }
-            
-            // 碰撞检测（使用调整后的碰撞箱）
+
             checkCollision() {
-                // 计算SINA的实际碰撞箱
-                const sinaHitbox = {
+                const sh = {
                     x: this.sina.x + this.sina.hitbox.offsetX,
                     y: this.sina.y + this.sina.hitbox.offsetY,
-                    width: this.sina.width * this.sina.hitbox.scaleX,
-                    height: this.sina.height * this.sina.hitbox.scaleY
+                    w: this.sina.width * this.sina.hitbox.scaleX,
+                    h: this.sina.height * this.sina.hitbox.scaleY
                 };
-                
-                for (const obstacle of this.obstacles) {
-                    // 计算障碍物的实际碰撞箱
-                    const obstacleHitbox = {
-                        x: obstacle.x + 5,
-                        y: obstacle.y + 5,
-                        width: obstacle.width * 0.8,
-                        height: obstacle.height * 0.8
-                    };
-                    
-                    // 检测碰撞
-                    if (
-                        sinaHitbox.x + sinaHitbox.width > obstacleHitbox.x &&
-                        sinaHitbox.x < obstacleHitbox.x + obstacleHitbox.width &&
-                        sinaHitbox.y + sinaHitbox.height > obstacleHitbox.y &&
-                        sinaHitbox.y < obstacleHitbox.y + obstacleHitbox.height
-                    ) {
+
+                for (const obs of this.obstacles) {
+                    const oh = { x: obs.x + 5, y: obs.y + 5, w: obs.width * 0.75, h: obs.height * 0.75 };
+                    if (sh.x + sh.w > oh.x && sh.x < oh.x + oh.w && sh.y + sh.h > oh.y && sh.y < oh.y + oh.h) {
                         this.gameOver();
                         return;
                     }
                 }
             }
-            
-            // 绘制游戏
+
+            drawGroundLine() {
+                const ctx = this.ctx;
+                const grassY = this.groundY - 3;
+                ctx.fillStyle = '#66BB6A';
+                ctx.fillRect(0, grassY, this.canvas.width, 6);
+                ctx.fillStyle = '#8D6E63';
+                ctx.fillRect(0, this.groundY + 3, this.canvas.width, this.canvas.height - this.groundY);
+                ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+                ctx.lineWidth = 1;
+                for (let i = 0; i < 5; i++) {
+                    const y = this.groundY + 6 + i * 5;
+                    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(this.canvas.width, y); ctx.stroke();
+                }
+                this.groundDecorations.forEach(d => {
+                    ctx.fillStyle = d.color;
+                    ctx.fillRect(d.x, grassY - d.height, d.width, d.height);
+                });
+            }
+
             draw() {
-                // 清空画布
-                this.ctx.fillStyle = '#f1f1f1';
-                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                // 绘制地面
-                this.ctx.fillStyle = '#888';
-                this.ctx.fillRect(0, this.groundY, this.canvas.width, 20);
-                
-                // 绘制SINA
-                this.ctx.drawImage(
-                    this.sinaImages[this.sina.currentFrame],
-                    this.sina.x,
-                    this.sina.y,
-                    this.sina.width,
-                    this.sina.height
-                );
-                
-                // 绘制障碍物
-                for (const obstacle of this.obstacles) {
-                    this.ctx.drawImage(
-                        this.hulusiImage,
-                        obstacle.x,
-                        obstacle.y,
-                        obstacle.width,
-                        obstacle.height
-                    );
+                const ctx = this.ctx;
+                const skyGrad = ctx.createLinearGradient(0, 0, 0, this.groundY);
+                skyGrad.addColorStop(0, '#B0E0FF');
+                skyGrad.addColorStop(0.5, '#D4EFFF');
+                skyGrad.addColorStop(1, '#E8F5E9');
+                ctx.fillStyle = skyGrad;
+                ctx.fillRect(0, 0, this.canvas.width, this.groundY);
+
+                ctx.fillStyle = 'rgba(129,199,132,0.3)';
+                ctx.beginPath(); ctx.ellipse(100, this.groundY - 5, 120, 35, 0, Math.PI, 0); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(350, this.groundY - 5, 90, 25, 0, Math.PI, 0); ctx.fill();
+                ctx.beginPath(); ctx.ellipse(600, this.groundY - 5, 140, 40, 0, Math.PI, 0); ctx.fill();
+
+                this.drawGroundLine();
+                ctx.drawImage(this.sinaImages[this.sina.currentFrame], this.sina.x, this.sina.y, this.sina.width, this.sina.height);
+
+                for (const obs of this.obstacles) {
+                    ctx.drawImage(this.hulusiImage, obs.x, obs.y, obs.width, obs.height);
                 }
             }
-            
-            // 游戏主循环
+
             animate() {
                 if (!this.isRunning) return;
-                
                 this.update();
                 this.draw();
                 requestAnimationFrame(() => this.animate());
             }
         }
-        
-        // 初始化游戏
-        window.onload = () => {
-            const game = new SinaGame();
-        };
+
+        window.onload = () => { new SinaGame(); };
     </script>
 </body>
 </html>

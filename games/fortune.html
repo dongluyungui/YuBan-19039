@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>今日御坂运势 - 御坂19039应援站</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/menu.css">
+    <link rel="stylesheet" href="../css/setting.css"/>
+    <link rel="stylesheet" href="../css/responsive-nav.css"/>
+    <script src="../js/responsive-nav.js"></script>
+    <script src="../js/setting.js"></script>
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
+    <style>
+        .game-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 70px 20px 20px;
+            user-select: none;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            padding: 35px 30px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 装饰背景圆 */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(233,30,99,0.06), transparent);
+            border-radius: 50%;
+        }
+        .container::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: -60px;
+            width: 160px;
+            height: 160px;
+            background: radial-gradient(circle, rgba(255,107,157,0.06), transparent);
+            border-radius: 50%;
+        }
+
+        .game-header h1 {
+            font-size: 1.6rem;
+            color: #e91e63;
+            margin-bottom: 5px;
+        }
+
+        .header .date {
+            color: #999;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
+        /* 抽卡区域 */
+        .draw-area {
+            position: relative;
+            margin: 20px 0;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 卡片翻转 */
+        .fortune-card {
+            width: 200px;
+            height: 280px;
+            perspective: 1000px;
+            cursor: pointer;
+            margin: 0 auto;
+        }
+
+        .fortune-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .fortune-card.flipped .fortune-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+
+        .card-front {
+            background: linear-gradient(145deg, #e91e63, #ff6b9d);
+            color: white;
+            border: 3px solid rgba(255,255,255,0.3);
+        }
+
+        .card-front .big-emoji {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .card-front .tap-text {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: bold;
+        }
+
+        .card-front .sparkle {
+            font-size: 1.2rem;
+            margin: 5px 0;
+            letter-spacing: 8px;
+        }
+
+        .card-back {
+            background: white;
+            transform: rotateY(180deg);
+        }
+
+        .card-back .fortune-emoji {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+        }
+
+        .card-back .fortune-level {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .card-back .fortune-desc {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* 运势详情 */
+        .fortune-details {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+            animation: fadeUp 0.5s ease;
+        }
+
+        .fortune-details.show {
+            display: block;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            background: #f8f8f8;
+            border-radius: 12px;
+            padding: 12px 15px;
+            text-align: center;
+        }
+
+        .detail-item .label {
+            font-size: 0.75rem;
+            color: #999;
+            margin-bottom: 4px;
+        }
+
+        .detail-item .value {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .detail-item .value.color-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .detail-item .value.color-dot::before {
+            content: '';
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--dot-color);
+        }
+
+        .fortune-message {
+            background: #fff5f8;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .fortune-message .label {
+            font-size: 0.8rem;
+            color: #e91e63;
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .fortune-message .text {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .lucky-activities {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .lucky-item {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        .lucky-item.good {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .lucky-item.bad {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        /* 按钮 */
+        .btn {
+            padding: 12px 35px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e91e63, #ff6b9d);
+            color: white;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #e91e63;
+            border: 2px solid #e91e63;
+        }
+
+        .btn-secondary:hover {
+            background: #fff5f8;
+        }
+
+        .share-section {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f8f8;
+            border-radius: 12px;
+        }
+
+        .share-section.show {
+            display: block;
+        }
+
+        .share-section .share-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 8px;
+            word-break: break-all;
+        }
+
+        .share-section .copy-btn {
+            padding: 6px 20px;
+            border-radius: 15px;
+            border: 1px solid #ddd;
+            background: white;
+            color: #555;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .share-section .copy-btn:hover {
+            border-color: #e91e63;
+            color: #e91e63;
+        }
+
+        .back-link {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-top: 20px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover { color: #e91e63; }
+
+        /* 已经抽过 */
+        .drawn-notice {
+            font-size: 0.8rem;
+            color: #bbb;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 25px 20px; }
+            .game-header h1 { font-size: 1.3rem; }
+            .fortune-card { width: 170px; height: 240px; }
+            .card-front .big-emoji { font-size: 3rem; }
+            .card-back .fortune-emoji { font-size: 2.8rem; }
+            .detail-grid { gap: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="fireworks-container"></div>
+    <ul id="context-menu">
+        <li>彩蛋</li>
+        <li>当前时间</li>
+    </ul>
+
+    <header class="header">
+        <div class="header-content">
+            <div>
+                <a href="../index.html" class="nav-link" data-i18n="home">首页</a>
+                <a href="../About.html" class="nav-link" data-i18n="about">关于</a>
+                <a href="../gallery.html" class="nav-link" data-i18n="gallery">画廊</a>
+                <a href="../time.html" class="nav-link" data-i18n="timeline">时间轴</a>
+                <a href="../comment.html" class="nav-link hidden-on-mobile" data-i18n="comment_board">留言板</a>
+                <a href="../Sound.html" class="nav-link hidden-on-mobile" data-i18n="voice_button">语音按钮</a>
+                <a href="../LiveHistory.html" class="nav-link hidden-on-mobile" data-i18n="previous_replays">往期回放</a>
+                <button id="settingBtn" class="nav-link" data-no-meow data-i18n="Webpage_settings">网页设置</button>
+                <div id="settingOverlay" class="setting-overlay"></div>
+                <div id="settingPanel" class="setting-panel"></div>
+
+                <div class="more-container more-container-pc" style="display: none;">
+                    <button class="more-btn more-btn-pc nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-pc"></div>
+                </div>
+
+                <div class="more-container more-container-mobile">
+                    <button class="more-btn more-btn-mobile nav-link" data-i18n="more">更多 ▼</button>
+                    <div class="more-dropdown more-dropdown-mobile">
+                        <a href="../comment.html" class="nav-link" data-i18n="comment_board">留言板</a>
+                        <a href="../Sound.html" class="nav-link" data-i18n="voice_button">语音按钮</a>
+                        <a href="../LiveHistory.html" class="nav-link" data-i18n="previous_replays">往期回放</a>
+                    </div>
+                </div>
+            </div>
+       </div>
+    </header>
+
+    <div class="game-page">
+    <div class="container">
+        <div class="game-header">
+            <h1>今日运势</h1>
+            <div class="date" id="todayDate">加载中...</div>
+        </div>
+
+        <div class="draw-area">
+            <div class="fortune-card" id="fortuneCard" onclick="drawFortune()">
+                <div class="fortune-card-inner">
+                    <div class="card-front">
+                        <div class="sparkle">✨ ✨ ✨</div>
+                        <div class="big-emoji">🎴</div>
+                        <div class="tap-text">点击抽签</div>
+                        <div class="sparkle">✨ ✨ ✨</div>
+                    </div>
+                    <div class="card-back" id="cardBack">
+                        <div class="fortune-emoji" id="fEmoji">🌟</div>
+                        <div class="fortune-level" id="fLevel" style="color:#e91e63;">大吉</div>
+                        <div class="fortune-desc" id="fDesc">今天运势超棒！</div>
+                    </div>
+                </div>
+            </div>
+            <div class="drawn-notice" id="drawnNotice"></div>
+        </div>
+
+        <div class="fortune-details" id="fortuneDetails">
+            <div class="detail-grid">
+                <div class="detail-item">
+                    <div class="label">幸运色</div>
+                    <div class="value color-dot" id="luckyColor" style="--dot-color: #e91e63;">粉色</div>
+                </div>
+                <div class="detail-item">
+                    <div class="label">幸运物</div>
+                    <div class="value" id="luckyItem">🌸 樱花</div>
+                </div>
+                <div class="detail-item">
+                    <div class="label">幸运数字</div>
+                    <div class="value" id="luckyNum">3</div>
+                </div>
+                <div class="detail-item">
+                    <div class="label">幸运方位</div>
+                    <div class="value" id="luckyDir">东南</div>
+                </div>
+            </div>
+
+            <div class="fortune-message">
+                <div class="label">💬 御坂对你说</div>
+                <div class="text" id="fortuneMsg">今天也要加油哦！</div>
+            </div>
+
+            <div class="detail-grid">
+                <div class="lucky-activities" style="grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <div class="detail-item" style="background:#e8f5e9;">
+                        <div class="label">✅ 今日宜</div>
+                        <div class="value" style="color:#2e7d32;font-size:0.9rem;" id="luckyDo">看直播</div>
+                    </div>
+                    <div class="detail-item" style="background:#fff3e0;">
+                        <div class="label">❌ 今日忌</div>
+                        <div class="value" style="color:#e65100;font-size:0.9rem;" id="unluckyDo">熬夜</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" id="drawBtn" onclick="drawFortune()">🎴 抽取运势</button>
+
+        <div class="share-section" id="shareSection">
+            <div class="share-text" id="shareText"></div>
+            <button class="copy-btn" onclick="copyResult()">📋 复制分享</button>
+        </div>
+    </div>
+
+    <a href="../games.html" class="back-link">← 返回游戏中心</a>
+
+    </div>  <!-- /.game-page -->
+
+    <script src="../js/star.js"></script>
+    <script src="../js/click.js"></script>
+    <script src="../js/time.js"></script>
+    <script src="../js/fireworks.js"></script>
+    <script src="../js/menu.js"></script>
+
+    <script>
+        const FORTUNES = [
+            { level: '大吉', emoji: '🌟', prob: 10, desc: '今天是你超幸运的一天！✨' },
+            { level: '中吉', emoji: '🌸', prob: 20, desc: '运势不错，好事连连哦~' },
+            { level: '小吉', emoji: '🍀', prob: 25, desc: '小小的幸运在等着你！' },
+            { level: '吉', emoji: '👍', prob: 20, desc: '平稳顺遂的一天~' },
+            { level: '末吉', emoji: '🌿', prob: 15, desc: '稍微有点波澜，但没关系！' },
+            { level: '凶', emoji: '🌧️', prob: 8, desc: '今天要小心一些哦...' },
+            { level: '大凶', emoji: '⚡', prob: 2, desc: '唔...今天待在家里比较好！' }
+        ];
+
+        
+        const SOUND_PATH = 'fortune/sounds/';
+        const flipSound = new Audio(SOUND_PATH + 'flip.ogg');
+        const luckySound = new Audio(SOUND_PATH + 'lucky.ogg');
+        const unluckySound = new Audio(SOUND_PATH + 'unlucky.ogg');
+
+        const COLORS = [
+            { name: '粉色', hex: '#e91e63' },
+            { name: '红色', hex: '#f44336' },
+            { name: '橙色', hex: '#ff9800' },
+            { name: '黄色', hex: '#ffeb3b' },
+            { name: '绿色', hex: '#4caf50' },
+            { name: '蓝色', hex: '#2196f3' },
+            { name: '紫色', hex: '#9c27b0' },
+            { name: '白色', hex: '#ffffff' },
+            { name: '金色', hex: '#ffd700' },
+            { name: '银色', hex: '#c0c0c0' }
+        ];
+
+        const ITEMS = ['🌸 樱花', '⚡ 超电磁炮', '🎵 耳机', '🎮 游戏手柄', '📖 漫画书', '☕ 咖啡', '🍡 团子', '🎀 蝴蝶结', '💎 宝石', '🌙 月亮', '🎤 麦克风', '🧸 玩偶'];
+        const DIRECTIONS = ['东方', '东南', '南方', '西南', '西方', '西北', '北方', '东北'];
+        const GOOD_ACTIVITIES = ['看御坂直播', '逛应援站', '听御坂唱歌', '打游戏', '吃甜点', '出门散步', '和朋友聊天', '看动漫'];
+        const BAD_ACTIVITIES = ['熬夜', '暴饮暴食', '冲动消费', '赖床', '过度焦虑', '宅在家一整天', '与人争吵', '拖延症'];
+
+        const MESSAGES = [
+            '今天也要元气满满哦！御坂在直播间等你呢~',
+            '不管今天是好运还是坏运，保持笑容最重要！(*´▽`*)',
+            '记得按时吃饭、好好休息，这样才能元气满满地看直播哦！',
+            '遇到困难的时候，想想御坂的"电磁炮"——勇敢向前冲！⚡',
+            '今天的你也很可爱呢！和呱太A一起支持御坂吧~',
+            '偶尔放松一下也没关系，御坂的直播间永远欢迎你！',
+            '好运会眷顾努力的人，今天也要加油哦！💪',
+            '世界很大，但御坂和你之间的距离只有一场直播~ 📺',
+            '微笑是最好的应援，今天也笑一个吧！😊',
+            '不管今天运势如何，御坂都希望你开心快乐！'
+        ];
+
+        let isDrawn = false;
+
+        // 基于日期的种子随机
+        function seededRandom(seed) {
+            let x = Math.sin(seed) * 10000;
+            return x - Math.floor(x);
+        }
+
+        function getDailySeed() {
+            const d = new Date();
+            return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+        }
+
+        function pickFromList(list, seed, count = 1) {
+            const shuffled = [...list];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(seededRandom(seed + i) * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return count === 1 ? shuffled[0] : shuffled.slice(0, count);
+        }
+
+        function getDailyFortune() {
+            const seed = getDailySeed();
+
+            // 加权随机选运势
+            const totalProb = FORTUNES.reduce((sum, f) => sum + f.prob, 0);
+            let r = seededRandom(seed) * totalProb;
+            let fortune = FORTUNES[0];
+            for (const f of FORTUNES) {
+                r -= f.prob;
+                if (r <= 0) { fortune = f; break; }
+            }
+
+            const color = pickFromList(COLORS, seed + 1);
+            const item = pickFromList(ITEMS, seed + 2);
+            const luckyNum = Math.floor(seededRandom(seed + 3) * 9) + 1;
+            const dir = pickFromList(DIRECTIONS, seed + 4);
+            const good = pickFromList(GOOD_ACTIVITIES, seed + 5);
+            const bad = pickFromList(BAD_ACTIVITIES, seed + 6);
+            const msgIndex = Math.floor(seededRandom(seed + 7) * MESSAGES.length);
+            const msg = MESSAGES[msgIndex];
+
+            return { fortune, color, item, luckyNum, dir, good, bad, msg };
+        }
+
+        function drawFortune(playAudio = true) { 
+            if (isDrawn) return;
+
+            isDrawn = true;
+            const card = document.getElementById('fortuneCard');
+
+            // 翻牌动画
+            card.classList.add('flipped');
+
+            // 播放翻牌音效（仅在用户交互时）
+            if (playAudio) {
+                flipSound.currentTime = 0;
+                flipSound.play().catch(() => {});
+            }
+
+            // 更新卡片背面
+            const result = getDailyFortune();
+            document.getElementById('fEmoji').textContent = result.fortune.emoji;
+            document.getElementById('fLevel').textContent = result.fortune.level;
+            document.getElementById('fLevel').style.color =
+                result.fortune.level === '大吉' ? '#e91e63' :
+                result.fortune.level === '凶' || result.fortune.level === '大凶' ? '#f44336' : '#ff9800';
+            document.getElementById('fDesc').textContent = result.fortune.desc;
+
+            // 更新详情
+            document.getElementById('luckyColor').textContent = result.color.name;
+            document.getElementById('luckyColor').style.setProperty('--dot-color', result.color.hex);
+            document.getElementById('luckyItem').textContent = result.item;
+            document.getElementById('luckyNum').textContent = result.luckyNum;
+            document.getElementById('luckyDir').textContent = result.dir;
+            document.getElementById('fortuneMsg').textContent = result.msg;
+            document.getElementById('luckyDo').textContent = '✅ ' + result.good;
+            document.getElementById('unluckyDo').textContent = '❌ ' + result.bad;
+
+            // 显示详情
+            setTimeout(() => {
+                document.getElementById('fortuneDetails').classList.add('show'); 
+                if (playAudio) {
+                    const isUnlucky = result.fortune.level.includes('凶');
+                    const sound = isUnlucky ? unluckySound : luckySound;
+                    sound.currentTime = 0;
+                    sound.play().catch(() => {});
+                }
+            }, 400);
+
+            // 改变按钮
+            document.getElementById('drawBtn').textContent = '🔮 今日已抽取';
+            document.getElementById('drawBtn').style.opacity = '0.6';
+            document.getElementById('drawBtn').style.cursor = 'default';
+            document.getElementById('drawBtn').onclick = null;
+
+            // 显示分享
+            const shareText = `今日运势 - ${result.fortune.level} ${result.fortune.emoji}\n幸运色：${result.color.name} | 幸运物：${result.item}\n幸运数字：${result.luckyNum} | 幸运方位：${result.dir}\n${result.good} | 避免${result.bad}\n${result.msg}\n—— 来自御坂19039应援站`;
+            document.getElementById('shareText').textContent = shareText;
+            setTimeout(() => {
+                document.getElementById('shareSection').classList.add('show');
+            }, 800);
+
+            // 保存已抽取标记
+            localStorage.setItem('fortune_date', getDailySeed());
+            document.getElementById('drawnNotice').textContent = '今日运势已揭晓，明天再来哦~';
+        }
+
+        function copyResult() {
+            const text = document.getElementById('shareText').textContent;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const btn = document.querySelector('.copy-btn');
+                    btn.textContent = '✅ 已复制！';
+                    setTimeout(() => { btn.textContent = '📋 复制分享'; }, 2000);
+                });
+            } else {
+                // 降级方案
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = '✅ 已复制！';
+                setTimeout(() => { btn.textContent = '📋 复制分享'; }, 2000);
+            }
+        }
+
+        // 初始化
+        const now = new Date();
+        const dateStr = now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日';
+        document.getElementById('todayDate').textContent = dateStr;
+
+        // 检查今天是否已经抽过
+        const savedDate = localStorage.getItem('fortune_date');
+        if (savedDate == getDailySeed()) {
+            // 自动展示今天的运势
+            setTimeout(() => drawFortune(false), 300);
+        }
+    </script>
+</body>
+</html>

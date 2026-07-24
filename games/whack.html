@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>御坂打章鱼 - 御坂19039应援站</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(180deg, #fff5f8 0%, #ffe0ec 50%, #ffd6e4 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            user-select: none;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: 100vh;
+        }
+
+        .header h1 {
+            font-size: 1.6rem;
+            color: #e91e63;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+
+        /* 状态栏 */
+        .status-bar {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .status-item {
+            background: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.06);
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .status-item span {
+            color: #e91e63;
+            font-weight: bold;
+        }
+
+        /* 游戏区域 */
+        .game-area {
+            flex: 1;
+            position: relative;
+            background: linear-gradient(180deg, #87CEEB 0%, #B0E0E6 60%, #90EE90 60%, #228B22 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            min-height: 350px;
+        }
+
+        /* 草地 */
+        .ground {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 35%;
+            background: linear-gradient(0deg, #228B22, #32CD32);
+            border-radius: 0 0 20px 20px;
+        }
+
+        .ground::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 0;
+            right: 0;
+            height: 16px;
+            background: radial-gradient(ellipse at 50% 0%, rgba(50,205,50,0.6) 0%, transparent 70%);
+        }
+
+        /* 洞 */
+        .holes {
+            position: absolute;
+            bottom: 18%;
+            left: 0;
+            right: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 0 15px;
+            z-index: 2;
+        }
+
+        .hole {
+            position: relative;
+            aspect-ratio: 1;
+            max-width: 130px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hole-front {
+            position: absolute;
+            bottom: 0;
+            left: -5%;
+            width: 110%;
+            height: 35%;
+            background: radial-gradient(ellipse at center, #5D4037, #3E2723);
+            border-radius: 50%;
+            z-index: 3;
+            box-shadow: inset 0 -5px 10px rgba(0,0,0,0.3);
+        }
+
+        .hole-bg {
+            position: absolute;
+            bottom: 10%;
+            left: 5%;
+            width: 90%;
+            height: 60%;
+            background: #2E1B0E;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* 角色 */
+        .character {
+            position: absolute;
+            bottom: 20%;
+            left: 5%;
+            width: 90%;
+            height: 70%;
+            z-index: 2;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.8rem;
+            transform: translateY(110%);
+            transition: transform 0.15s ease-out;
+            pointer-events: none;
+        }
+
+        .character.up {
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .character.hit {
+            transform: translateY(110%) scale(0.5);
+            transition: transform 0.1s ease-in;
+        }
+
+        .character .char-emoji {
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
+            transition: transform 0.1s;
+            position: relative;
+        }
+
+        .character.hit .char-emoji {
+            transform: scale(1.3);
+        }
+
+        .characters-list {
+            display: none;
+        }
+
+        /* 分数弹出 */
+        .score-popup {
+            position: absolute;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            pointer-events: none;
+            z-index: 10;
+            animation: popUp 0.8s ease-out forwards;
+        }
+
+        .score-popup.bad {
+            color: #f44336;
+        }
+
+        @keyframes popUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-60px) scale(1.2); }
+        }
+
+        /* 开始/结束覆盖层 */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(3px);
+            z-index: 20;
+            border-radius: 20px;
+        }
+
+        .overlay.hidden {
+            display: none;
+        }
+
+        .overlay-content {
+            background: white;
+            padding: 35px 30px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 320px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            animation: overlayPop 0.3s ease;
+        }
+
+        @keyframes overlayPop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .overlay-content .big-icon {
+            font-size: 4rem;
+            margin-bottom: 10px;
+        }
+
+        .overlay-content h2 {
+            color: #e91e63;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .overlay-content p {
+            color: #666;
+            margin: 5px 0;
+            font-size: 0.95rem;
+        }
+
+        .overlay-content .highlight {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e91e63;
+        }
+
+        .btn {
+            padding: 12px 35px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e91e63, #ff6b9d);
+            color: white;
+            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #e91e63;
+            border: 2px solid #e91e63;
+        }
+
+        .btn-secondary:hover {
+            background: #fff5f8;
+        }
+
+        .combo-display {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            z-index: 5;
+            background: rgba(0,0,0,0.5);
+            color: #ffd700;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            display: none;
+        }
+
+        .combo-display.show {
+            display: block;
+            animation: comboGlow 0.5s ease;
+        }
+
+        @keyframes comboGlow {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .back-link {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.85rem;
+            margin-top: 10px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover { color: #e91e63; }
+
+        @media (max-width: 480px) {
+            .header h1 { font-size: 1.3rem; }
+            .character { font-size: 2.2rem; }
+            .status-item { padding: 6px 14px; font-size: 0.85rem; }
+            .holes { gap: 5px; padding: 0 8px; }
+            .overlay-content { padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐙 御坂打章鱼</h1>
+            <p>限时 30 秒，敲得越多分越高！</p>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-item">⏱️ <span id="timerDisplay">30</span>s</div>
+            <div class="status-item">🏆 <span id="scoreDisplay">0</span> 分</div>
+            <div class="status-item">🔥 <span id="comboDisplay">0</span> 连击</div>
+        </div>
+
+        <div class="game-area" id="gameArea">
+            <div class="ground"></div>
+
+            <div class="combo-display" id="comboPopup">🔥 COMBO x3</div>
+
+            <!-- 9个洞 -->
+            <div class="holes" id="holesContainer">
+                <div class="hole" data-index="0">
+                    <div class="hole-bg"></div>
+                    <div class="character" data-index="0"><span class="char-emoji"></span></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="hole" data-index="1">
+                    <div class="hole-bg"></div>
+                    <div class="character" data-index="1"><span class="char-emoji"></span></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="hole" data-index="2">
+                    <div class="hole-bg"></div>
+                    <div class="character" data-index="2"><span class="char-emoji"></span></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="hole" data-index="3">
+                    <div class="hole-bg"></div>
+                    <div class="character" data-index="3"><span class="char-emoji"></span></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="hole" data-index="4">
+                    <div class="hole-bg"></div>
+                    <div class="character" data-index="4"><span class="char-emoji"></span></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="hole" data-index="5">
+                    <div class="hole-bg"></div>
+                    <div class="character" data-index="5"><span class="char-emoji"></span></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="hole" data-index="6">
+                    <div class="hole-bg"></div>
+                    <div class="character" data-index="6"><span class="char-emoji"></span></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="hole" data-index="7">
+                    <div class="hole-bg"></div>
+                    <div class="character" data-index="7"><span class="char-emoji"></span></div>
+                    <div class="hole-front"></div>
+                </div>
+                <div class="hole" data-index="8">
+                    <div class="hole-bg"></div>
+                    <div class="character" data-index="8"><span class="char-emoji"></span></div>
+                    <div class="hole-front"></div>
+                </div>
+            </div>
+
+            <!-- 开始覆盖层 -->
+            <div class="overlay" id="startOverlay">
+                <div class="overlay-content">
+                    <div class="big-icon">🐙</div>
+                    <h2>准备开始！</h2>
+                    <p>点击冒出来的角色得分</p>
+                    <p>⭐ 御坂 +3分 | 🐙 章鱼 +1分 | 💣 炸弹 -2分</p>
+                    <button class="btn btn-primary" onclick="startGame()">开始游戏 🎮</button>
+                </div>
+            </div>
+
+            <!-- 结束覆盖层 -->
+            <div class="overlay hidden" id="endOverlay">
+                <div class="overlay-content">
+                    <div class="big-icon" id="endIcon">🏆</div>
+                    <h2 id="endTitle">时间到！</h2>
+                    <p>最终得分</p>
+                    <div class="highlight" id="finalScore">0</div>
+                    <p id="endComment">不错哦~</p>
+                    <div class="btn-group" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+                        <button class="btn btn-primary" onclick="startGame()">再来一次 🔄</button>
+                        <a href="../games.html" class="btn btn-secondary" style="text-decoration:none;display:inline-flex;align-items:center;">← 返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="../games.html" class="back-link">← 返回游戏中心</a>
+
+    <script>
+        const CHARACTERS = {
+            misaka: { emoji: '⚡', name: '御坂', points: 3, weight: 20 },
+            octopus: { emoji: '🐙', name: '章鱼', points: 1, weight: 40 },
+            bomb: { emoji: '💣', name: '炸弹', points: -2, weight: 15 },
+            star: { emoji: '⭐', name: '星星', points: 2, weight: 25 }
+        };
+
+        const CHAR_TYPES = Object.values(CHARACTERS);
+
+        let score = 0;
+        let combo = 0;
+        let maxCombo = 0;
+        let timeLeft = 30;
+        let isPlaying = false;
+        let timerInterval = null;
+        let spawnInterval = null;
+        let activeCharacters = new Set();
+        let gameSpeed = 1;
+
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const comboDisplay = document.getElementById('comboDisplay');
+        const comboPopup = document.getElementById('comboPopup');
+        const startOverlay = document.getElementById('startOverlay');
+        const endOverlay = document.getElementById('endOverlay');
+
+        function spawnCharacter() {
+            if (!isPlaying) return;
+
+            // 找一个空位
+            const available = [];
+            for (let i = 0; i < 9; i++) {
+                if (!activeCharacters.has(i)) available.push(i);
+            }
+
+            if (available.length === 0) return;
+
+            // 同时出现的角色数量 1-3
+            const count = Math.min(
+                available.length,
+                Math.floor(Math.random() * Math.min(3, 1 + Math.floor(gameSpeed * 0.5))) + 1
+            );
+
+            for (let c = 0; c < count; c++) {
+                if (available.length === 0) break;
+                const idx = Math.floor(Math.random() * available.length);
+                const holeIdx = available.splice(idx, 1)[0];
+
+                // 加权随机选角色
+                const totalWeight = CHAR_TYPES.reduce((s, t) => s + t.weight, 0);
+                let r = Math.random() * totalWeight;
+                let type = CHAR_TYPES[0];
+                for (const t of CHAR_TYPES) {
+                    r -= t.weight;
+                    if (r <= 0) { type = t; break; }
+                }
+
+                const charEl = document.querySelector(`.character[data-index="${holeIdx}"]`);
+                const emojiSpan = charEl.querySelector('.char-emoji');
+                emojiSpan.textContent = type.emoji;
+                emojiSpan.dataset.points = type.points;
+                emojiSpan.dataset.type = type.name;
+
+                activeCharacters.add(holeIdx);
+                charEl.classList.remove('hit');
+                charEl.classList.add('up');
+
+                // 自动消失
+                const duration = Math.max(600, 1200 - gameSpeed * 80) + Math.random() * 300;
+                setTimeout(() => {
+                    if (charEl.classList.contains('up') && !charEl.classList.contains('hit')) {
+                        charEl.classList.remove('up');
+                        activeCharacters.delete(holeIdx);
+                    }
+                }, duration);
+            }
+        }
+
+        function handleClick(e) {
+            if (!isPlaying) return;
+
+            const charEl = e.currentTarget;
+            if (!charEl.classList.contains('up') || charEl.classList.contains('hit')) return;
+
+            const holeIdx = parseInt(charEl.dataset.index);
+            const emojiSpan = charEl.querySelector('.char-emoji');
+            const points = parseInt(emojiSpan.dataset.points);
+            const type = emojiSpan.dataset.type;
+
+            charEl.classList.remove('up');
+            charEl.classList.add('hit');
+            activeCharacters.delete(holeIdx);
+
+            if (points > 0) {
+                combo++;
+                if (combo > maxCombo) maxCombo = combo;
+                const comboMultiplier = Math.min(combo, 10);
+                const finalPoints = points * (1 + Math.floor(comboMultiplier / 3));
+                score += finalPoints;
+
+                // 连击显示
+                if (combo >= 3) {
+                    comboPopup.textContent = `🔥 COMBO x${combo}`;
+                    comboPopup.classList.remove('show');
+                    void comboPopup.offsetWidth;
+                    comboPopup.classList.add('show');
+                }
+
+                showScorePopup(charEl, `+${finalPoints}`, false);
+            } else {
+                combo = 0;
+                score += points;
+                showScorePopup(charEl, `${points}`, true);
+                // 震动效果
+                charEl.style.animation = 'shake 0.3s ease';
+                setTimeout(() => { charEl.style.animation = ''; }, 300);
+            }
+
+            scoreDisplay.textContent = score;
+            comboDisplay.textContent = combo;
+
+            // 游戏加速
+            gameSpeed = Math.min(5, 1 + Math.floor(score / 30));
+        }
+
+        function showScorePopup(el, text, isBad) {
+            const rect = el.getBoundingClientRect();
+            const gameRect = document.getElementById('gameArea').getBoundingClientRect();
+            const popup = document.createElement('div');
+            popup.className = 'score-popup' + (isBad ? ' bad' : '');
+            popup.textContent = text;
+            popup.style.left = (rect.left - gameRect.left + rect.width / 2 - 15) + 'px';
+            popup.style.top = (rect.top - gameRect.top) + 'px';
+            document.getElementById('gameArea').appendChild(popup);
+            setTimeout(() => popup.remove(), 800);
+        }
+
+        function startGame() {
+            // 重置状态
+            score = 0;
+            combo = 0;
+            maxCombo = 0;
+            timeLeft = 30;
+            isPlaying = true;
+            gameSpeed = 1;
+            activeCharacters.clear();
+
+            scoreDisplay.textContent = '0';
+            timerDisplay.textContent = '30';
+            comboDisplay.textContent = '0';
+            comboPopup.classList.remove('show');
+
+            startOverlay.classList.add('hidden');
+            endOverlay.classList.add('hidden');
+
+            // 清除所有角色
+            document.querySelectorAll('.character').forEach(char => {
+                char.classList.remove('up', 'hit');
+            });
+
+            // 绑定点击
+            document.querySelectorAll('.character').forEach(char => {
+                char.addEventListener('click', handleClick);
+            });
+
+            // 定时器
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft;
+                if (timeLeft <= 5) {
+                    timerDisplay.style.color = '#f44336';
+                }
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+
+            // 生成角色
+            if (spawnInterval) clearInterval(spawnInterval);
+            spawnCharacter();
+            spawnInterval = setInterval(spawnCharacter, 700);
+        }
+
+        function endGame() {
+            isPlaying = false;
+            clearInterval(timerInterval);
+            clearInterval(spawnInterval);
+
+            // 清除所有角色
+            document.querySelectorAll('.character').forEach(char => {
+                char.classList.remove('up', 'hit');
+            });
+            timerDisplay.style.color = '';
+
+            // 评价
+            document.getElementById('finalScore').textContent = score;
+            let icon, title, comment;
+            if (score >= 100) {
+                icon = '👑'; title = '打章鱼大师！'; comment = '太强了！你是御坂认证的快手！⚡';
+            } else if (score >= 60) {
+                icon = '🌟'; title = '身手敏捷！'; comment = '反应很快嘛，可以去帮御坂打章鱼了~';
+            } else if (score >= 30) {
+                icon = '👍'; title = '表现不错！'; comment = '继续练习，下次一定能更高分！';
+            } else {
+                icon = '💪'; title = '还需要加油~'; comment = '章鱼太狡猾了，再试一次吧！';
+            }
+
+            document.getElementById('endIcon').textContent = icon;
+            document.getElementById('endTitle').textContent = title;
+            document.getElementById('endComment').textContent = comment;
+
+            endOverlay.classList.remove('hidden');
+        }
+
+        // 添加震动keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                20% { transform: translateX(-8px); }
+                40% { transform: translateX(8px); }
+                60% { transform: translateX(-5px); }
+                80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
