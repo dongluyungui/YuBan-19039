@@ -10,9 +10,9 @@
   <ellipse cx="150" cy="145" rx="35" ry="12" fill="#3E2723"/>
   <ellipse cx="225" cy="140" rx="35" ry="12" fill="#3E2723"/>
   <!-- 角色 -->
-  <text x="75" y="125" text-anchor="middle" font-size="38">🐙</text>
-  <text x="150" y="115" text-anchor="middle" font-size="38">⚡</text>
-  <text x="225" y="128" text-anchor="middle" font-size="38">🐙</text>
+  <text x="75" y="125" text-anchor="middle" font-size="38">🦎</text>
+  <text x="150" y="125" text-anchor="middle" font-size="38">🍥</text>
+  <text x="225" y="128" text-anchor="middle" font-size="38">🐖</text>
   <!-- 遮罩 -->
   <ellipse cx="75" cy="145" rx="38" ry="13" fill="none" stroke="#2E1B0E" stroke-width="2" opacity="0.5"/>
   <ellipse cx="150" cy="150" rx="38" ry="13" fill="none" stroke="#2E1B0E" stroke-width="2" opacity="0.5"/>

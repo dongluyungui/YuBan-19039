@@ -678,10 +678,10 @@ ${tagSpans}
           // 主播标签识别逻辑（不区分大小写）
           const lowerTitle = title.toLowerCase();
           const sinaKeywords = ['sina', 'slna', 'xina'];
-          const zaixiKeywords = ['zaixi', 'zaix1', 'zaix'];
-
+          const zaixiKeywords = ['zaixi', 'Zaix1'];
+          
           let hostTag = '御坂19039'; // 默认值
-
+          
           // 检查是否包含SINA相关关键词
           if (sinaKeywords.some(key => lowerTitle.includes(key.toLowerCase()))) {
             hostTag = 'SINA';
@@ -690,147 +690,10 @@ ${tagSpans}
           else if (zaixiKeywords.some(key => lowerTitle.includes(key.toLowerCase()))) {
             hostTag = '烖晞';
           }
-          // 检查是否为大坂/OSKA
-          else if (/大坂|osaka/.test(lowerTitle)) {
-            hostTag = '御坂19039';
-          }
-
+          
           document.getElementById('hostTag').value = hostTag;
-
-          // ==================== 标题→标签自动识别 ====================
-          // 根据 LiveHistory.html 的历史数据整理的关键词映射规则
-          var TAG_RULES = [
-            // ── 主题标签 ──
-            { tag: '绘画', keywords: ['画画', '边画', '画完', '画一', '生贺', '画米塔', '在画'] },
-            { tag: '静音', keywords: ['静音', '哑巴'] },
-            { tag: '音乐', keywords: ['练琴', '复健', '琴'] },
-            { tag: '剪视频', keywords: ['剪视频'] },
-            { tag: '调试', keywords: ['调试'] },
-            { tag: '摸鱼', keywords: ['摸鱼', '不想上课'] },
-            { tag: 'live2d', keywords: ['live2d'] },
-
-            // ── 具体游戏名 ──
-            { tag: '三角洲', keywords: ['三角洲', '酸角粥', '酸角洲', '普坝', '航天', '长弓'] },
-            { tag: '瓦罗兰特', keywords: ['瓦罗兰特', '打瓦', '瓦瓦高手', '瓦瓦', '瓦高手'] },
-            { tag: '我的世界', keywords: ['我的世界', '生存专家', 'MC'] },
-            { tag: '泰拉瑞亚', keywords: ['泰拉瑞亚'] },
-            { tag: '原神', keywords: ['原神'] },
-            { tag: '米塔', keywords: ['米塔'] },
-            { tag: '光遇', keywords: ['光遇', '跑图', '心心'] },
-            { tag: '杯杯倒满', keywords: ['杯杯倒满', '奶茶店', '折耳根柠檬茶', '开奶茶'] },
-            { tag: 'csgo', keywords: ['csgo'] },
-            { tag: 'qq14', keywords: ['qq14', 'ff14'] },
-            { tag: '星穹铁道', keywords: ['星穹铁道', '星穹'] },
-            { tag: '小小梦魇', keywords: ['小小梦魇'] },
-            { tag: 'PEAK', keywords: ['PEAK', '爬山', '山顶'] },
-            { tag: '超级变色龙', keywords: ['超级变色龙', '变色龙'] },
-            { tag: '恐怖游戏', keywords: ['大叫挑战', '恐怖'] },
-
-            // ── 游戏类型 ──
-            { tag: 'FPS', keywords: ['FPS'] },
-            { tag: '沙盒', keywords: ['沙盒'] },
-            { tag: '模拟经营', keywords: ['模拟经营'] },
-
-            // ── 内容类型 ──
-            { tag: '读故事', keywords: ['读故事', '小王子', '水孩子', '花开'] },
-            { tag: '练习', keywords: ['练习'] },
-            { tag: '光标', keywords: ['光标'] },
-            { tag: '仓鼠', keywords: ['仓鼠'] },
-
-            // ── 事件 ──
-            { tag: '跨年', keywords: ['跨年'] },
-            { tag: '节日', keywords: ['节日', '中秋', '国庆'] },
-            { tag: '生日', keywords: ['生日', '生贺'] },
-            { tag: '周年', keywords: ['周年'] },
-            { tag: '六一', keywords: ['六一', '儿童节'] },
-            { tag: '端午', keywords: ['端午'] },
-            { tag: '双满', keywords: ['双满'] },
-            { tag: '出道', keywords: ['出道'] },
-            { tag: '挑战', keywords: ['挑战', '不要笑'] },
-            { tag: '万圣节', keywords: ['万圣节'] },
-
-            // ── 状态 ──
-            { tag: '逃离现实', keywords: ['逃离现实'] },
-          ];
-
-          // 检测所有匹配的标签
-          var detectedTags = [];
-          TAG_RULES.forEach(function (rule) {
-            var matched = rule.keywords.some(function (kw) {
-              return lowerTitle.indexOf(kw.toLowerCase()) !== -1;
-            });
-            if (matched) detectedTags.push(rule.tag);
-          });
-          // 去重
-          detectedTags = detectedTags.filter(function (t, i) {
-            return detectedTags.indexOf(t) === i;
-          });
-
-          // ── 检测主题 ──
-          var detectedThemes = [];
-          if (/静音|哑巴/.test(lowerTitle)) detectedThemes.push('静音');
-          if (/画画|边画|画完|画一/.test(lowerTitle)) detectedThemes.push('绘画');
-
-          var hasGame = /打|玩|游戏|酸角|瓦(?!罗兰特)|FPS/.test(lowerTitle) ||
-            detectedTags.some(function(t) {
-              return ['三角洲','瓦罗兰特','我的世界','泰拉瑞亚','原神','米塔',
-                      '光遇','杯杯倒满','csgo','qq14','星穹铁道','小小梦魇',
-                      'PEAK','超级变色龙','恐怖游戏'].indexOf(t) !== -1;
-            });
-          if (hasGame) detectedThemes.push('游戏');
-          if (/这么晚|还没睡|聊聊天|聊一下|看比赛/.test(lowerTitle) && !hasGame) detectedThemes.push('杂谈');
-
-          // 按优先级设置 themeTag：静音 > 绘画 > 游戏 > 杂谈
-          var themePriority = ['静音', '绘画', '游戏', '杂谈'];
-          for (var i = 0; i < themePriority.length; i++) {
-            if (detectedThemes.indexOf(themePriority[i]) !== -1) {
-              document.getElementById('themeTag').value = themePriority[i];
-              break;
-            }
-          }
-
-          // ── 收集所有需选中的标签（去重） ──
-          var allTagsToApply = [];
-          detectedTags.forEach(function(t) { allTagsToApply.push(t); });
-          detectedThemes.forEach(function(t) { allTagsToApply.push(t); });
-          // 排除主播标签（已在主播select中了）
-          allTagsToApply = allTagsToApply.filter(function(t) {
-            return t !== 'SINA' && t !== '御坂19039' && t !== '烖晞';
-          });
-          // 去重
-          allTagsToApply = allTagsToApply.filter(function(t, i) {
-            return allTagsToApply.indexOf(t) === i;
-          });
-
-          // ── 自动选中公共标签 ──
-          var commonTags = document.getElementById('common-tags');
-          var existingCommonTagTexts = [];
-          if (commonTags) {
-            [...commonTags.getElementsByClassName('tag')].forEach(function (tag) {
-              existingCommonTagTexts.push(tag.textContent);
-              if (allTagsToApply.indexOf(tag.textContent) !== -1) {
-                if (!tag.classList.contains('selected')) {
-                  tag.click();
-                }
-              }
-            });
-          }
-
-          // ── 处理公共标签中没有的检测标签（通过标签输入框添加） ──
-          var tagsList = document.getElementById('tags-list');
-          allTagsToApply.forEach(function (tagText) {
-            if (existingCommonTagTexts.indexOf(tagText) !== -1) return;
-            var alreadyAdded = [...tagsList.getElementsByClassName('tag')]
-              .some(function(t) { return t.firstElementChild.textContent === tagText; });
-            if (!alreadyAdded) {
-              var tagElement = document.createElement('div');
-              tagElement.className = 'tag';
-              tagElement.innerHTML = '<span>' + tagText + '</span><span class="delete-btn" onclick="this.parentElement.remove()">×</span>';
-              tagsList.appendChild(tagElement);
-            }
-          });
         }
-
+        
         // 填充开播/下播时间
         if (data['开播时间']) {
           const startTime = data['开播时间'];

@@ -31,9 +31,18 @@
     // 烟花数组，用于存储上升中的烟花
     window.fireworks = [];
 
+    // ====== 路径自动适配 ======
+    // 检测当前页面是否在子目录中，自动添加 ../ 前缀
+    var audioPrefix = '';
+    var pathParts = window.location.pathname;
+    var dir = pathParts.substring(0, pathParts.lastIndexOf('/'));
+    if (dir.indexOf('/games') !== -1 || dir.indexOf('/Tools') !== -1) {
+        audioPrefix = '../';
+    }
+
     // 创建音频元素
-    var launchSound = new Audio('Sounds/fireworks/lunch.mp3');
-    var explosionSound = new Audio('Sounds/fireworks/twinkle.mp3');
+    var launchSound = new Audio(audioPrefix + 'Sounds/fireworks/lunch.mp3');
+    var explosionSound = new Audio(audioPrefix + 'Sounds/fireworks/twinkle.mp3');
 
     // 烟花类
     window.Firework = class Firework {

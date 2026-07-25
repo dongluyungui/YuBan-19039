@@ -2,6 +2,21 @@
 const contextMenu = document.getElementById('context-menu');
 const fireworks = [];
 
+// ====== 路径自动适配 ======
+// 检测当前页面是否在子目录中（如 games/），自动添加 ../ 前缀
+function getSubdirPrefix() {
+    var path = window.location.pathname;
+    var dir = path.substring(0, path.lastIndexOf('/'));
+    if (dir.indexOf('/games') !== -1 || dir.indexOf('/Tools') !== -1) {
+        return '../';
+    }
+    return '';
+}
+
+function openToolPage(page) {
+    window.open(getSubdirPrefix() + 'Tools/' + page, '_blank');
+}
+
 // 初始化时检查菜单状态
 document.addEventListener('DOMContentLoaded', () => {
     const isEnabled = localStorage.getItem('isContextMenuEnabled') !== 'false';
@@ -57,20 +72,20 @@ for (let i = 0; i < menuItems.length; i++) {
                 window.open('https://www.example.com', '_blank');
                 break;
             case 'ai总结':
-                window.open('Tools/aisummary.html', '_blank');
+                openToolPage('aisummary.html');
                 break;
             case '当前时间':
-                window.open('Tools/NowTime.html', '_blank');
-                break;    
+                openToolPage('NowTime.html');
+                break;
             case '更新动态':
-                window.open('Tools/dynamics.html', '_blank');
+                openToolPage('dynamics.html');
                 break;
             case '生成记录':
-                window.open('Tools/LiveRecords.html', '_blank');
+                openToolPage('LiveRecords.html');
                 break;
             case '添加作品':
-                window.open('Tools/galleryRecords.html', '_blank');
-                break;    
+                openToolPage('galleryRecords.html');
+                break;
             case '复制文本':
                 const textToCopy = '这是要复制的文本';
                 navigator.clipboard.writeText(textToCopy).then(() => {
